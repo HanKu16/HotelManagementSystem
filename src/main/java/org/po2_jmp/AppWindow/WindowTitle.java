@@ -12,8 +12,8 @@ public class WindowTitle {
 
     public WindowTitle(String title) {
         if (!isTitleValid(title)) {
-            throw new IllegalArgumentException("Title can not be null and " +
-                    "longer than " + MAX_SIZE);
+            throw new IllegalArgumentException("Illegal values passed " +
+                    "to constructor");
         }
         this.value = title;
     }

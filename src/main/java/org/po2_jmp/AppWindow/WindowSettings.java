@@ -13,18 +13,19 @@ public class WindowSettings {
 
     public WindowSettings(WindowDimensions dimensions,
                           WindowTitle title, String startPanelId) {
-        if (!areWindowDimensionsValid(dimensions) || !isTitleValid(title)) {
-            throw new IllegalArgumentException("Dimensions and title can not " +
-                    "be null but " + dimensions + " are " + dimensions +
-                    " and " + title + " is " + title);
-        }
-        if (!isStartPanelIdValid(startPanelId)) {
-            throw new IllegalArgumentException("StartPanelId can not be null " +
-                    "but is " + startPanelId);
+        if (!areParamsValid(dimensions, title, startPanelId)) {
+            throw new IllegalArgumentException("Illegal values passed " +
+                    "to constructor");
         }
         this.dimensions = dimensions;
         this.title = title;
         this.startPanelId = startPanelId;
+    }
+
+    private boolean areParamsValid(WindowDimensions dimensions,
+            WindowTitle title, String startPanelId) {
+        return areWindowDimensionsValid(dimensions) && isTitleValid(title) &&
+                isStartPanelIdValid(startPanelId);
     }
 
     private boolean areWindowDimensionsValid(WindowDimensions dimensions) {

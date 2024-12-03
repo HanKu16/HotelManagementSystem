@@ -15,14 +15,16 @@ public class WindowDimensions {
     private final int height;
 
     public WindowDimensions(int width, int height) {
-        if (!isWidthValid(width) || !isHeightValid(height)) {
-            throw new IllegalArgumentException("Width must be value in " +
-                    "between <" + MIN_WIDTH + ", " + MAX_WIDTH +
-                    ">\nHeight must be value in <" + MIN_HEIGHT +
-                    ", " + MAX_HEIGHT + ">");
+        if (!areParamsValid(width, height)) {
+            throw new IllegalArgumentException("Illegal values passed " +
+                    "to constructor");
         }
         this.width = width;
         this.height = height;
+    }
+
+    private boolean areParamsValid(int width, int height) {
+        return isWidthValid(width) && isHeightValid(height);
     }
 
     private boolean isWidthValid(int width) {
