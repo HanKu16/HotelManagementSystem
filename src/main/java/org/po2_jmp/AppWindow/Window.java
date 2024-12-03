@@ -10,24 +10,20 @@ public class Window extends JFrame {
 
     private final WindowSettings settings;
     private final HashMap<String, JPanel> panels;
-    private static final JPanel panelContainer = new JPanel();
-    private static final CardLayout cardLayout = new CardLayout();
+    private final JPanel container;
+    private final CardLayout cardLayout;
 
-    public Window(WindowSettings settings, HashMap<String, JPanel> panels) {
-        if (!areSettingsValid(settings) || ! arePanelsValid(panels)) {
+    public Window(WindowSettings settings, HashMap<String, JPanel> panels,
+                  JPanel container, CardLayout cardLayout) {
+        if (!areParamsValid(settings, panels, container, cardLayout)) {
             throw new IllegalArgumentException("Illegal values passed " +
-                    "to constructor\nsettings: " + settings + "\n" +
-                    "panels: " + panels);
+                    "to constructor");
         }
         this.settings = settings;
         this.panels = panels;
+        this.container = container;
+        this.cardLayout = cardLayout;
         configure();
-    }
-
-    public static void switchToPanel(String panelId) {
-        if (panelId != null) {
-            cardLayout.show(panelContainer, panelId);
-        }
     }
 
     private void configure() {
@@ -52,21 +48,27 @@ public class Window extends JFrame {
     }
 
     private void setLayout() {
-        panelContainer.setLayout(cardLayout);
+        container.setLayout(cardLayout);
     }
 
     private void assignPanelsToContainer() {
         for (String panelId : panels.keySet()) {
-            panelContainer.add(panels.get(panelId), panelId);
+            container.add(panels.get(panelId), panelId);
         }
     }
 
     private void assignContainer() {
-        this.add(panelContainer);
+        this.add(container);
     }
 
     private void setStartingPanel(String panelId) {
-        cardLayout.show(panelContainer, panelId);
+        cardLayout.show(container, panelId);
+    }
+
+    private boolean areParamsValid(WindowSettings settings, HashMap<String,
+            JPanel> panels, JPanel container, CardLayout cardLayout) {
+        return areSettingsValid(settings) && arePanelsValid(panels) &&
+                isContainerValid(container) && isCardLayoutValid(cardLayout);
     }
 
     private boolean areSettingsValid(WindowSettings settings) {
@@ -75,6 +77,14 @@ public class Window extends JFrame {
 
     private boolean arePanelsValid(HashMap<String, JPanel> panels) {
         return (panels != null) && !panels.containsValue(null);
+    }
+
+    private boolean isContainerValid(JPanel container) {
+        return container != null;
+    }
+
+    private boolean isCardLayoutValid(CardLayout cardLayout) {
+        return cardLayout != null;
     }
 
 }
