@@ -1,8 +1,10 @@
 package org.po2_jmp.AppWindow;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class WindowSettings {
 
     private final WindowDimensions dimensions;
