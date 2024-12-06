@@ -1,8 +1,10 @@
 package org.po2_jmp.Panels;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
+@Getter
 @ToString
 @EqualsAndHashCode
 public class PanelId {
@@ -15,10 +17,6 @@ public class PanelId {
                     "to PanelId constructor");
         }
         this.value = panelId;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     private boolean isPanelIdValid(String panelId) {
