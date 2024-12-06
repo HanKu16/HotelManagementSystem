@@ -27,14 +27,14 @@ public class FrontendApp implements Runnable {
         }
     }
 
-    public WindowSettings createWindowSettings() {
+    private WindowSettings createWindowSettings() {
         return new WindowSettings(
                 new WindowDimensions(800, 600),
                 new WindowTitle("Hotel Management System"),
                 new PanelId("1"));
     }
 
-    public List<Panel> createPanels(CardLayout cardLayout, JPanel container) {
+    private List<Panel> createPanels(CardLayout cardLayout, JPanel container) {
         List<Panel> panels = new ArrayList<>();
         Panel panelOne = new PanelOne(
                 new PanelId("1"), cardLayout, container);
