@@ -1,7 +1,7 @@
-package org.po2_jmp.AppWindow;
+package org.po2_jmp.window;
 
 import org.junit.jupiter.api.Test;
-import org.po2_jmp.Panels.PanelId;
+import org.po2_jmp.panels.PanelId;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WindowSettingsTest {

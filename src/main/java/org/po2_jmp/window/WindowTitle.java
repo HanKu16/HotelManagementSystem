@@ -1,4 +1,4 @@
-package org.po2_jmp.AppWindow;
+package org.po2_jmp.window;
 
 import lombok.Getter;
 import lombok.ToString;

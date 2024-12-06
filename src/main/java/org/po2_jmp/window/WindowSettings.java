@@ -1,7 +1,7 @@
-package org.po2_jmp.AppWindow;
+package org.po2_jmp.window;
 
 import lombok.Getter;
-import org.po2_jmp.Panels.PanelId;
+import org.po2_jmp.panels.PanelId;
 
 @Getter
 public class WindowSettings {

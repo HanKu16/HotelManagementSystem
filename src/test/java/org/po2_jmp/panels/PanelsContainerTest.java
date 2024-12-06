@@ -1,4 +1,4 @@
-package org.po2_jmp.Panels;
+package org.po2_jmp.panels;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

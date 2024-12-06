@@ -1,4 +1,4 @@
-package org.po2_jmp.Panels;
+package org.po2_jmp.panels;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
