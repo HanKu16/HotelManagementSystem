@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class App implements Runnable {
+public class FrontendApp implements Runnable {
 
     @Override
     public void run() {

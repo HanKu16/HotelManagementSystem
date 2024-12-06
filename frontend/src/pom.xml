@@ -7,6 +7,12 @@
     <groupId>org.po2_jmp</groupId>
     <artifactId>HotelManagementSystem</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>Backend</module>
+        <module>backend</module>
+        <module>frontend</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
