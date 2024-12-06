@@ -1,10 +1,8 @@
 package org.po2_jmp.AppWindow;
 
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
 public class WindowDimensions {
 
     private static final int MIN_WIDTH = 1;
