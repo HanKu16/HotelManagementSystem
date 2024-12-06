@@ -1,12 +1,14 @@
 package org.po2_jmp;
 
-import org.po2_jmp.AppWindow.*;
-import org.po2_jmp.AppWindow.Window;
+import org.po2_jmp.window.*;
+import org.po2_jmp.window.Window;
+import org.po2_jmp.panels.*;
+import org.po2_jmp.panels.Panel;
+import org.po2_jmp.panels.PanelsContainer;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App implements Runnable {
 
@@ -16,9 +18,10 @@ public class App implements Runnable {
             WindowSettings settings = createWindowSettings();
             JPanel container = new JPanel();
             CardLayout cardLayout = new CardLayout();
-            HashMap<String, JPanel> panels = createPanels(cardLayout, container);
-            Window window = new Window(settings, panels,
-                    container, cardLayout);
+            List<Panel> panels = createPanels(cardLayout, container);
+            PanelsContainer myContainer = new PanelsContainer(
+                    container, cardLayout, panels);
+            Window window = new Window(settings, myContainer);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -28,88 +31,24 @@ public class App implements Runnable {
         return new WindowSettings(
                 new WindowDimensions(800, 600),
                 new WindowTitle("Hotel Management System"),
-                "1");
+                new PanelId("1"));
     }
 
-    private HashMap<String, JPanel> createPanels(CardLayout cardLayout, JPanel container) {
-        HashMap<String, JPanel> panels = new HashMap<>();
-        panels.put("1", createPanelOne(cardLayout, container));
-        panels.put("2", createPanelTwo(cardLayout, container));
-        panels.put("3", createPanelThree(cardLayout, container));
+    public List<Panel> createPanels(CardLayout cardLayout, JPanel container) {
+        List<Panel> panels = new ArrayList<>();
+        Panel panelOne = new PanelOne(
+                new PanelId("1"), cardLayout, container);
+        Panel panelTwo = new PanelTwo(
+                new PanelId("2"), cardLayout, container);
+        Panel panelThree = new PanelThree(
+                new PanelId("3"), cardLayout, container);
+        Panel loginPanel = new LoginPanel(
+                new PanelId("Login"), cardLayout, container);
+        panels.add(panelOne);
+        panels.add(panelTwo);
+        panels.add(panelThree);
+        panels.add(loginPanel);
         return panels;
-    }
-
-    private JPanel createPanelOne(CardLayout cardLayout, JPanel container) {
-        JPanel panelFirst = new JPanel();
-        JLabel label = new JLabel("Panel One");
-        panelFirst.add(label);
-        JButton buttonTwo = new JButton("Switch to second panel");
-        buttonTwo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(container, "2");
-
-            }
-        });
-        panelFirst.add(buttonTwo);
-        JButton buttonThree = new JButton("Switch to third panel");
-        buttonThree.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(container, "3");
-            }
-        });
-        panelFirst.add(buttonThree);
-        panelFirst.setBackground(Color.RED);
-        return panelFirst;
-    }
-
-    private JPanel createPanelTwo(CardLayout cardLayout, JPanel container) {
-        JPanel panelSecond = new JPanel();
-        JLabel label = new JLabel("Panel Second");
-        panelSecond.add(label);
-        JButton buttonOne = new JButton("Switch to first panel");
-        buttonOne.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(container, "1");
-            }
-        });
-        panelSecond.add(buttonOne);
-        JButton buttonThree = new JButton("Switch to third panel");
-        buttonThree.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(container, "3");
-            }
-        });
-        panelSecond.add(buttonThree);
-        panelSecond.setBackground(Color.GREEN);
-        return panelSecond;
-    }
-
-    private JPanel createPanelThree(CardLayout cardLayout, JPanel container) {
-        JPanel panelThree = new JPanel();
-        JLabel label = new JLabel("Panel Three");
-        panelThree.add(label);
-        JButton buttonOne = new JButton("Switch to first panel");
-        buttonOne.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(container, "1");
-            }
-        });
-        panelThree.add(buttonOne);
-        JButton buttonTwo = new JButton("Switch to second panel");
-        buttonTwo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(container, "2");
-            }
-        });
-        panelThree.add(buttonTwo);
-        panelThree.setBackground(Color.BLUE);
-        return panelThree;
     }
 
 }
