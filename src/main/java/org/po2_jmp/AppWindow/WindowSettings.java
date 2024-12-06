@@ -1,18 +1,17 @@
 package org.po2_jmp.AppWindow;
 
 import lombok.Getter;
-import lombok.ToString;
+import org.po2_jmp.Panels.PanelId;
 
 @Getter
-@ToString
 public class WindowSettings {
 
     private final WindowDimensions dimensions;
     private final WindowTitle title;
-    private final String startPanelId;
+    private final PanelId startPanelId;
 
     public WindowSettings(WindowDimensions dimensions,
-                          WindowTitle title, String startPanelId) {
+                          WindowTitle title, PanelId startPanelId) {
         if (!areParamsValid(dimensions, title, startPanelId)) {
             throw new IllegalArgumentException("Illegal values passed " +
                     "to constructor");
@@ -23,7 +22,7 @@ public class WindowSettings {
     }
 
     private boolean areParamsValid(WindowDimensions dimensions,
-            WindowTitle title, String startPanelId) {
+            WindowTitle title, PanelId startPanelId) {
         return areWindowDimensionsValid(dimensions) && isTitleValid(title) &&
                 isStartPanelIdValid(startPanelId);
     }
@@ -36,7 +35,7 @@ public class WindowSettings {
         return title != null;
     }
 
-    private boolean isStartPanelIdValid(String panelId) {
+    private boolean isStartPanelIdValid(PanelId panelId) {
         return panelId != null;
     }
 
