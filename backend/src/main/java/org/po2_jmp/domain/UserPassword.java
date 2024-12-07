@@ -18,11 +18,12 @@ public class UserPassword {
         }
         if (!isLengthInRange(password)) {
             throw new IllegalArgumentException("User password must contain " +
-                    MIN_LENGTH + " to " + MAX_LENGTH + " characters");
+                    MIN_LENGTH + " to " + MAX_LENGTH + " characters, but " +
+                    "contains " + password.length());
         }
         if (!containsOnlyLettersAndNumbers(password)) {
             throw new IllegalArgumentException("User password can contain " +
-                    "only letters and numbers");
+                    "only letters and numbers, but is " + password.length());
         }
         this.value = password;
     }

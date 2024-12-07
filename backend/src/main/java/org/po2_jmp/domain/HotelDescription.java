@@ -12,12 +12,13 @@ public class HotelDescription {
 
     public HotelDescription(String description) {
         if (isNull(description)) {
-            throw new IllegalArgumentException(
-                    "Hotel description can not be null");
+            throw new IllegalArgumentException("Hotel description can " +
+                    "not be null");
         }
         if (!isLengthInRange(description)) {
             throw new IllegalArgumentException("Hotel description can not " +
-                    "be longer than " + MAX_LENGTH);
+                    "be longer than " + MAX_LENGTH + ", but (" + description +
+                    ") is " + description.length() + "characters long");
         }
         this.value = description;
     }

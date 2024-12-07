@@ -14,7 +14,8 @@ public class RoomGuestCapacity {
     public RoomGuestCapacity(int capacity) {
         if (!isInRange(capacity)) {
             throw new IllegalArgumentException("Room guest capacity must be " +
-                    "between " + MIN_VALUE + " and " + MAX_VALUE);
+                    "between " + MIN_VALUE + " and " + MAX_VALUE +
+                    " ,but is " + capacity);
         }
         this.value = capacity;
     }

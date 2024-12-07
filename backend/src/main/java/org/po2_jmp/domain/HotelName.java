@@ -13,16 +13,17 @@ public class HotelName {
 
     public HotelName(String hotelName) {
         if (isNullOrBlank(hotelName)) {
-            throw new IllegalArgumentException(
-                    "Hotel name can not be null or blank");
+            throw new IllegalArgumentException("Hotel name can not be " +
+                    "null or blank");
         }
         if (!isLengthInRange(hotelName)) {
             throw new IllegalArgumentException("Hotel name must contain " +
-                    MIN_LENGTH + " to " + MAX_LENGTH + " characters");
+                    MIN_LENGTH + " to " + MAX_LENGTH + " characters, " +
+                    "but " + hotelName + " contains " + hotelName.length());
         }
         if (!containsOnlyLettersAndWhiteSpaces(hotelName)) {
             throw new IllegalArgumentException("Hotel name can only contain " +
-                    "letters and white spaces");
+                    "letters and white spaces, but is" + hotelName);
         }
         this.value = hotelName;
     }

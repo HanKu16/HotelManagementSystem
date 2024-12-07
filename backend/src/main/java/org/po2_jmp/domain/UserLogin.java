@@ -13,16 +13,16 @@ public class UserLogin {
 
     public UserLogin(String login) {
         if (isNullOrBlank(login)) {
-            throw new IllegalArgumentException(
-                    "User login can not be null or blank");
+            throw new IllegalArgumentException("User login can not be null or blank");
         }
         if (!isLengthInRange(login)) {
             throw new IllegalArgumentException("User login must contain " +
-                    MIN_LENGTH + " to " + MAX_LENGTH + " characters");
+                    MIN_LENGTH + " to " + MAX_LENGTH + " characters, but " +
+                    login + " contains " + login.length());
         }
         if (!containsOnlyLettersAndNumbers(login)) {
             throw new IllegalArgumentException("User login can contain " +
-                    "only letters and numbers");
+                    "only letters and numbers, but is " + login);
         }
         this.value = login;
     }
