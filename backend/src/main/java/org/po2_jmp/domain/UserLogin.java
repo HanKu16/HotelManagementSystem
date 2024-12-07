@@ -14,14 +14,14 @@ public class UserLogin {
     public UserLogin(String login) {
         if (isNullOrBlank(login)) {
             throw new IllegalArgumentException(
-                    "Login can not be null or blank");
+                    "User login can not be null or blank");
         }
         if (!isLengthInRange(login)) {
-            throw new IllegalArgumentException("Login must contain " +
+            throw new IllegalArgumentException("User login must contain " +
                     MIN_LENGTH + " to " + MAX_LENGTH + " characters");
         }
         if (!containsOnlyLettersAndNumbers(login)) {
-            throw new IllegalArgumentException("Login can contain " +
+            throw new IllegalArgumentException("User login can contain " +
                     "only letters and numbers");
         }
         this.value = login;

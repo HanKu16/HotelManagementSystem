@@ -14,14 +14,14 @@ public class HotelName {
     public HotelName(String hotelName) {
         if (isNullOrBlank(hotelName)) {
             throw new IllegalArgumentException(
-                    "HotelName can not be null or blank");
+                    "Hotel name can not be null or blank");
         }
         if (!isLengthInRange(hotelName)) {
-            throw new IllegalArgumentException("HotelName must contain " +
+            throw new IllegalArgumentException("Hotel name must contain " +
                     MIN_LENGTH + " to " + MAX_LENGTH + " characters");
         }
         if (!containsOnlyLettersAndWhiteSpaces(hotelName)) {
-            throw new IllegalArgumentException("HotelName can only contain " +
+            throw new IllegalArgumentException("Hotel name can only contain " +
                     "letters and white spaces");
         }
         this.value = hotelName;

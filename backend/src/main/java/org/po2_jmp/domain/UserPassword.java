@@ -14,14 +14,14 @@ public class UserPassword {
     public UserPassword(String password) {
         if (isNullOrBlank(password)) {
             throw new IllegalArgumentException(
-                    "Password can not be null or blank");
+                    "User password can not be null or blank");
         }
         if (!isLengthInRange(password)) {
-            throw new IllegalArgumentException("Password must contain " +
+            throw new IllegalArgumentException("User password must contain " +
                     MIN_LENGTH + " to " + MAX_LENGTH + " characters");
         }
         if (!containsOnlyLettersAndNumbers(password)) {
-            throw new IllegalArgumentException("Password can contain " +
+            throw new IllegalArgumentException("User password can contain " +
                     "only letters and numbers");
         }
         this.value = password;
