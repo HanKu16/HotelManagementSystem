@@ -1,7 +1,6 @@
 package org.po2_jmp.domain;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserLoginTest {
@@ -23,7 +22,7 @@ class UserLoginTest {
     @Test
     void Constructor_ShouldThrowIllegalArgumentException_WhenLoginIsBlank() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new UserLogin("  ");
+            new UserLogin("        ");
         });
     }
 

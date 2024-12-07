@@ -1,8 +1,8 @@
 package org.po2_jmp.domain;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+
 class UserPasswordTest {
 
     @Test
@@ -22,7 +22,7 @@ class UserPasswordTest {
     @Test
     void Constructor_ShouldThrowIllegalArgumentException_WhenPasswordIsBlank() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new UserPassword("  ");
+            new UserPassword("        ");
         });
     }
 
@@ -50,14 +50,14 @@ class UserPasswordTest {
     @Test
     void Constructor_ShouldThrowIllegalArgumentException_WhenPasswordContainsAsterisk() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new UserLogin("*horse");
+            new UserPassword("*goodHorse");
         });
     }
 
     @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenLoginContainsDollarSign() {
+    void Constructor_ShouldThrowIllegalArgumentException_WhenPasswordContainsDollarSign() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new UserLogin("JohnLondon$");
+            new UserPassword("greatHorse$");
         });
     }
 
