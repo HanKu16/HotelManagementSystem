@@ -8,7 +8,6 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class PostalCode {
 
-    private static final String POLISH_POSTAL_CODE_REGEX = "\\d{2}-\\d{3}";
     private final String value;
 
     public PostalCode(String postalCode) {
@@ -21,7 +20,7 @@ public class PostalCode {
     }
 
     private boolean isValid(String postalCode) {
-        return Pattern.matches(POLISH_POSTAL_CODE_REGEX, postalCode);
+        return Pattern.matches("\\d{2}-\\d{3}", postalCode);
     }
 
 }
