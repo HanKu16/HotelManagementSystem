@@ -18,4 +18,9 @@ public class Hotel {
     private HotelDescription description;
     private Address address;
 
+    public Hotel(HotelName name, HotelDescription description) {
+        this.name = name;
+        this.description = description;
+    }
+
 }
