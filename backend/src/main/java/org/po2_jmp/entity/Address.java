@@ -19,8 +19,10 @@ public class Address {
     private PostalCode postalCode;
     private BuildingNumber buildingNumber;
 
-    public Address(CityName cityName, BuildingNumber buildingNumber) {
+    public Address(CityName cityName, PostalCode postalCode,
+            BuildingNumber buildingNumber) {
         this.city = cityName;
+        this.postalCode = postalCode;
         this.buildingNumber = buildingNumber;
     }
 
