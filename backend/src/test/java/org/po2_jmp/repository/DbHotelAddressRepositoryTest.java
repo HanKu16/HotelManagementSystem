@@ -26,6 +26,34 @@ class DbHotelAddressRepositoryTest {
     }
 
     @Test
+    void Constructor_ShouldThrowIllegalArgumentException_WhenUrlIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+           new DbHotelAddressRepository(null, user, password);
+        });
+    }
+
+    @Test
+    void Constructor_ShouldThrowIllegalArgumentException_WhenUserIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new DbHotelAddressRepository(url, null, password);
+        });
+    }
+
+    @Test
+    void Constructor_ShouldThrowIllegalArgumentException_WhenPasswordIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new DbHotelAddressRepository(url, user, null);
+        });
+    }
+
+    @Test
+    void Constructor_ShouldCreateObject_WhenAllParamsAreNotNulls() {
+        DbHotelAddressRepository repository = new DbHotelAddressRepository(
+                url, user, password);
+        assertNotNull(repository);
+    }
+
+    @Test
     void FindById_ShouldReturnPresentOptional_WhenIdIs2() throws SQLException {
         fillHotelAddressesTable();
         Optional<Address> optionalAddress = hotelAddressRepository.findById(2);

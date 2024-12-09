@@ -16,6 +16,10 @@ public class DbHotelAddressRepository implements HotelAddressRepository {
     private final String password;
 
     public DbHotelAddressRepository(String url, String user, String password) {
+        if (areAnyNullParams(url, user, password)) {
+            throw new IllegalArgumentException("Url, user and password can not be " +
+                    "nulls but were passed to DbHotelAddressRepository constructor");
+        }
         this.url = url;
         this.user = user;
         this.password = password;
@@ -98,6 +102,11 @@ public class DbHotelAddressRepository implements HotelAddressRepository {
         stmt.setString(1, address.getCity().getValue());
         stmt.setString(2, address.getPostalCode().getValue());
         stmt.setString(3, address.getBuildingNumber().getValue());
+    }
+
+    private boolean areAnyNullParams(String url,
+            String user, String password) {
+        return (url == null) || (user == null) || (password == null);
     }
 
 }
