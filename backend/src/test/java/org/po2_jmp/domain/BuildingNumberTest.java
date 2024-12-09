@@ -6,6 +6,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class BuildingNumberTest {
 
     @Test
+    void Constructor_ShouldThrowIllegalArgumentException_WhenBuildingNumberIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new BuildingNumber(null);
+        });
+    }
+
+    @Test
     void Constructor_ShouldCreateObject_WhenBuildingNumberIs15() {
         BuildingNumber buildingNumber = new BuildingNumber("15");
         assertNotNull(buildingNumber);
