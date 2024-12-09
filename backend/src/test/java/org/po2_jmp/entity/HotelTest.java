@@ -12,29 +12,57 @@ class HotelTest {
     private final Address validAddress = createValidAddress();
 
     @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenHotelNameIsNull() {
+    void ConstructorWithoutId_ShouldThrowIllegalArgumentException_WhenHotelNameIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Hotel(null, validDescription, validAddress);
         });
     }
 
     @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenPostalCodeIsNull() {
+    void ConstructorWithoutId_ShouldThrowIllegalArgumentException_WhenPostalCodeIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Hotel(validName, null, validAddress);
         });
     }
 
     @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenBuildingNumberIsNull() {
+    void ConstructorWithoutId_ShouldThrowIllegalArgumentException_WhenBuildingNumberIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Hotel(validName, validDescription, null);
         });
     }
 
     @Test
-    void Constructor_ShouldCreateObject_WhenParamsAreValid() {
+    void ConstructorWithoutId_ShouldCreateObject_WhenParamsAreValid() {
         Hotel hotel = new Hotel(validName,
+                validDescription, validAddress);
+        assertNotNull(hotel);
+    }
+
+    @Test
+    void ConstructorWithId_ShouldThrowIllegalArgumentException_WhenHotelNameIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Hotel(1, null, validDescription, validAddress);
+        });
+    }
+
+    @Test
+    void ConstructorWithId_ShouldThrowIllegalArgumentException_WhenPostalCodeIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Hotel(2, validName, null, validAddress);
+        });
+    }
+
+    @Test
+    void ConstructorWithId_ShouldThrowIllegalArgumentException_WhenBuildingNumberIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Hotel(3, validName, validDescription, null);
+        });
+    }
+
+    @Test
+    void ConstructorWithtId_ShouldCreateObject_WhenParamsAreValid() {
+        Hotel hotel = new Hotel(4, validName,
                 validDescription, validAddress);
         assertNotNull(hotel);
     }

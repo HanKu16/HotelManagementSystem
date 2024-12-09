@@ -13,29 +13,57 @@ class AddressTest {
     private final BuildingNumber validBuildingNumber = new BuildingNumber("14");
 
     @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenCityIsNull() {
+    void ConstructorWithoutId_ShouldThrowIllegalArgumentException_WhenCityIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Address(null, validPostalCode, validBuildingNumber);
         });
     }
 
     @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenPostalCodeIsNull() {
+    void ConstructorWithoutId_ShouldThrowIllegalArgumentException_WhenPostalCodeIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Address(validCityName, null, validBuildingNumber);
         });
     }
 
     @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenBuildingNumberIsNull() {
+    void ConstructorWithoutId_ShouldThrowIllegalArgumentException_WhenBuildingNumberIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Address(validCityName, validPostalCode, null);
         });
     }
 
     @Test
-    void Constructor_ShouldCreateObject_WhenParamsAreValid() {
+    void ConstructorWithoutId_ShouldCreateObject_WhenParamsAreValid() {
         Address address = new Address(validCityName,
+                validPostalCode, validBuildingNumber);
+        assertNotNull(address);
+    }
+
+    @Test
+    void ConstructorWithId_ShouldThrowIllegalArgumentException_WhenCityIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Address(8, null, validPostalCode, validBuildingNumber);
+        });
+    }
+
+    @Test
+    void ConstructorWithId_ShouldThrowIllegalArgumentException_WhenPostalCodeIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Address(100, validCityName, null, validBuildingNumber);
+        });
+    }
+
+    @Test
+    void ConstructorWithId_ShouldThrowIllegalArgumentException_WhenBuildingNumberIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Address(17, validCityName, validPostalCode, null);
+        });
+    }
+
+    @Test
+    void ConstructorWithId_ShouldCreateObject_WhenParamsAreValid() {
+        Address address = new Address(55, validCityName,
                 validPostalCode, validBuildingNumber);
         assertNotNull(address);
     }
