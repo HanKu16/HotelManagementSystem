@@ -11,6 +11,10 @@ public class PostalCode {
     private final String value;
 
     public PostalCode(String postalCode) {
+        if (postalCode == null) {
+            throw new IllegalArgumentException(
+                    "Postal code can not be null");
+        }
         if (!isValid(postalCode)) {
             throw new IllegalArgumentException(postalCode + " is invalid for " +
                     "Poland were format is XX-XXX, where each X has to be digit " +

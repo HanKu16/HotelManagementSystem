@@ -15,14 +15,14 @@ public class BuildingNumber {
             throw new IllegalArgumentException(
                     "Building number can not be null");
         }
-        if (!isValidBuildingNumber(buildingNumber)) {
+        if (!isValid(buildingNumber)) {
             throw new IllegalArgumentException(buildingNumber +
                     " is invalid building number");
         }
         this.value = buildingNumber;
     }
 
-    private boolean isValidBuildingNumber(String buildingNumber) {
+    private boolean isValid(String buildingNumber) {
         return Pattern.matches("\\d+([A-Za-z])?(\\/\\d+)?", buildingNumber);
     }
 

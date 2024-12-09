@@ -6,6 +6,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class PostalCodeTest {
 
     @Test
+    void Constructor_ShouldThrowIllegalArgumentException_WhenPostalCodeIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+           new PostalCode(null);
+        });
+    }
+
+    @Test
     void Constructor_ShouldThrowIllegalArgumentException_WhenPostalCodeHasDashInWrongPlace() {
         assertThrows(IllegalArgumentException.class, () -> {
             new PostalCode("123-45");

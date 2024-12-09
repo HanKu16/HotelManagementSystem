@@ -11,7 +11,7 @@ public class HotelDescription {
     private final String value;
 
     public HotelDescription(String description) {
-        if (isNull(description)) {
+        if (description == null) {
             throw new IllegalArgumentException("Hotel description can " +
                     "not be null");
         }
@@ -21,10 +21,6 @@ public class HotelDescription {
                     ") is " + description.length() + "characters long");
         }
         this.value = description;
-    }
-
-    public boolean isNull(String description) {
-        return description == null;
     }
 
     private boolean isLengthInRange(String description) {
