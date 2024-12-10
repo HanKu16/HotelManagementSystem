@@ -17,7 +17,7 @@ public class DbHotelRepository implements HotelRepository {
     public DbHotelRepository(String url, String user, String password) {
         if (areAnyNullParams(url, user, password)) {
             throw new IllegalArgumentException("Url, user and password can not be " +
-                    "nulls but were passed to DbHotelAddressRepository constructor");
+                    "nulls but were passed to DbHotelRepository constructor");
         }
         this.url = url;
         this.user = user;
