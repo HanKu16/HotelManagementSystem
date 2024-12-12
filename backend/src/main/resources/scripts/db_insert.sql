@@ -11,7 +11,7 @@ VALUES
 	('Babilon', 'Hotel Babilon ma bardzo dobrą lokalizacje.', 1),
 	('Akropol', 'Hotel Akropol jest najlepiej ocenianym hotelem w Krakowie.', 2),
 	('Neptun', 'Hotel Neptun znajduje się tylko 200m od morza.', 3),
-	('Kaptiol', 'Hotel Kapitol jest najwyższym hotelem w kraju.', 4),
+	('Kapitol', 'Hotel Kapitol jest najwyższym hotelem w kraju.', 4),
 	('Olimp', 'Hotel Olimp posiada piękny widok na panoramę Odry.', 5);
 
 INSERT INTO hotel_rooms (guest_capacity, hotel_id)
