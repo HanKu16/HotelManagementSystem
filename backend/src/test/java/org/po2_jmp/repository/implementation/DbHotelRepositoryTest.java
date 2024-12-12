@@ -1,5 +1,6 @@
 package org.po2_jmp.repository.implementation;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.po2_jmp.entity.Hotel;
@@ -24,10 +25,14 @@ class DbHotelRepositoryTest {
 
     @BeforeEach
     public void setUp() throws SQLException {
-        hotelsConfigurator.drop();
-        hotelAddressesConfigurator.drop();
         hotelAddressesConfigurator.create();
         hotelsConfigurator.create();
+    }
+
+    @AfterEach
+    public void cleanUp() throws SQLException {
+        hotelsConfigurator.drop();
+        hotelAddressesConfigurator.drop();
     }
 
     @Test

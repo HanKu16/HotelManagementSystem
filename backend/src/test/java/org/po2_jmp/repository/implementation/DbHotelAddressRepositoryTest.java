@@ -5,6 +5,9 @@ import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.po2_jmp.domain.BuildingNumber;
@@ -26,8 +29,12 @@ class DbHotelAddressRepositoryTest {
     public void setUp() throws SQLException {
         this.hotelAddressRepository = new DbHotelAddressRepository(
                 url, user, password);
-        configurator.drop();
         configurator.create();
+    }
+
+    @AfterEach
+    public void cleanUp() throws SQLException {
+        configurator.drop();
     }
 
     @Test

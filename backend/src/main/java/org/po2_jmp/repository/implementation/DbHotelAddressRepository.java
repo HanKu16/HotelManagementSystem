@@ -5,7 +5,6 @@ import org.po2_jmp.domain.CityName;
 import org.po2_jmp.domain.PostalCode;
 import org.po2_jmp.entity.Address;
 import org.po2_jmp.repository.contract.HotelAddressRepository;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
