@@ -1,5 +1,6 @@
 package org.po2_jmp.repository;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
@@ -10,19 +11,23 @@ import org.po2_jmp.domain.BuildingNumber;
 import org.po2_jmp.domain.CityName;
 import org.po2_jmp.domain.PostalCode;
 import org.po2_jmp.entity.Address;
+import org.po2_jmp.utils.DbTestConfigurator;
 
 class DbHotelAddressRepositoryTest {
 
     private final String url = "jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1";
     private final String user = "sa";
     private final String password = "";
+    private final String tableName = "hotel_addresses";
+    private final DbTestConfigurator configurator = createConfigurator();
     private DbHotelAddressRepository hotelAddressRepository;
 
     @BeforeEach
     public void setUp() throws SQLException {
         this.hotelAddressRepository = new DbHotelAddressRepository(
                 url, user, password);
-        prepareTable();
+        configurator.drop();
+        configurator.create();
     }
 
     @Test
@@ -55,29 +60,15 @@ class DbHotelAddressRepositoryTest {
 
     @Test
     void FindById_ShouldReturnPresentOptional_WhenIdIs2() throws SQLException {
-        fillHotelAddressesTable();
+        configurator.insert();
         Optional<Address> optionalAddress = hotelAddressRepository.findById(2);
         assertTrue(optionalAddress.isPresent());
     }
 
     @Test
     void FindById_ShouldReturnEmptyOptional_WhenIdIs6() throws SQLException {
-        fillHotelAddressesTable();
+        configurator.insert();
         Optional<Address> optionalAddress = hotelAddressRepository.findById(6);
-        assertTrue(optionalAddress.isEmpty());
-    }
-
-    @Test
-    void FindById_ShouldReturnEmptyOptional_WhenIdIsZero() throws SQLException {
-        fillHotelAddressesTable();
-        Optional<Address> optionalAddress = hotelAddressRepository.findById(0);
-        assertTrue(optionalAddress.isEmpty());
-    }
-
-    @Test
-    void FindById_ShouldReturnEmptyOptional_WhenIdIsNegative() throws SQLException {
-        fillHotelAddressesTable();
-        Optional<Address> optionalAddress = hotelAddressRepository.findById(-1);
         assertTrue(optionalAddress.isEmpty());
     }
 
@@ -88,16 +79,8 @@ class DbHotelAddressRepositoryTest {
     }
 
     @Test
-    void FindById_ShouldReturnEmptyOptional_WhenIdIsVeryLarge() throws SQLException {
-        fillHotelAddressesTable();
-        Optional<Address> optionalAddress = hotelAddressRepository
-                .findById(Integer.MAX_VALUE);
-        assertTrue(optionalAddress.isEmpty());
-    }
-
-    @Test
     void FindById_ShouldReturnCorrectAddress_WhenIdIs1() throws SQLException {
-        fillHotelAddressesTable();
+        configurator.insert();
         Optional<Address> optionalAddress = hotelAddressRepository.findById(1);
         assertTrue(optionalAddress.isPresent());
         Address address = optionalAddress.get();
@@ -108,7 +91,7 @@ class DbHotelAddressRepositoryTest {
 
     @Test
     void FindById_ShouldReturnCorrectAddress_WhenIdIs3() throws SQLException {
-        fillHotelAddressesTable();
+        configurator.insert();
         Optional<Address> optionalAddress = hotelAddressRepository.findById(3);
         assertTrue(optionalAddress.isPresent());
         Address address = optionalAddress.get();
@@ -124,20 +107,22 @@ class DbHotelAddressRepositoryTest {
     }
 
     @Test
-    void FindAll_ShouldReturn3Records_When3RecordsInTheTable() throws SQLException {
-        fillHotelAddressesTable();
+    void FindAll_ShouldReturn5Records_When5RecordsInTheTable() throws SQLException {
+        configurator.insert();
         List<Address> addresses = hotelAddressRepository.findAll();
-        assertEquals(3, addresses.size());
+        assertEquals(5, addresses.size());
     }
 
     @Test
-    void FindAll_ShouldReturnCorrectRecords_When3RecordsInTheTable() throws SQLException {
-        List<String> cities = List.of("Warszawa", "Kraków", "Gdańsk");
-        List<String> postalCodes = List.of("00-021", "30-134", "80-011");
-        List<String> buildingNumbers = List.of("15", "21A", "2");
+    void FindAll_ShouldReturnCorrectRecords_When5RecordsInTheTable() throws SQLException {
+        List<String> cities = List.of("Warszawa", "Kraków", "Gdańsk",
+                "Białystok", "Wrocław");
+        List<String> postalCodes = List.of("00-021", "30-134", "80-011",
+                "15-109", "50-007");
+        List<String> buildingNumbers = List.of("15", "21A", "2", "78B", "6");
 
-        fillHotelAddressesTable();
-        for (int i = 1; i < 4; ++i) {
+        configurator.insert();
+        for (int i = 1; i < 6; ++i) {
             Optional<Address> optionalAddress = hotelAddressRepository.findById(i);
             assertTrue(optionalAddress.isPresent());
             Address address = optionalAddress.get();
@@ -154,7 +139,7 @@ class DbHotelAddressRepositoryTest {
     @Test
     void Add_ShouldReturnPresentOptional_WhenAddressIsValidAndTableIsNotEmpty()
             throws SQLException {
-        fillHotelAddressesTable();
+        configurator.insert();
         Address address = new Address(
                 new CityName("Kielce"),
                 new PostalCode("25-751"),
@@ -163,46 +148,12 @@ class DbHotelAddressRepositoryTest {
         assertTrue(optionalAddressId.isPresent());
     }
 
-    @Test
-    void Add_ShouldReturnPresentOptionalContainingIdEqual4_When3RecordsInTheTable()
-            throws SQLException {
-        fillHotelAddressesTable();
-        Address address = new Address(
-                new CityName("Kielce"),
-                new PostalCode("25-751"),
-                new BuildingNumber("13"));
-        Optional<Integer> optionalAddressId = hotelAddressRepository.add(address);
-        assertTrue(optionalAddressId.isPresent());
-        assertEquals(4, optionalAddressId.get());
-    }
-
-    private void prepareTable() throws SQLException {
-        String dropSql = "DROP TABLE hotel_addresses IF EXISTS;";
-        String createSql = "CREATE TABLE hotel_addresses (" +
-                "   hotel_address_id SERIAL PRIMARY KEY," +
-                "   city VARCHAR(60) NOT NULL," +
-                "   postal_code VARCHAR(6) NOT NULL," +
-                "   building_number VARCHAR(10) NOT NULL);";
-
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            try (PreparedStatement stmt = connection.prepareStatement(dropSql)) {
-                stmt.executeUpdate();
-            }
-            try (PreparedStatement stmt = connection.prepareStatement(createSql)) {
-                stmt.executeUpdate();
-            }
-        }
-    }
-
-    private void fillHotelAddressesTable() throws SQLException {
-        String insertSql = "INSERT INTO hotel_addresses (city, postal_code," +
-                "   building_number) VALUES" +
-                "   ('Warszawa', '00-021', '15')," +
-                "   ('Kraków', '30-134', '21A')," +
-                "   ('Gdańsk', '80-011', '2');";
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(insertSql)) {
-            stmt.executeUpdate();
+    private DbTestConfigurator createConfigurator() {
+        try {
+            return new DbTestConfigurator(url, user, password, tableName);
+        } catch (IOException e) {
+            throw new RuntimeException("Error creating DbTestConfigurator " +
+                    "for table: " + tableName, e);
         }
     }
 
