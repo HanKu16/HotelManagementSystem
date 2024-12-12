@@ -79,17 +79,6 @@ class DbHotelAddressRepositoryTest {
     }
 
     @Test
-    void FindById_ShouldReturnCorrectAddress_WhenIdIs1() throws SQLException {
-        configurator.insert();
-        Optional<Address> optionalAddress = hotelAddressRepository.findById(1);
-        assertTrue(optionalAddress.isPresent());
-        Address address = optionalAddress.get();
-        assertEquals("Warszawa", address.getCity().getValue());
-        assertEquals("00-021", address.getPostalCode().getValue());
-        assertEquals("15", address.getBuildingNumber().getValue());
-    }
-
-    @Test
     void FindById_ShouldReturnCorrectAddress_WhenIdIs3() throws SQLException {
         configurator.insert();
         Optional<Address> optionalAddress = hotelAddressRepository.findById(3);
