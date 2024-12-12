@@ -1,4 +1,4 @@
-package org.po2_jmp.repository;
+package org.po2_jmp.repository.contract;
 
 import org.po2_jmp.entity.HotelRoom;
 import java.util.List;

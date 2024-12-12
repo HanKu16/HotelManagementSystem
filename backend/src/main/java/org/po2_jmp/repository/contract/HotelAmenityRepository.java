@@ -1,4 +1,4 @@
-package org.po2_jmp.repository;
+package org.po2_jmp.repository.contract;
 
 import java.util.List;
 import java.util.Optional;
