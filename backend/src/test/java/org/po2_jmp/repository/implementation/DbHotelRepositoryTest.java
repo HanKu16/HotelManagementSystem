@@ -1,4 +1,4 @@
-package org.po2_jmp.repository;
+package org.po2_jmp.repository.implementation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

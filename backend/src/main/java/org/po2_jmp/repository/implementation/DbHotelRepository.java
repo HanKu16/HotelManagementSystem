@@ -1,8 +1,10 @@
-package org.po2_jmp.repository;
+package org.po2_jmp.repository.implementation;
 
 import org.po2_jmp.domain.*;
 import org.po2_jmp.entity.Address;
 import org.po2_jmp.entity.Hotel;
+import org.po2_jmp.repository.contract.HotelRepository;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

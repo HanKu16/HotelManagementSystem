@@ -1,4 +1,4 @@
-package org.po2_jmp.repository;
+package org.po2_jmp.repository.implementation;
 
 import java.io.IOException;
 import java.sql.*;
