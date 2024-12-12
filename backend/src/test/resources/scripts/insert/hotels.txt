@@ -1,0 +1,7 @@
+INSERT INTO hotels (name, description, hotel_address_id)
+VALUES
+	('Babilon', 'Hotel Babilon ma bardzo dobrą lokalizacje.', 1),
+	('Akropol', 'Hotel Akropol jest najlepiej ocenianym hotelem w Krakowie.', 2),
+	('Neptun', 'Hotel Neptun znajduje się tylko 200m od morza.', 3),
+	('Kaptiol', 'Hotel Kapitol jest najwyższym hotelem w kraju.', 4),
+	('Olimp', 'Hotel Olimp posiada piękny widok na panoramę Odry.', 5);
