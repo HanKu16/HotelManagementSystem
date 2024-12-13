@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
-class DbHotelRepositoryTest {
+class DbHotelsRepositoryTest {
 
     private final String url = "jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1";
     private final String user = "sa";
@@ -20,8 +20,8 @@ class DbHotelRepositoryTest {
             createConfigurator("hotels");
     private final DbTestConfigurator hotelAddressesConfigurator =
             createConfigurator("hotel_addresses");
-    private final DbHotelRepository hotelRepository =
-            new DbHotelRepository(url, user, password);
+    private final DbHotelsRepository repository =
+            new DbHotelsRepository(url, user, password);
 
     @BeforeEach
     public void setUp() throws SQLException {
@@ -38,54 +38,54 @@ class DbHotelRepositoryTest {
     @Test
     void Constructor_ShouldThrowIllegalArgumentException_WhenUrlIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new DbHotelRepository(null, user, password);
+            new DbHotelsRepository(null, user, password);
         });
     }
 
     @Test
     void Constructor_ShouldThrowIllegalArgumentException_WhenUserIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new DbHotelRepository(url, null, password);
+            new DbHotelsRepository(url, null, password);
         });
     }
 
     @Test
     void Constructor_ShouldThrowIllegalArgumentException_WhenPasswordIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new DbHotelRepository(url, user, null);
+            new DbHotelsRepository(url, user, null);
         });
     }
 
     @Test
     void Constructor_ShouldCreateObject_WhenParamsAreValid() {
-        DbHotelRepository repository = new DbHotelRepository(url, user, password);
+        DbHotelsRepository repository = new DbHotelsRepository(url, user, password);
         assertNotNull(repository);
     }
 
     @Test
     void FindById_ShouldReturnPresentOptional_WhenIdIs4() throws SQLException {
         insertData();
-        Optional<Hotel> optionalAddress = hotelRepository.findById(4);
+        Optional<Hotel> optionalAddress = repository.findById(4);
         assertTrue(optionalAddress.isPresent());
     }
 
     @Test
     void FindById_ShouldReturnEmptyOptional_WhenIdIs9() throws SQLException {
         insertData();
-        Optional<Hotel> optionalHotel = hotelRepository.findById(9);
+        Optional<Hotel> optionalHotel = repository.findById(9);
         assertTrue(optionalHotel.isEmpty());
     }
 
     @Test
     void FindById_ShouldReturnEmptyOptional_WhenTableIsEmpty() {
-        Optional<Hotel> optionalAddress = hotelRepository.findById(3);
+        Optional<Hotel> optionalAddress = repository.findById(3);
         assertTrue(optionalAddress.isEmpty());
     }
 
     @Test
     void FindById_ShouldReturnCorrectAddress_WhenIdIs3() throws SQLException {
         insertData();
-        Optional<Hotel> optionalHotel = hotelRepository.findById(4);
+        Optional<Hotel> optionalHotel = repository.findById(4);
         assertTrue(optionalHotel.isPresent());
         Hotel hotel = optionalHotel.get();
         assertEquals("Kapitol", hotel.getName().getValue());
@@ -99,14 +99,14 @@ class DbHotelRepositoryTest {
 
     @Test
     void FindAll_ShouldReturn0Records_WhenTableIsEmpty() {
-        List<Hotel> hotels = hotelRepository.findAll();
+        List<Hotel> hotels = repository.findAll();
         assertEquals(0, hotels.size());
     }
 
     @Test
     void FindAll_ShouldReturn5Records_When5RecordsInTheTable() throws SQLException {
         insertData();
-        List<Hotel> hotels = hotelRepository.findAll();
+        List<Hotel> hotels = repository.findAll();
         assertEquals(5, hotels.size());
     }
 
@@ -117,8 +117,7 @@ class DbHotelRepositoryTest {
 
     private DbTestConfigurator createConfigurator(String tableName) {
         try {
-             return new DbTestConfigurator(
-                    url, user, password, tableName);
+             return new DbTestConfigurator(url, user, password, tableName);
         } catch (IOException e) {
             throw new RuntimeException("Error creating DbTestConfigurator " +
                     "for table: " + tableName, e);

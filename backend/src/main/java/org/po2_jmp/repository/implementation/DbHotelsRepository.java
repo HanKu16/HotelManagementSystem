@@ -3,22 +3,22 @@ package org.po2_jmp.repository.implementation;
 import org.po2_jmp.domain.*;
 import org.po2_jmp.entity.Address;
 import org.po2_jmp.entity.Hotel;
-import org.po2_jmp.repository.contract.HotelRepository;
+import org.po2_jmp.repository.contract.HotelsRepository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DbHotelRepository implements HotelRepository {
+public class DbHotelsRepository implements HotelsRepository {
 
     private final String url;
     private final String user;
     private final String password;
 
-    public DbHotelRepository(String url, String user, String password) {
+    public DbHotelsRepository(String url, String user, String password) {
         if (areAnyNullParams(url, user, password)) {
             throw new IllegalArgumentException("Url, user and password can not be " +
-                    "nulls but were passed to DbHotelRepository constructor");
+                    "nulls but were passed to DbHotelsRepository constructor");
         }
         this.url = url;
         this.user = user;
