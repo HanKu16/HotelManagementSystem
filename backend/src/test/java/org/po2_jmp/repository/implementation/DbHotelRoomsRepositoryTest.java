@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-class DbHotelRoomRepositoryTest {
+class DbHotelRoomsRepositoryTest {
 
     private final String url = "jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1";
     private final String user = "sa";
@@ -23,12 +23,11 @@ class DbHotelRoomRepositoryTest {
             createConfigurator("hotels");
     private final DbTestConfigurator hotelAddressesConfigurator =
             createConfigurator("hotel_addresses");
-    private DbHotelRoomRepository hotelRoomRepository;
+    private DbHotelRoomsRepository repository;
 
     @BeforeEach
     public void setUp() throws SQLException {
-        this.hotelRoomRepository = new DbHotelRoomRepository(
-                url, user, password);
+        this.repository = new DbHotelRoomsRepository(url, user, password);
         hotelAddressesConfigurator.create();
         hotelsConfigurator.create();
         hotelRoomsConfigurator.create();
@@ -44,27 +43,27 @@ class DbHotelRoomRepositoryTest {
     @Test
     void Constructor_ShouldThrowIllegalArgumentException_WhenUrlIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new DbHotelRoomRepository(null, user, password);
+            new DbHotelRoomsRepository(null, user, password);
         });
     }
 
     @Test
     void Constructor_ShouldThrowIllegalArgumentException_WhenUserIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new DbHotelRoomRepository(url, null, password);
+            new DbHotelRoomsRepository(url, null, password);
         });
     }
 
     @Test
     void Constructor_ShouldThrowIllegalArgumentException_WhenPasswordIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new DbHotelRoomRepository(url, user, null);
+            new DbHotelRoomsRepository(url, user, null);
         });
     }
 
     @Test
     void Constructor_ShouldCreateObject_WhenAllParamsAreNotNulls() {
-        DbHotelRoomRepository repository = new DbHotelRoomRepository(
+        DbHotelRoomsRepository repository = new DbHotelRoomsRepository(
                 url, user, password);
         assertNotNull(repository);
     }
@@ -72,27 +71,27 @@ class DbHotelRoomRepositoryTest {
     @Test
     void FindById_ShouldReturnPresentOptional_WhenIdIs2() throws SQLException {
         insertData();
-        Optional<HotelRoom> optionalHotelRoom = hotelRoomRepository.findById(2);
+        Optional<HotelRoom> optionalHotelRoom = repository.findById(2);
         assertTrue(optionalHotelRoom.isPresent());
     }
 
     @Test
     void FindById_ShouldReturnEmptyOptional_WhenIdIs35() throws SQLException {
         insertData();
-        Optional<HotelRoom> optionalHotelRoom = hotelRoomRepository.findById(35);
+        Optional<HotelRoom> optionalHotelRoom = repository.findById(35);
         assertTrue(optionalHotelRoom.isEmpty());
     }
 
     @Test
     void FindById_ShouldReturnEmptyOptional_WhenTableIsEmpty() {
-        Optional<HotelRoom> optionalHotelRoom = hotelRoomRepository.findById(5);
+        Optional<HotelRoom> optionalHotelRoom = repository.findById(5);
         assertTrue(optionalHotelRoom.isEmpty());
     }
 
     @Test
     void FindById_ShouldReturnCorrectRoom_WhenIdIs7() throws SQLException {
         insertData();
-        Optional<HotelRoom> optionalHotelRoom= hotelRoomRepository.findById(7);
+        Optional<HotelRoom> optionalHotelRoom= repository.findById(7);
         assertTrue(optionalHotelRoom.isPresent());
         HotelRoom hotelRoom = optionalHotelRoom.get();
         assertEquals(7, hotelRoom.getId());
@@ -102,14 +101,14 @@ class DbHotelRoomRepositoryTest {
 
     @Test
     void FindAllByHotelId_ShouldReturn0Records_WhenTableIsEmpty() {
-        List<HotelRoom> hotelRooms = hotelRoomRepository.findAllByHotelId(3);
+        List<HotelRoom> hotelRooms = repository.findAllByHotelId(3);
         assertEquals(0, hotelRooms.size());
     }
 
     @Test
     void FindAllByHotelId_ShouldReturn5Records_WhenHotelIdIs2() throws SQLException {
         insertData();
-        List<HotelRoom> hotelRooms = hotelRoomRepository.findAllByHotelId(2);
+        List<HotelRoom> hotelRooms = repository.findAllByHotelId(2);
         assertEquals(5, hotelRooms.size());
     }
 
@@ -118,7 +117,7 @@ class DbHotelRoomRepositoryTest {
             throws SQLException {
         insertData();
         HotelRoom hotelRoom = new HotelRoom(new RoomGuestCapacity(3), 2);
-        Optional<Integer> optionalHotelRoomId = hotelRoomRepository.add(hotelRoom);
+        Optional<Integer> optionalHotelRoomId = repository.add(hotelRoom);
         assertTrue(optionalHotelRoomId.isPresent());
     }
 
