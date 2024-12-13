@@ -92,9 +92,6 @@ public class DbHotelAmenityRepository implements HotelAmenityRepository {
         }
         return optionAmenityId;
     }
-//    private final int id;
-//    private final HotelAmenityName name;
-//    private final int hotelId;
 
     private HotelAmenity createHotelAmenity(ResultSet rs) throws SQLException {
         return new HotelAmenity(
