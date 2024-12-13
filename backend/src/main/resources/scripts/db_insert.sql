@@ -34,3 +34,10 @@ INSERT INTO roles (name)
 VALUES
     ('USER'),
     ('ADMIN');
+
+INSERT INTO users (user_id, password, role_id)
+VALUES
+	('adrian16', 'piesPimpek12', 1),
+	('PawelOrzel', 'polska1', 1),
+	('szpaku', 'pokemon99', 1),
+	('admin1', 'appadmin1', 2);

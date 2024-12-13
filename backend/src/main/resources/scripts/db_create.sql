@@ -35,3 +35,13 @@ CREATE TABLE roles (
 	role_id SERIAL CONSTRAINT roles_pk PRIMARY KEY,
 	name ROLE_NAME UNIQUE NOT NULL
 );
+
+CREATE TABLE users (
+	user_id VARCHAR(16) CONSTRAINT users_pk PRIMARY KEY,
+	password VARCHAR(20) NOT NULL,
+	creation_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	role_id INT NOT NULL,
+	CONSTRAINT users_roles_fk
+	FOREIGN KEY (role_id) REFERENCES roles(role_id)
+);
+
