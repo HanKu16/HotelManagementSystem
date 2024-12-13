@@ -34,7 +34,10 @@ public class PanelOne implements Panel {
         JButton buttonThree = new JButton("Switch to third panel");
         buttonThree.addActionListener(
                 e -> layout.show(container, "3"));
-        panelFirst.add(buttonThree);
+        JButton buttonMain = new JButton("Switch to main panel");
+        buttonMain.addActionListener(
+                e -> layout.show(container, "Main"));
+        panelFirst.add(buttonMain);
         panelFirst.setBackground(Color.RED);
         return panelFirst;
     }
