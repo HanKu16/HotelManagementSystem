@@ -28,3 +28,10 @@ CREATE TABLE hotel_amenities (
 	CONSTRAINT hotel_amenities_hotels_fk
 	FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id)
 );
+
+CREATE TYPE role_name AS ENUM ('USER', 'ADMIN');
+
+CREATE TABLE roles (
+	role_id SERIAL CONSTRAINT roles_pk PRIMARY KEY,
+	name ROLE_NAME UNIQUE NOT NULL
+);

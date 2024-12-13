@@ -29,3 +29,8 @@ VALUES
 	('Siłownia', 3), ('Plaża hotelowa', 3), ('Basen', 3),
 	('Basen', 4), ('Sauna', 4), ('Wi-Fi', 4),
 	('Wi-Fi', 5), ('Park hotelowy', 5), ('Plac zabaw', 5);
+
+INSERT INTO roles (name)
+VALUES
+    ('USER'),
+    ('ADMIN');
