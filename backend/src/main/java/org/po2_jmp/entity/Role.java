@@ -1,13 +1,9 @@
 package org.po2_jmp.entity;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 import org.po2_jmp.domain.RoleName;
 
 @Getter
-@ToString
-@EqualsAndHashCode
 public class Role {
 
     private final int id;
