@@ -16,7 +16,7 @@ public class User {
         this(id, password, LocalDateTime.now(), roleId);
     }
 
-    private User(UserLogin id, UserPassword password,
+    public User(UserLogin id, UserPassword password,
             LocalDateTime creationDateTime, int roleId) {
         if (areAnyNullParams(id, password, creationDateTime)) {
             throw new IllegalArgumentException("User id, password and " +
