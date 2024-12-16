@@ -45,3 +45,14 @@ CREATE TABLE users (
 	FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
 
+CREATE TABLE reservations (
+    reservation_id SERIAL CONSTRAINT reservations_pk PRIMARY KEY,
+    reservation_date DATE NOT NULL,
+    creation_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id VARCHAR(16) NOT NULL,
+    hotel_room_id INT NOT NULL,
+    CONSTRAINT reservations_users_fk
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    CONSTRAINT reservations_rooms_fk
+    FOREIGN KEY (hotel_room_id) REFERENCES hotel_rooms(hotel_room_id)
+);
