@@ -72,7 +72,7 @@ public class ReservationsCreatorImpl implements ReservationsCreator {
                 new ReservationCreationResponse(ResponseStatus.CREATED,
                         "reservation created", hotelName, request.getReservationDate()):
                 new ReservationCreationResponse(ResponseStatus.INTERNAL_SERVER_ERROR,
-                        "internal server error");
+                        "failed to create reservation, please try again");
     }
 
     private List<HotelRoom> getMatchingRooms(ReservationCreationRequest request) {
