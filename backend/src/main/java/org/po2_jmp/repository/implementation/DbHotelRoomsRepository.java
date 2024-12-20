@@ -69,6 +69,29 @@ public class DbHotelRoomsRepository implements HotelRoomsRepository {
     }
 
     @Override
+    public List<HotelRoom> findAllByHotelIdAndGuestCapacity(
+            int hotelId, int guestCapacity) {
+        String sql = "SELECT hotel_room_id, guest_capacity, hotel_id" +
+                    " FROM hotel_rooms" +
+                    " WHERE hotel_id = ? AND guest_capacity = ?;";
+        List<HotelRoom> rooms = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            setSelectByHotelIdAndGuestCapacityParams(stmt, hotelId, guestCapacity);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    HotelRoom room = createRoom(rs);
+                    rooms.add(room);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rooms;
+    }
+
+    @Override
     public Optional<Integer> add(HotelRoom room) {
         String sql = "INSERT INTO hotel_rooms (guest_capacity, hotel_id)" +
                     " VALUES (?, ?);";
@@ -105,6 +128,12 @@ public class DbHotelRoomsRepository implements HotelRoomsRepository {
             HotelRoom room) throws SQLException {
         stmt.setInt(1, room.getGuestCapacity().getValue());
         stmt.setInt(2, room.getHotelId());
+    }
+
+    private void setSelectByHotelIdAndGuestCapacityParams(PreparedStatement stmt,
+            int hotelId, int guestCapacity) throws SQLException {
+        stmt.setInt(1, hotelId);
+        stmt.setInt(2, guestCapacity);
     }
 
     private boolean areAnyNullParams(String url,

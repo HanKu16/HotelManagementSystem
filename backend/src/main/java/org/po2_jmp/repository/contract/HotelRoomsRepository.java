@@ -8,6 +8,7 @@ public interface HotelRoomsRepository {
 
     Optional<HotelRoom> findById(int id);
     List<HotelRoom> findAllByHotelId(int hotelId);
+    List<HotelRoom> findAllByHotelIdAndGuestCapacity(int hotelId, int guestCapacity);
     Optional<Integer> add(HotelRoom room);
 
 }

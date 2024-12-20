@@ -113,6 +113,30 @@ class DbHotelRoomsRepositoryTest {
     }
 
     @Test
+    void FindAllByHotelIdAndGuestCapacity_ShouldReturn0Records_WhenHotelIdIs2AndGuestCapacityIs4()
+            throws SQLException {
+        insertData();
+        List<HotelRoom> hotelRooms = repository.findAllByHotelIdAndGuestCapacity(2, 4);
+        assertEquals(0, hotelRooms.size());
+    }
+
+    @Test
+    void FindAllByHotelIdAndGuestCapacity_ShouldReturn3Records_WhenHotelIdIs3AndGuestCapacityIs3()
+            throws SQLException {
+        insertData();
+        List<HotelRoom> hotelRooms = repository.findAllByHotelIdAndGuestCapacity(3, 3);
+        assertEquals(3, hotelRooms.size());
+    }
+
+    @Test
+    void FindAllByHotelIdAndGuestCapacity_ShouldReturn0Records_WhenHotelOfGivenIdDoesNotExist()
+            throws SQLException {
+        insertData();
+        List<HotelRoom> hotelRooms = repository.findAllByHotelIdAndGuestCapacity(17, 3);
+        assertEquals(0, hotelRooms.size());
+    }
+
+    @Test
     void Add_ShouldReturnPresentOptional_WhenHotelRoomIsValid()
             throws SQLException {
         insertData();
