@@ -3,7 +3,7 @@ package org.po2_jmp.repository.implementation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.po2_jmp.domain.UserLogin;
+import org.po2_jmp.domain.UserId;
 import org.po2_jmp.domain.UserPassword;
 import org.po2_jmp.entity.User;
 import org.po2_jmp.utils.DbTestConfigurator;
@@ -88,7 +88,7 @@ class DbUsersRepositoryTest {
         Optional<User> optionalUser = usersRepository.findById("adrian16");
         assertTrue(optionalUser.isPresent());
         User user = optionalUser.get();
-        assertEquals(new UserLogin("adrian16"), user.getId());
+        assertEquals(new UserId("adrian16"), user.getId());
         assertEquals(new UserPassword("piesPimpek12"), user.getPassword());
         assertEquals(1, user.getRoleId());
     }
@@ -98,7 +98,7 @@ class DbUsersRepositoryTest {
             throws SQLException {
         insertData();
         User user = new User(
-                new UserLogin("nowyUser"),
+                new UserId("nowyUser"),
                 new UserPassword("hasloUzytkownika"),
                 LocalDateTime.now(),
                 1
@@ -112,7 +112,7 @@ class DbUsersRepositoryTest {
             throws SQLException {
         rolesConfigurator.insert();
         User user = new User(
-                new UserLogin("nowyUser"),
+                new UserId("nowyUser"),
                 new UserPassword("hasloUzytkownika"),
                 LocalDateTime.now(),
                 1

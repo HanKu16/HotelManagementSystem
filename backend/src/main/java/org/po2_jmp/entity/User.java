@@ -7,17 +7,17 @@ import java.time.LocalDateTime;
 @Getter
 public class User {
 
-    private final UserLogin id;
+    private final UserId id;
     private final UserPassword password;
     private final LocalDateTime creationDateTime;
     private final int roleId;
 
-    public User(UserLogin id, UserPassword password, int roleId) {
+    public User(UserId id, UserPassword password, int roleId) {
         this(id, password, LocalDateTime.now(), roleId);
     }
 
-    public User(UserLogin id, UserPassword password,
-            LocalDateTime creationDateTime, int roleId) {
+    public User(UserId id, UserPassword password,
+                LocalDateTime creationDateTime, int roleId) {
         if (areAnyNullParams(id, password, creationDateTime)) {
             throw new IllegalArgumentException("User id, password and " +
                     "creation datetime can not be nulls, but null was " +
@@ -29,8 +29,8 @@ public class User {
         this.roleId = roleId;
     }
 
-    private boolean areAnyNullParams(UserLogin id, UserPassword password,
-            LocalDateTime creationDateTime) {
+    private boolean areAnyNullParams(UserId id, UserPassword password,
+                                     LocalDateTime creationDateTime) {
         return (id == null) || (password == null) ||
                 (creationDateTime == null);
     }

@@ -1,6 +1,6 @@
 package org.po2_jmp.service.helper;
 
-import org.po2_jmp.domain.UserLogin;
+import org.po2_jmp.domain.UserId;
 import org.po2_jmp.domain.UserPassword;
 import org.po2_jmp.repository.contract.UsersRepository;
 import org.po2_jmp.request.UserRegistrationRequest;
@@ -33,7 +33,7 @@ public class UserRegistrationRequestValidator {
     private List<String> isUserIdValid(String userId) {
         List<String> errors = new ArrayList<>();
         try {
-            new UserLogin(userId);
+            new UserId(userId);
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
         }

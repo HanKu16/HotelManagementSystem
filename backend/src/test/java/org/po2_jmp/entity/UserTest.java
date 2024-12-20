@@ -2,13 +2,13 @@ package org.po2_jmp.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import org.po2_jmp.domain.UserLogin;
+import org.po2_jmp.domain.UserId;
 import org.po2_jmp.domain.UserPassword;
 import java.time.LocalDateTime;
 
 class UserTest {
 
-    private final UserLogin validLogin = new UserLogin("ValidLogin");
+    private final UserId validLogin = new UserId("ValidLogin");
     private final UserPassword validPassword = new UserPassword("validPassword");
     private final LocalDateTime validCreationDateTime = LocalDateTime.of(
             2024, 12, 13, 15, 30, 45);

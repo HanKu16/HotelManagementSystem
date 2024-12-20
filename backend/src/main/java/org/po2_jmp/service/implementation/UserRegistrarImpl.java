@@ -3,7 +3,7 @@ package org.po2_jmp.service.implementation;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import org.po2_jmp.domain.UserLogin;
+import org.po2_jmp.domain.UserId;
 import org.po2_jmp.domain.UserPassword;
 import org.po2_jmp.entity.User;
 import org.po2_jmp.repository.contract.UsersRepository;
@@ -48,7 +48,7 @@ public class UserRegistrarImpl implements UserRegistrar {
 
     private User createUser(UserRegistrationRequest request) {
         return new User(
-                new UserLogin(request.getUserId()),
+                new UserId(request.getUserId()),
                 new UserPassword(request.getPassword()),
                 LocalDateTime.now(),
                 USER_ROLE_ID

@@ -63,7 +63,7 @@ class UserPasswordTest {
 
     @Test
     void Constructor_ShouldCreateObject_WhenLoginIsValid() {
-        UserLogin login = new UserLogin("MyHorse15");
+        UserId login = new UserId("MyHorse15");
         assertNotNull(login);
     }
 

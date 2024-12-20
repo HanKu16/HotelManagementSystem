@@ -4,7 +4,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import org.po2_jmp.repository.contract.ReservationsRepository;
-import org.po2_jmp.domain.UserLogin;
+import org.po2_jmp.domain.UserId;
 import org.po2_jmp.entity.Reservation;
 import java.util.List;
 import java.util.Optional;
@@ -123,7 +123,7 @@ public class DbReservationsRepository implements ReservationsRepository {
                 rs.getInt("reservation_id"),
                 rs.getDate("reservation_date").toLocalDate(),
                 rs.getTimestamp("creation_datetime").toLocalDateTime(),
-                new UserLogin(rs.getString("user_id")),
+                new UserId(rs.getString("user_id")),
                 rs.getInt("hotel_room_id")
         );
     }

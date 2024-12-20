@@ -180,7 +180,7 @@ class ReservationCreationRequestValidatorTest {
 
     private User createUserForMock() {
         return new User(
-                new UserLogin("adam159"),
+                new UserId("adam159"),
                 new UserPassword("hasloadam"),
                 LocalDateTime.of(2024, 5, 19, 14, 30, 0), 1);
     }

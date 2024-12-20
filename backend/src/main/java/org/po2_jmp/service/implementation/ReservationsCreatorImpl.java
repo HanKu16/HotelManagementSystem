@@ -1,6 +1,6 @@
 package org.po2_jmp.service.implementation;
 
-import org.po2_jmp.domain.UserLogin;
+import org.po2_jmp.domain.UserId;
 import org.po2_jmp.entity.Hotel;
 import org.po2_jmp.entity.HotelRoom;
 import org.po2_jmp.entity.Reservation;
@@ -83,7 +83,7 @@ public class ReservationsCreatorImpl implements ReservationsCreator {
     private Reservation createNewReservation(int hotelRoomId,
             ReservationCreationRequest request) {
         return new Reservation(request.getReservationDate(), LocalDateTime.now(),
-                new UserLogin(request.getUserId()), hotelRoomId);
+                new UserId(request.getUserId()), hotelRoomId);
     }
 
     private void validateConstructorParams(

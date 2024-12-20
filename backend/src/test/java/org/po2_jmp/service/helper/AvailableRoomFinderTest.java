@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.po2_jmp.domain.RoomGuestCapacity;
-import org.po2_jmp.domain.UserLogin;
+import org.po2_jmp.domain.UserId;
 import org.po2_jmp.entity.HotelRoom;
 import org.po2_jmp.entity.Reservation;
 import org.po2_jmp.repository.contract.ReservationsRepository;
@@ -93,7 +93,7 @@ class AvailableRoomFinderTest {
             LocalDate reservationDate, int roomId) {
         int reservationId = 5;
         LocalDateTime creationDateTime = LocalDateTime.of(2024, 12, 20, 14, 30, 0);
-        UserLogin userId = new UserLogin("szpaku");
+        UserId userId = new UserId("szpaku");
         return new Reservation(
                 reservationId,
                 reservationDate,

@@ -3,7 +3,7 @@ package org.po2_jmp.repository.implementation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.po2_jmp.domain.UserLogin;
+import org.po2_jmp.domain.UserId;
 import org.po2_jmp.entity.Reservation;
 import org.po2_jmp.utils.DbTestConfigurator;
 import static org.junit.jupiter.api.Assertions.*;
@@ -153,7 +153,7 @@ class DbReservationsRepositoryTest {
         Reservation reservation = new Reservation(
                 LocalDate.of(2024, 12, 29),
                 LocalDateTime.of(2024, 12, 28, 6, 30, 0, 0),
-                new UserLogin("szpaku"),
+                new UserId("szpaku"),
                 5);
         Optional<Integer> optionalReservationId = repository.add(reservation);
         assertTrue(optionalReservationId.isPresent());

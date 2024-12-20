@@ -1,6 +1,6 @@
 package org.po2_jmp.repository.implementation;
 
-import org.po2_jmp.domain.UserLogin;
+import org.po2_jmp.domain.UserId;
 import org.po2_jmp.domain.UserPassword;
 import org.po2_jmp.entity.User;
 import org.po2_jmp.repository.contract.UsersRepository;
@@ -71,7 +71,7 @@ public class DbUsersRepository implements UsersRepository {
 
     private User createUser(ResultSet rs) throws SQLException {
         return new User(
-                new UserLogin(rs.getString("user_id")),
+                new UserId(rs.getString("user_id")),
                 new UserPassword(rs.getString("password")),
                 rs.getTimestamp("creation_datetime").toLocalDateTime(),
                 rs.getInt("role_id")
