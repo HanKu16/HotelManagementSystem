@@ -10,13 +10,14 @@ import org.po2_jmp.repository.contract.ReservationsRepository;
 import org.po2_jmp.request.ReservationCreationRequest;
 import org.po2_jmp.response.ReservationCreationResponse;
 import org.po2_jmp.response.ResponseStatus;
+import org.po2_jmp.service.contract.ReservationsCreator;
 import org.po2_jmp.service.helper.AvailableRoomFinder;
 import org.po2_jmp.service.helper.ReservationCreationRequestValidator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public class ReservationsCreatorImpl {
+public class ReservationsCreatorImpl implements ReservationsCreator {
 
     private final ReservationsRepository reservationsRepository;
     private final HotelsRepository hotelsRepository;
@@ -39,6 +40,7 @@ public class ReservationsCreatorImpl {
         this.requestValidator = requestValidator;
     }
 
+    @Override
     public ReservationCreationResponse create(ReservationCreationRequest request) {
         List<String> errorMessages = requestValidator.validate(request);
         if (!errorMessages.isEmpty()) {
