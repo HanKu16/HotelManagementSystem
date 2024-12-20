@@ -15,15 +15,15 @@ public class ReservationCreationResponse extends Response {
     private final String hotelName;
     private final LocalDate reservationDate;
 
-    public ReservationCreationResponse(int statusCode, String message) {
-        super(statusCode, message);
+    public ReservationCreationResponse(ResponseStatus status, String message) {
+        super(status, message);
         this.hotelName = null;
         this.reservationDate = null;
     }
 
-    public ReservationCreationResponse(int statusCode, String message,
+    public ReservationCreationResponse(ResponseStatus status, String message,
             String hotelName, LocalDate reservationDate) {
-        super(statusCode, message);
+        super(status, message);
         this.hotelName = hotelName;
         this.reservationDate = reservationDate;
     }

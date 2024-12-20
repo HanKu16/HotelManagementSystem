@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public abstract class Response {
 
-    private final int statusCode;
+    private final ResponseStatus status;
     private final String message;
 
 }
