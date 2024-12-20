@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.po2_jmp.domain.RoleName;
-import org.po2_jmp.entity.Role;
 
 @Getter
 @ToString
@@ -13,11 +12,17 @@ import org.po2_jmp.entity.Role;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserAuthenticationResponse extends Response {
 
+    private final String userId;
     private final RoleName role;
 
+    public UserAuthenticationResponse(ResponseStatus status, String message) {
+        this(status, message, null, null);
+    }
+
     public UserAuthenticationResponse(ResponseStatus status,
-            String message, RoleName role) {
+            String message, String userId, RoleName role) {
         super(status, message);
+        this.userId = userId;
         this.role = role;
     }
 
