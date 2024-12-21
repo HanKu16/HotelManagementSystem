@@ -1,0 +1,7 @@
+CREATE TABLE hotel_amenities (
+	hotel_amenity_id SERIAL CONSTRAINT hotel_amenities_pk PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	hotel_id INT NOT NULL,
+	CONSTRAINT hotel_amenities_hotels_fk
+	FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id)
+);
