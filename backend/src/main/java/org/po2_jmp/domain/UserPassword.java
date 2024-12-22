@@ -23,7 +23,7 @@ public class UserPassword {
         }
         if (!containsOnlyLettersAndNumbers(password)) {
             throw new IllegalArgumentException("User password can contain " +
-                    "only letters and numbers, but is " + password.length());
+                    "only letters and numbers, but is " + password);
         }
         this.value = password;
     }
