@@ -1,5 +1,8 @@
 package org.po2_jmp.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -13,9 +16,13 @@ public class UserRegistrationRequest extends Request {
     private final String password;
     private final String confirmedPassword;
 
-    public UserRegistrationRequest(String type, String endpoint,
-            String userId, String password, String confirmedPassword) {
-        super(type, endpoint);
+    @JsonCreator
+    public UserRegistrationRequest(
+            @JsonProperty("command") String command,
+            @JsonProperty("userId") String userId,
+            @JsonProperty("password") String password,
+            @JsonProperty("confirmedPassword") String confirmedPassword) {
+        super(command);
         this.userId = userId;
         this.password = password;
         this.confirmedPassword = confirmedPassword;

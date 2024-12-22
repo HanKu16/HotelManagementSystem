@@ -1,5 +1,7 @@
 package org.po2_jmp.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -15,9 +17,14 @@ public class ReservationCreationRequest extends Request {
     private final int hotelId;
     private final int guestCapacity;
 
-    public ReservationCreationRequest(String type, String endpoint, String userId,
-            LocalDate reservationDate, int hotelId, int guestCapacity) {
-        super(type, endpoint);
+    @JsonCreator
+    public ReservationCreationRequest(
+            @JsonProperty("command") String command,
+            @JsonProperty("userId") String userId,
+            @JsonProperty("reservationDate") LocalDate reservationDate,
+            @JsonProperty("hotelId") int hotelId,
+            @JsonProperty("guestCapacity") int guestCapacity) {
+        super(command);
         this.userId = userId;
         this.reservationDate = reservationDate;
         this.hotelId = hotelId;

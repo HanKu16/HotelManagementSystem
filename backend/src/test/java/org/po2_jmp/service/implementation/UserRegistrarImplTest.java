@@ -67,7 +67,7 @@ class UserRegistrarImplTest {
     }
 
     private UserRegistrationRequest createRequest() {
-        return new UserRegistrationRequest("POST", "/register",
+        return new UserRegistrationRequest("register",
                 "newUser", "password", "password");
     }
 

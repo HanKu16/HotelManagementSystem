@@ -21,13 +21,15 @@ class UserRegistrationRequestValidatorTest {
     @InjectMocks
     private UserRegistrationRequestValidator requestValidator;
 
+    private final String requestCommand = "register";
+
     @Test
     void Validate_ShouldReturnEmptyList_WhenRequestIsValid() {
         String userId = "validUser";
         String password = "validPassword123";
         String confirmedPassword = "validPassword123";
         UserRegistrationRequest request = new UserRegistrationRequest(
-                "POST", "/register", userId, password, confirmedPassword);
+                requestCommand, userId, password, confirmedPassword);
         when(usersRepository.findById(userId)).thenReturn(Optional.empty());
 
         List<String> errors = requestValidator.validate(request);
@@ -41,7 +43,7 @@ class UserRegistrationRequestValidatorTest {
         String password = "validPassword123";
         String confirmedPassword = "validPassword123";
         UserRegistrationRequest request = new UserRegistrationRequest(
-                "POST", "/register", userId, password, confirmedPassword);
+                requestCommand, userId, password, confirmedPassword);
         when(usersRepository.findById(userId)).thenReturn(Optional.empty());
 
         List<String> errors = requestValidator.validate(request);
@@ -55,7 +57,7 @@ class UserRegistrationRequestValidatorTest {
         String password = "Password1";
         String confirmedPassword = "password2";
         UserRegistrationRequest request = new UserRegistrationRequest(
-                "POST", "/register", userId, password, confirmedPassword);
+                requestCommand, userId, password, confirmedPassword);
         when(usersRepository.findById(userId)).thenReturn(Optional.empty());
 
         List<String> errors = requestValidator.validate(request);
@@ -69,7 +71,7 @@ class UserRegistrationRequestValidatorTest {
         String password = "password/1";
         String confirmedPassword = "password/1";
         UserRegistrationRequest request = new UserRegistrationRequest(
-                "POST", "/register", userId, password, confirmedPassword);
+                requestCommand, userId, password, confirmedPassword);
         when(usersRepository.findById(userId)).thenReturn(Optional.empty());
 
         List<String> errors = requestValidator.validate(request);

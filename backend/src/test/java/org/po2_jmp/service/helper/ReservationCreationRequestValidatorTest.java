@@ -172,10 +172,8 @@ class ReservationCreationRequestValidatorTest {
         String type = "GET";
         String endpoint = "/reservations";
         int guestCapacity = 3;
-        return new ReservationCreationRequest(
-                type, endpoint,
-                userId, reservationDate,
-                hotelId, guestCapacity);
+        return new ReservationCreationRequest(endpoint, userId,
+                reservationDate, hotelId, guestCapacity);
     }
 
     private User createUserForMock() {

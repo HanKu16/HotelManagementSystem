@@ -1,5 +1,7 @@
 package org.po2_jmp.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -12,9 +14,12 @@ public class UserAuthenticationRequest extends Request {
     private final String userId;
     private final String password;
 
-    public UserAuthenticationRequest(String type, String endpoint,
-            String userId, String password) {
-        super(type, endpoint);
+    @JsonCreator
+    public UserAuthenticationRequest(
+            @JsonProperty("command") String command,
+            @JsonProperty("userId") String userId,
+            @JsonProperty("password") String password) {
+        super(command);
         this.userId = userId;
         this.password = password;
     }
