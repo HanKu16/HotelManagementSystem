@@ -32,10 +32,12 @@ class UsersAuthenticatorImplTest {
     @InjectMocks
     private UsersAuthenticatorImpl usersAuthenticator;
 
+    private final String requestCommand = "login";
+
     @Test
-    void Authenticate_ShouldReturnResponseOfStatusBadRequest_WhenUserIdIsInvalid() {
+    void Authenticate_ShouldReturnResponseOfStatusBadRequest_WhenUserIdIsNull() {
         UserAuthenticationRequest request = new UserAuthenticationRequest(
-                "GET", "login", null, "ptaku213");
+                requestCommand, null,  "ptaku213");
 
         UserAuthenticationResponse response = usersAuthenticator.authenticate(request);
 
@@ -43,9 +45,9 @@ class UsersAuthenticatorImplTest {
     }
 
     @Test
-    void Authenticate_ShouldReturnResponseOfStatusBadRequest_WhenPasswordIsInvalid() {
+    void Authenticate_ShouldReturnResponseOfStatusBadRequest_WhenPasswordIsNull() {
         UserAuthenticationRequest request = new UserAuthenticationRequest(
-                "GET", "login", "szpaku", null);
+                requestCommand, "login", null);
 
         UserAuthenticationResponse response = usersAuthenticator.authenticate(request);
 
@@ -56,7 +58,7 @@ class UsersAuthenticatorImplTest {
     void Authenticate_ShouldReturnResponseOfStatusNotFound_WhenUsersDoesNotExist() {
         String userId = "szpaku";
         UserAuthenticationRequest request = new UserAuthenticationRequest(
-                "GET", "login", userId, "password123");
+                requestCommand, "szpaku",  "password123");
         when(usersRepository.findById(userId)).thenReturn(Optional.empty());
 
         UserAuthenticationResponse response = usersAuthenticator.authenticate(request);
@@ -70,7 +72,7 @@ class UsersAuthenticatorImplTest {
         User user = new User(new UserId(userId), new UserPassword("pokemon1"),
                 LocalDateTime.of(2017, 2, 3, 6, 30, 0, 0), 1);
         UserAuthenticationRequest request = new UserAuthenticationRequest(
-                "GET", "login", userId, "pokemon513");
+                requestCommand, userId, "pokemon513");
         when(usersRepository.findById(userId)).thenReturn(Optional.of(user));
 
         UserAuthenticationResponse response = usersAuthenticator.authenticate(request);
@@ -86,7 +88,7 @@ class UsersAuthenticatorImplTest {
         User user = new User(new UserId(userId), new UserPassword(password),
                 LocalDateTime.of(2017, 2, 3, 6, 30, 0, 0), roleId);
         UserAuthenticationRequest request = new UserAuthenticationRequest(
-                "GET", "login", userId, password);
+                requestCommand, userId, password);
         when(usersRepository.findById(userId)).thenReturn(Optional.of(user));
         when(rolesRepository.findById(roleId)).thenReturn(Optional.of(
                 new Role(roleId, RoleName.USER)

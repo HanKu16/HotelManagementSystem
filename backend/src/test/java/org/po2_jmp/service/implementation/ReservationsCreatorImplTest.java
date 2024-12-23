@@ -140,7 +140,7 @@ class ReservationsCreatorImplTest {
     }
 
     private ReservationCreationRequest createRequestForMock() {
-        return new ReservationCreationRequest("POST", "/reservations",
+        return new ReservationCreationRequest("createReservation",
                 "szpaku", LocalDate.of(2099, 1, 1), 2, 3);
     }
 
