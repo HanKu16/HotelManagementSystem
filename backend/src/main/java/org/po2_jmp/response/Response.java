@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public abstract class Response {
+public class Response {
 
     private final ResponseStatus status;
     private final String message;
