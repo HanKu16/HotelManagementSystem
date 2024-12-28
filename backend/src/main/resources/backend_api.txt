@@ -1,0 +1,61 @@
+Communication with backend is via Web Sockets.
+Client should send messages in text form of json.
+Each request should have "command" key in itself.
+
+Backend implements:
+- user authentication
+- user registration
+- creating new reservations
+
+User authentication:
+- request:
+{
+    "command": "authenticate",
+    "userId": "?String?",
+    "password": "?String?"
+}
+- response
+{
+    "status": "?ResponseStatus?",
+    "message": "?String?",
+    "userId": "?String?",
+    "role": "?RoleName?"
+}
+
+User registration:
+- request
+{
+    "command": "register",
+    "userId": "?String?",
+    "password": "?String?",
+    "confirmedPassword": "?String?"
+}
+- response
+{
+    "status": "?ResponseStatus?",
+    "message": "?String?",
+    "userId": "?String?"
+}
+
+Reservation creation:
+- request:
+{
+    "command": ""createReservation"",
+    "userId": "?String?",
+    "reservationDate": "?LocalDate?",
+    "hotelId": ?int?,
+    "guestCapacity": ?int?
+}
+- response
+{
+    "status": "?ResponseStatus?",
+    "message": "?String?",
+    "hotelName": "?String?",
+    "reservationDate": ?LocalDate?
+}
+
+When something goes wrong with request, response will be looking like:
+{
+    "status": "?ResponseStatus",
+    "message": "?String?"
+}
