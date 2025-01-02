@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.po2_jmp.domain.BuildingNumber;
 import org.po2_jmp.domain.CityName;
 import org.po2_jmp.domain.PostalCode;
+import org.po2_jmp.domain.StreetName;
 import org.po2_jmp.entity.Address;
 import org.po2_jmp.utils.DbTestConfigurator;
 
@@ -134,6 +135,7 @@ class DbHotelAddressesRepositoryTest {
         configurator.insert();
         Address address = new Address(
                 new CityName("Kielce"),
+                new StreetName("Ogrodowa"),
                 new PostalCode("25-751"),
                 new BuildingNumber("13"));
         Optional<Integer> optionalAddressId = repository.add(address);

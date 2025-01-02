@@ -68,7 +68,7 @@ class HotelTest {
     }
 
     private Address createValidAddress() {
-        return new Address(new CityName("Warszawa"),
+        return new Address(new CityName("Warszawa"), new StreetName("Krótka"),
                 new PostalCode("30-001"), new BuildingNumber("14"));
     }
 

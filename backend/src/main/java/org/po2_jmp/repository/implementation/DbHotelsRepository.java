@@ -96,6 +96,7 @@ public class DbHotelsRepository implements HotelsRepository {
         Address address = new Address(
                 rs.getInt("hotel_address_id"),
                 new CityName(rs.getString("city")),
+                new StreetName(rs.getString("street")),
                 new PostalCode(rs.getString("postal_code")),
                 new BuildingNumber(rs.getString("building_number"))
         );

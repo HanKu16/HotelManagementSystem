@@ -190,6 +190,7 @@ class ReservationCreationRequestValidatorTest {
                 new HotelDescription("To jest Akropol"),
                 new Address(
                         new CityName("Warszawa"),
+                        new StreetName("Warszawska"),
                         new PostalCode("00-002"),
                         new BuildingNumber("2")
                 ));
