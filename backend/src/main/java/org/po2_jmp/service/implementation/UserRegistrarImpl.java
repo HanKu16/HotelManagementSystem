@@ -25,6 +25,10 @@ public class UserRegistrarImpl implements UserRegistrar {
             throw new IllegalArgumentException("UsersRepository can not be null," +
                     " but null was passed to UserRegistrarImpl");
         }
+        if (requestValidator == null) {
+            throw new IllegalArgumentException("UsersRegistrationRequestValidator " +
+                    "can not be null, but null was passed to UserRegistrarImpl");
+        }
         this.usersRepository = usersRepository;
         this.requestValidator = requestValidator;
     }

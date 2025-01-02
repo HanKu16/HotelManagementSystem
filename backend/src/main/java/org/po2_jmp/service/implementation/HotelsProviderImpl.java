@@ -20,6 +20,14 @@ public class HotelsProviderImpl implements HotelsProvider {
 
     public HotelsProviderImpl(HotelsRepository hotelsRepository,
             HotelAmenitiesRepository hotelAmenitiesRepository) {
+        if (hotelsRepository == null) {
+            throw new IllegalArgumentException("HotelsRepository can not be null," +
+                    " but null was passed to HotelsProviderImpl");
+        }
+        if (hotelAmenitiesRepository == null) {
+            throw new IllegalArgumentException("HotelAmenitiesRepository " +
+                    "can not be null, but null was passed to HotelsProviderImpl");
+        }
         this.hotelsRepository = hotelsRepository;
         this.hotelAmenitiesRepository = hotelAmenitiesRepository;
     }
