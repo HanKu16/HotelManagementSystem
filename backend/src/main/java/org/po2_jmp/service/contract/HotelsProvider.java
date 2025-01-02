@@ -7,7 +7,7 @@ import org.po2_jmp.response.HotelsOverviewsResponse;
 
 public interface HotelsProvider {
 
-    HotelProfileResponse getProfileById(HotelProfileRequest request);
+    HotelProfileResponse getProfile(HotelProfileRequest request);
     HotelsOverviewsResponse getHotelsOverviews(HotelsOverviewsRequest request);
 
 }

@@ -33,7 +33,7 @@ public class HotelsProviderImpl implements HotelsProvider {
     }
 
     @Override
-    public HotelProfileResponse getProfileById(HotelProfileRequest request) {
+    public HotelProfileResponse getProfile(HotelProfileRequest request) {
         int hotelId = request.getHotelId();
         Optional<Hotel> optionalHotel = hotelsRepository.findById(hotelId);
         if (optionalHotel.isEmpty()) {
