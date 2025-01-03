@@ -18,6 +18,7 @@ public class MessageResponder {
     private final UserRegistrar userRegistrar;
     private final ReservationsCreator reservationsCreator;
     private final HotelsProvider hotelsProvider;
+    private final ReservationsProvider reservationsProvider;
     private final JsonConverter jsonConverter;
 
     public MessageResponder() {
@@ -40,8 +41,6 @@ public class MessageResponder {
         AvailableRoomFinder availableRoomFinder = new AvailableRoomFinder(reservationsRepository);
         ReservationCreationRequestValidator reservationCreationRequestValidator =
                 new ReservationCreationRequestValidator(usersRepository, hotelsRepository);
-        HotelsProvider hotelsProvider = new HotelsProviderImpl(
-                hotelsRepository, hotelAmenitiesRepository);
 
         this.jsonConverter = new JsonConverter();
         this.usersAuthenticator = new UsersAuthenticatorImpl(
@@ -51,7 +50,10 @@ public class MessageResponder {
         this.reservationsCreator = new ReservationsCreatorImpl(
                 reservationsRepository, hotelsRepository, hotelRoomsRepository,
                 availableRoomFinder, reservationCreationRequestValidator);
-        this.hotelsProvider = hotelsProvider;
+        this.hotelsProvider = new HotelsProviderImpl(
+                hotelsRepository, hotelAmenitiesRepository);
+        this.reservationsProvider = new ReservationsProviderImpl(
+                reservationsRepository, hotelRoomsRepository, hotelsRepository);
     }
 
     public String respond(String message) {
@@ -87,6 +89,7 @@ public class MessageResponder {
             case "createReservation" -> handleCreateReservationRequest(message);
             case "getHotelProfile" -> handleHotelProfileRequest(message);
             case "getHotelsOverviews" -> handleHotelsOverviewsRequest(message);
+            case "getUserReservations" -> handleUserReservationsRequest(message);
             default -> handleUnknownCommandRequest();
         };
     }
@@ -123,7 +126,7 @@ public class MessageResponder {
         HotelProfileRequest hotelProfileRequest = jsonConverter
                 .deserialize(message, HotelProfileRequest.class);
         HotelProfileResponse hotelProfileResponse = hotelsProvider
-                .getProfileById(hotelProfileRequest);
+                .getProfile(hotelProfileRequest);
         return jsonConverter.serialize(hotelProfileResponse);
     }
 
@@ -134,6 +137,15 @@ public class MessageResponder {
         HotelsOverviewsResponse hotelsOverviewsResponse = hotelsProvider
                 .getHotelsOverviews(hotelsOverviewsRequest);
         return jsonConverter.serialize(hotelsOverviewsResponse);
+    }
+
+    private String handleUserReservationsRequest(String message)
+            throws JsonProcessingException{
+        UserReservationsRequest userReservationsRequest = jsonConverter
+                .deserialize(message, UserReservationsRequest.class);
+        UserReservationsResponse userReservationsResponse = reservationsProvider
+                .getUserReservations(userReservationsRequest);
+        return jsonConverter.serialize(userReservationsResponse);
     }
 
     private String handleUnknownCommandRequest() throws JsonProcessingException {
