@@ -151,6 +151,7 @@ class ReservationsCreatorImplTest {
                 new HotelDescription("To jest Akropol"),
                 new Address(
                         new CityName("Warszawa"),
+                        new StreetName("Mokra"),
                         new PostalCode("00-002"),
                         new BuildingNumber("2")
                 ));

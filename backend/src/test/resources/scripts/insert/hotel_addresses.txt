@@ -1,7 +1,7 @@
-INSERT INTO hotel_addresses (city, postal_code, building_number)
+INSERT INTO hotel_addresses (city, street, postal_code, building_number)
 VALUES
-	('Warszawa', '00-021', '15'),
-	('Kraków', '30-134', '21A'),
-	('Gdańsk', '80-011', '2'),
-	('Białystok', '15-109', '78B'),
-	('Wrocław', '50-007', '6');
+	('Warszawa', 'Mokotowska', '00-021', '15'),
+	('Kraków', 'Grunwaldzka', '30-134', '21A'),
+	('Gdańsk', 'Morska','80-011', '2'),
+	('Białystok', 'Podlaska', '15-109', '78B'),
+	('Wrocław', 'Techniczna','50-007', '6');

@@ -3,6 +3,7 @@ package org.po2_jmp.repository.implementation;
 import org.po2_jmp.domain.BuildingNumber;
 import org.po2_jmp.domain.CityName;
 import org.po2_jmp.domain.PostalCode;
+import org.po2_jmp.domain.StreetName;
 import org.po2_jmp.entity.Address;
 import org.po2_jmp.repository.contract.HotelAddressesRepository;
 import java.sql.*;
@@ -27,7 +28,7 @@ public class DbHotelAddressesRepository implements HotelAddressesRepository {
     }
 
     public Optional<Address> findById(int id)  {
-        String sql = "SELECT hotel_address_id, city, postal_code, building_number" +
+        String sql = "SELECT hotel_address_id, city, street, postal_code, building_number" +
                     " FROM hotel_addresses" +
                     " WHERE hotel_address_id = ?";
         Optional<Address> optionalAddress = Optional.empty();
@@ -48,7 +49,7 @@ public class DbHotelAddressesRepository implements HotelAddressesRepository {
     }
 
     public List<Address> findAll() {
-        String sql = "SELECT hotel_address_id, city, postal_code, building_number" +
+        String sql = "SELECT hotel_address_id, city, street, postal_code, building_number" +
                     " FROM hotel_addresses";
         List<Address> addresses = new ArrayList<>();
 
@@ -66,8 +67,8 @@ public class DbHotelAddressesRepository implements HotelAddressesRepository {
     }
 
     public Optional<Integer> add(Address address) {
-        String sql = "INSERT INTO hotel_addresses (city, postal_code, building_number)" +
-                    " VALUES (?, ?, ?);";
+        String sql = "INSERT INTO hotel_addresses (city, street, postal_code, building_number)" +
+                    " VALUES (?, ?, ?, ?);";
         Optional<Integer> optionalAddressId = Optional.empty();
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
@@ -93,6 +94,7 @@ public class DbHotelAddressesRepository implements HotelAddressesRepository {
         return new Address(
                 rs.getInt("hotel_address_id"),
                 new CityName(rs.getString("city")),
+                new StreetName(rs.getString("street")),
                 new PostalCode(rs.getString("postal_code")),
                 new BuildingNumber(rs.getString("building_number"))
         );
@@ -101,8 +103,9 @@ public class DbHotelAddressesRepository implements HotelAddressesRepository {
     private void setInsertQueryParams(PreparedStatement stmt,
             Address address) throws SQLException {
         stmt.setString(1, address.getCity().getValue());
-        stmt.setString(2, address.getPostalCode().getValue());
-        stmt.setString(3, address.getBuildingNumber().getValue());
+        stmt.setString(2, address.getStreet().getValue());
+        stmt.setString(3, address.getPostalCode().getValue());
+        stmt.setString(4, address.getBuildingNumber().getValue());
     }
 
     private boolean areAnyNullParams(String url,
