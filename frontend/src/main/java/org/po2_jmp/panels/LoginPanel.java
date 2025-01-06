@@ -86,6 +86,8 @@ public class LoginPanel implements Panel {
         loginButton.setBackground(Color.GRAY);
         loginButton.setForeground(Color.WHITE);
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loginButton.addActionListener(
+                e ->layout.show(container, "HotelList"));
         panel.add(loginButton);
 
         loginButton.addActionListener(new ActionListener() {
@@ -116,6 +118,8 @@ public class LoginPanel implements Panel {
         registerButton.setBackground(Color.GRAY);
         registerButton.setForeground(Color.WHITE);
         registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        registerButton.addActionListener(
+                e -> layout.show(container, "Register"));
         panel.add(registerButton);
 
         return panel;

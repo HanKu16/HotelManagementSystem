@@ -133,7 +133,7 @@ public class HotelDetailsPanel implements Panel {
         reserveButton.setPreferredSize(new Dimension(200, 40));
         reserveButton.setMaximumSize(new Dimension(200, 40));
         reserveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        reserveButton.setEnabled(false); // Initially disabled
+        reserveButton.setEnabled(false);
 
         panel.add(reserveButton);
 

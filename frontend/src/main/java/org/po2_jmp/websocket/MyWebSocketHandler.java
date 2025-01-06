@@ -28,9 +28,12 @@ public class MyWebSocketHandler {
             switch (type) {
                 case "user was successfully authenticated":
                     UserAuthenticationResponse loginResponse =  jsonUtils.deserialize(message, UserAuthenticationResponse.class);
+                    System.out.println(loginResponse);
+                    System.out.println(message);
                     break;
-                case "user was successfully registered":
+                case "user account was created successfully":
                     UserRegistrationResponse registerResponse =  jsonUtils.deserialize(message, UserRegistrationResponse.class);
+                    System.out.println(registerResponse);
                     break;
                 default:
                     System.err.println("Unknown message type: " + type);

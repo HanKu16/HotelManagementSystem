@@ -66,9 +66,7 @@ public class FrontendApp implements Runnable {
         panels.add(new LoginPanel(new PanelId("Login"), cardLayout, container, webSocketHandler));
         panels.add(new NavigationPanel(new PanelId("Navigation"), cardLayout, container));
         panels.add(new RoomsPanel(new PanelId("Rooms"), cardLayout, container));
-        panels.add(new FirstHeaderPanel(new PanelId("FirstHeader"), cardLayout, container));
-        panels.add(new FirstHotelPanel(new PanelId("FirstHotel"), cardLayout, container));
-        panels.add(new FirstPanel(new PanelId("First"), cardLayout, container));
+        panels.add(new HotelListPanel(new PanelId("HotelList"), cardLayout, container, webSocketHandler));
         panels.add(new HotelBookingPanel(new PanelId("HotelBooking"), cardLayout, container));
         panels.add(new HotelDetailsPanel(new PanelId("HotelDetails"), cardLayout, container));
         panels.add(new RegisterPanel(new PanelId("Register"), cardLayout, container, webSocketHandler));
