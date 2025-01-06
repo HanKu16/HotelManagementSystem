@@ -9,21 +9,45 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.jetty.websocket.client.WebSocketClient;
+import java.net.URI;
+import java.util.concurrent.TimeUnit;
+import org.po2_jmp.websocket.MyWebSocketHandler;
 
 public class FrontendApp implements Runnable {
+
+    private WebSocketClient webSocketClient;
+    private MyWebSocketHandler webSocketHandler;
 
     @Override
     public void run() {
         try {
+            // Connect to WebSocket server
+            connectToWebSocketServer("ws://localhost:8889/ws");
+
+            // GUI setup
             WindowSettings settings = createWindowSettings();
             JPanel container = new JPanel();
             CardLayout cardLayout = new CardLayout();
             List<Panel> panels = createPanels(cardLayout, container);
-            PanelsContainer myContainer = new PanelsContainer(
-                    container, cardLayout, panels);
+            PanelsContainer myContainer = new PanelsContainer(container, cardLayout, panels);
             Window window = new Window(settings, myContainer);
+
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private void connectToWebSocketServer(String serverUri) {
+        try {
+            webSocketClient = new WebSocketClient();
+            webSocketHandler = new MyWebSocketHandler();
+            webSocketClient.start();
+
+            // Connect to the WebSocket server
+            webSocketClient.connect(webSocketHandler, new URI(serverUri)).get(10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            System.err.println("Failed to connect to WebSocket server: " + e.getMessage());
         }
     }
 
@@ -31,39 +55,23 @@ public class FrontendApp implements Runnable {
         return new WindowSettings(
                 new WindowDimensions(800, 600),
                 new WindowTitle("Hotel Management System"),
-                new PanelId("First"));
+                new PanelId("Login"));
     }
 
     private List<Panel> createPanels(CardLayout cardLayout, JPanel container) {
         List<Panel> panels = new ArrayList<>();
-        Panel panelOne = new PanelOne(
-                new PanelId("1"), cardLayout, container);
-        Panel panelTwo = new PanelTwo(
-                new PanelId("2"), cardLayout, container);
-        Panel panelThree = new PanelThree(
-                new PanelId("3"), cardLayout, container);
-        Panel loginPanel = new LoginPanel(
-                new PanelId("Login"), cardLayout, container);
-        Panel navigationPanel = new NavigationPanel(
-                new PanelId("Navigation"), cardLayout, container);
-        Panel roomsPanel = new RoomsPanel(
-                new PanelId("Rooms"), cardLayout, container);
-        Panel firstHeaderPanel = new FirstHeaderPanel(
-                new PanelId("FirstHeader"), cardLayout, container);
-        Panel firstHotelPanel = new FirstHotelPanel(
-                new PanelId("FirstHotel"), cardLayout, container);
-        Panel firstPanel = new FirstPanel(
-                new PanelId("First"), cardLayout, container);
-        panels.add(panelOne);
-        panels.add(panelTwo);
-        panels.add(panelThree);
-        panels.add(loginPanel);
-        panels.add(navigationPanel);
-        panels.add(roomsPanel);
-        panels.add(firstHeaderPanel);
-        panels.add(firstHotelPanel);
-        panels.add(firstPanel);
+        panels.add(new PanelOne(new PanelId("1"), cardLayout, container));
+        panels.add(new PanelTwo(new PanelId("2"), cardLayout, container));
+        panels.add(new PanelThree(new PanelId("3"), cardLayout, container));
+        panels.add(new LoginPanel(new PanelId("Login"), cardLayout, container, webSocketHandler));
+        panels.add(new NavigationPanel(new PanelId("Navigation"), cardLayout, container));
+        panels.add(new RoomsPanel(new PanelId("Rooms"), cardLayout, container));
+        panels.add(new FirstHeaderPanel(new PanelId("FirstHeader"), cardLayout, container));
+        panels.add(new FirstHotelPanel(new PanelId("FirstHotel"), cardLayout, container));
+        panels.add(new FirstPanel(new PanelId("First"), cardLayout, container));
+        panels.add(new HotelBookingPanel(new PanelId("HotelBooking"), cardLayout, container));
+        panels.add(new HotelDetailsPanel(new PanelId("HotelDetails"), cardLayout, container));
+        panels.add(new RegisterPanel(new PanelId("Register"), cardLayout, container, webSocketHandler));
         return panels;
     }
-
 }

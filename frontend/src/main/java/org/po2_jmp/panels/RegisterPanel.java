@@ -7,10 +7,11 @@ import java.awt.event.ActionEvent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.po2_jmp.request.UserAuthenticationRequest;
+import org.po2_jmp.request.UserRegistrationRequest;
 import org.po2_jmp.websocket.JsonUtils;
 import org.po2_jmp.websocket.MyWebSocketHandler;
 
-public class LoginPanel implements Panel {
+public class RegisterPanel implements Panel {
 
     private final PanelId id;
     private final JPanel panel;
@@ -18,7 +19,7 @@ public class LoginPanel implements Panel {
     JsonUtils jsonUtils = new JsonUtils();
 
 
-    public LoginPanel(PanelId id, CardLayout layout, JPanel container, MyWebSocketHandler myWebSocketHandler) {
+    public RegisterPanel(PanelId id, CardLayout layout, JPanel container, MyWebSocketHandler myWebSocketHandler) {
         this.id = id;
         this.panel = create(layout, container);
         this.myWebSocketHandler = myWebSocketHandler;
@@ -60,13 +61,6 @@ public class LoginPanel implements Panel {
         panel.add(titlePanel);
         panel.add(Box.createVerticalStrut(20)); // Space between title and login
 
-        // Login section
-        JLabel loginLabel = new JLabel("SIGN IN", SwingConstants.CENTER);
-        loginLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        loginLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(loginLabel);
-        panel.add(Box.createVerticalStrut(20));
-
         JTextField loginField = new JTextField("login");
         loginField.setPreferredSize(new Dimension(200, 40));
         loginField.setMaximumSize(new Dimension(200, 40));
@@ -79,24 +73,32 @@ public class LoginPanel implements Panel {
         panel.add(passwordField);
         panel.add(Box.createVerticalStrut(20));
 
+        JPasswordField confirmPasswordField = new JPasswordField("password");
+        confirmPasswordField.setPreferredSize(new Dimension(200, 40));
+        confirmPasswordField.setMaximumSize(new Dimension(200, 40));
+        panel.add(confirmPasswordField);
+        panel.add(Box.createVerticalStrut(20));
+        
         // Buttons
-        JButton loginButton = new JButton("Sign in");
-        loginButton.setPreferredSize(new Dimension(200, 40));
-        loginButton.setMaximumSize(new Dimension(200, 40));
-        loginButton.setBackground(Color.GRAY);
-        loginButton.setForeground(Color.WHITE);
-        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(loginButton);
+        JButton registerButton = new JButton("Sign up");
+        registerButton.setPreferredSize(new Dimension(200, 40));
+        registerButton.setMaximumSize(new Dimension(200, 40));
+        registerButton.setBackground(Color.GRAY);
+        registerButton.setForeground(Color.WHITE);
+        registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(registerButton);
 
-        loginButton.addActionListener(new ActionListener() {
+        registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                 String username = loginField.getText().trim();
                 char[] passwordArray = passwordField.getPassword();
                 String password = new String(passwordArray);
-                UserAuthenticationRequest userAuthenticationRequest = new UserAuthenticationRequest("authenticate", username, password );
+                char[] confirmPasswordArray = confirmPasswordField.getPassword();
+                String confirmPassword = new String(confirmPasswordArray);
+                UserRegistrationRequest userRegistrationRequest = new UserRegistrationRequest("register", username, password, confirmPassword);
                 try {
-                    String request = jsonUtils.serialize(userAuthenticationRequest);
+                    String request = jsonUtils.serialize(userRegistrationRequest);
                     myWebSocketHandler.sendMessage(request);
                 } catch (JsonProcessingException ex) {
                     throw new RuntimeException(ex);
@@ -105,18 +107,6 @@ public class LoginPanel implements Panel {
         });
 
         panel.add(Box.createVerticalStrut(10));
-
-        JLabel noAccountLabel = new JLabel("Don't have an account?", SwingConstants.CENTER);
-        noAccountLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(noAccountLabel);
-
-        JButton registerButton = new JButton("Sign up");
-        registerButton.setPreferredSize(new Dimension(200, 40));
-        registerButton.setMaximumSize(new Dimension(200, 40));
-        registerButton.setBackground(Color.GRAY);
-        registerButton.setForeground(Color.WHITE);
-        registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(registerButton);
 
         return panel;
     }
