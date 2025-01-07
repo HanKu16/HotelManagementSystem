@@ -25,6 +25,7 @@ public class DbReservationsRepository implements ReservationsRepository {
         this.password = password;
     }
 
+    @Override
     public Optional<Reservation> findById(int id) {
         String sql = "SELECT reservation_id, reservation_date, creation_datetime," +
                     " user_id, hotel_room_id" +
@@ -47,6 +48,7 @@ public class DbReservationsRepository implements ReservationsRepository {
         return optionalReservation;
     }
 
+    @Override
     public List<Reservation> findAllByUserId(String userId) {
         String sql = "SELECT reservation_id, reservation_date, creation_datetime," +
                     " user_id, hotel_room_id" +
@@ -69,6 +71,7 @@ public class DbReservationsRepository implements ReservationsRepository {
         return reservations;
     }
 
+    @Override
     public Optional<Reservation> findByRoomIdAndReservationDate(
             int roomId, LocalDate reservationDate) {
         String sql = "SELECT reservation_id, reservation_date, creation_datetime," +
@@ -93,6 +96,7 @@ public class DbReservationsRepository implements ReservationsRepository {
         return optionalReservation;
     }
 
+    @Override
     public Optional<Integer> add(Reservation reservation) {
         String sql = "INSERT INTO reservations" +
                     " (reservation_date, creation_datetime, user_id, hotel_room_id)" +
@@ -116,6 +120,21 @@ public class DbReservationsRepository implements ReservationsRepository {
             e.printStackTrace();
         }
         return optionalReservationId;
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        String sql = "DELETE FROM reservations WHERE reservation_id = ?;";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private Reservation createReservation(ResultSet rs) throws SQLException {
