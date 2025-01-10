@@ -19,6 +19,7 @@ public class MessageResponder {
     private final ReservationsCreator reservationsCreator;
     private final HotelsProvider hotelsProvider;
     private final ReservationsProvider reservationsProvider;
+    private final ReservationsCanceler reservationsCanceler;
     private final JsonConverter jsonConverter;
 
     public MessageResponder() {
@@ -54,6 +55,7 @@ public class MessageResponder {
                 hotelsRepository, hotelAmenitiesRepository);
         this.reservationsProvider = new ReservationsProviderImpl(
                 reservationsRepository, hotelRoomsRepository, hotelsRepository);
+        this.reservationsCanceler = new ReservationsCancelerImpl(reservationsRepository);
     }
 
     public String respond(String message) {
@@ -90,62 +92,67 @@ public class MessageResponder {
             case "getHotelProfile" -> handleHotelProfileRequest(message);
             case "getHotelsOverviews" -> handleHotelsOverviewsRequest(message);
             case "getUserReservations" -> handleUserReservationsRequest(message);
+            case "cancelReservation" -> handleCancelReservationRequest(message);
             default -> handleUnknownCommandRequest();
         };
     }
 
     private String handleAuthenticationRequest(String message)
             throws JsonProcessingException {
-        UserAuthenticationRequest authenticationRequest = jsonConverter.deserialize(
+        UserAuthenticationRequest request = jsonConverter.deserialize(
                 message, UserAuthenticationRequest.class);
-        UserAuthenticationResponse authenticationResponse =
-                usersAuthenticator.authenticate(authenticationRequest);
-        return jsonConverter.serialize(authenticationResponse);
+        UserAuthenticationResponse response = usersAuthenticator.authenticate(request);
+        return jsonConverter.serialize(response);
     }
 
     private String handleRegistrationRequest(String message)
             throws JsonProcessingException {
-        UserRegistrationRequest registrationRequest = jsonConverter.deserialize(
+        UserRegistrationRequest request = jsonConverter.deserialize(
                 message, UserRegistrationRequest.class);
-        UserRegistrationResponse registrationResponse = userRegistrar.register(
-                registrationRequest);
-        return jsonConverter.serialize(registrationResponse);
+        UserRegistrationResponse response = userRegistrar.register(request);
+        return jsonConverter.serialize(response);
     }
 
     private String handleCreateReservationRequest(String message)
             throws JsonProcessingException {
-        ReservationCreationRequest reservationCreationRequest = jsonConverter
-                .deserialize(message, ReservationCreationRequest.class);
-        ReservationCreationResponse reservationCreationResponse =
-                reservationsCreator.create(reservationCreationRequest);
-        return jsonConverter.serialize(reservationCreationResponse);
+        ReservationCreationRequest request = jsonConverter.deserialize(
+                message, ReservationCreationRequest.class);
+        ReservationCreationResponse response = reservationsCreator.create(request);
+        return jsonConverter.serialize(response);
     }
 
     private String handleHotelProfileRequest(String message)
             throws JsonProcessingException {
-        HotelProfileRequest hotelProfileRequest = jsonConverter
-                .deserialize(message, HotelProfileRequest.class);
-        HotelProfileResponse hotelProfileResponse = hotelsProvider
-                .getProfile(hotelProfileRequest);
-        return jsonConverter.serialize(hotelProfileResponse);
+        HotelProfileRequest request = jsonConverter.deserialize(
+                message, HotelProfileRequest.class);
+        HotelProfileResponse response = hotelsProvider.getProfile(request);
+        return jsonConverter.serialize(response);
     }
 
     private String handleHotelsOverviewsRequest(String message)
             throws JsonProcessingException {
-        HotelsOverviewsRequest hotelsOverviewsRequest = jsonConverter
-                .deserialize(message, HotelsOverviewsRequest.class);
-        HotelsOverviewsResponse hotelsOverviewsResponse = hotelsProvider
-                .getHotelsOverviews(hotelsOverviewsRequest);
-        return jsonConverter.serialize(hotelsOverviewsResponse);
+        HotelsOverviewsRequest request = jsonConverter.deserialize(
+                message, HotelsOverviewsRequest.class);
+        HotelsOverviewsResponse response = hotelsProvider
+                .getHotelsOverviews(request);
+        return jsonConverter.serialize(response);
     }
 
     private String handleUserReservationsRequest(String message)
             throws JsonProcessingException{
-        UserReservationsRequest userReservationsRequest = jsonConverter
+        UserReservationsRequest request = jsonConverter
                 .deserialize(message, UserReservationsRequest.class);
-        UserReservationsResponse userReservationsResponse = reservationsProvider
-                .getUserReservations(userReservationsRequest);
-        return jsonConverter.serialize(userReservationsResponse);
+        UserReservationsResponse response = reservationsProvider
+                .getUserReservations(request);
+        return jsonConverter.serialize(response);
+    }
+
+    private String handleCancelReservationRequest(String message)
+        throws JsonProcessingException {
+        ReservationCancellationRequest request = jsonConverter
+                .deserialize(message, ReservationCancellationRequest.class);
+        ReservationCancellationResponse response = reservationsCanceler.cancel(request);
+        return jsonConverter.serialize(response);
     }
 
     private String handleUnknownCommandRequest() throws JsonProcessingException {
