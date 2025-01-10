@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import java.net.URI;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.po2_jmp.websocket.MyWebSocketHandler;
 
@@ -40,12 +42,15 @@ public class FrontendApp implements Runnable {
 
     private void connectToWebSocketServer(String serverUri) {
         try {
+
             webSocketClient = new WebSocketClient();
+            BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
             webSocketHandler = new MyWebSocketHandler();
+
             webSocketClient.start();
 
             // Connect to the WebSocket server
-            webSocketClient.connect(webSocketHandler, new URI(serverUri)).get(10, TimeUnit.SECONDS);
+            webSocketClient.connect(webSocketHandler, new URI(serverUri)).get(15, TimeUnit.MINUTES);
         } catch (Exception e) {
             System.err.println("Failed to connect to WebSocket server: " + e.getMessage());
         }

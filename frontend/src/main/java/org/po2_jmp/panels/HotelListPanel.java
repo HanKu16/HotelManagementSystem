@@ -47,13 +47,21 @@ public class HotelListPanel implements Panel {
 
         HotelsOverviewsRequest hotelsOverviewsRequest = new HotelsOverviewsRequest("getHotelsOverviews");
         try {
+            assert jsonUtils != null;
             String request = jsonUtils.serialize(hotelsOverviewsRequest);
+            assert myWebSocketHandler != null;
             myWebSocketHandler.sendMessage(request);
         } catch (JsonProcessingException ex) {
             throw new RuntimeException(ex);
         }
-        for(int i = 1; i <= 4; i++){
+        for(int i = 0; i < 4; i++){
+            int hotelId = i + 1;
 
+
+            String hotelName;
+            String address;
+            String amenities;
+            panel.add(createHotelPanel(hotelName, address, amenities, layout, container));
         }
         panel.add(createHotelPanel("Hotel A", "Ulica Przykładowa 1, Miasto, 00-001", "- WiFi\n- Basen\n- Siłownia", layout, container));
         panel.add(createHotelPanel("Hotel B", "Ulica Druga 2, Miasto, 00-002", "- Darmowe Śniadanie\n- Parking\n- Spa", layout, container));

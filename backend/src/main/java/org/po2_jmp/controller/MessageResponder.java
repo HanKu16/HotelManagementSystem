@@ -52,7 +52,8 @@ public class MessageResponder {
                 reservationsRepository, hotelsRepository, hotelRoomsRepository,
                 availableRoomFinder, reservationCreationRequestValidator);
         this.hotelsProvider = new HotelsProviderImpl(
-                hotelsRepository, hotelAmenitiesRepository);
+                hotelsRepository, hotelAmenitiesRepository,
+                hotelRoomsRepository);
         this.reservationsProvider = new ReservationsProviderImpl(
                 reservationsRepository, hotelRoomsRepository, hotelsRepository);
         this.reservationsCanceler = new ReservationsCancelerImpl(reservationsRepository);
