@@ -1,4 +1,5 @@
 package org.po2_jmp.websocket;
+import lombok.Getter;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import org.po2_jmp.response.UserAuthenticationResponse;
@@ -8,12 +9,15 @@ import org.po2_jmp.websocket.JsonUtils;
 
 import java.io.IOException;
 import java.io.*;
+import java.util.concurrent.BlockingQueue;
 
 @WebSocket
 public class MyWebSocketHandler {
 
     private Session session;
     private JsonUtils jsonUtils = new JsonUtils();
+    @Getter
+    private BlockingQueue<String> messageQueue;
 
     @OnWebSocketConnect
     public void onConnect(Session session) {
@@ -24,12 +28,12 @@ public class MyWebSocketHandler {
     @OnWebSocketMessage
     public void onMessage(String message) {
         try {
+            messageQueue.put(message);
             String type = jsonUtils.getTypeFromMessage(message);
             switch (type) {
                 case "user was successfully authenticated":
                     UserAuthenticationResponse loginResponse =  jsonUtils.deserialize(message, UserAuthenticationResponse.class);
                     System.out.println(loginResponse);
-                    System.out.println(message);
                     break;
                 case "user account was created successfully":
                     UserRegistrationResponse registerResponse =  jsonUtils.deserialize(message, UserRegistrationResponse.class);
@@ -65,6 +69,7 @@ public class MyWebSocketHandler {
             }
         }
     }
+
 }
 
 
