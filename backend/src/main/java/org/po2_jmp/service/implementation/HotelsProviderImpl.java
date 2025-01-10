@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.po2_jmp.entity.Address;
 import org.po2_jmp.entity.Hotel;
 import org.po2_jmp.entity.HotelAmenity;
+import org.po2_jmp.entity.HotelRoom;
 import org.po2_jmp.repository.contract.HotelAmenitiesRepository;
+import org.po2_jmp.repository.contract.HotelRoomsRepository;
 import org.po2_jmp.repository.contract.HotelsRepository;
 import org.po2_jmp.request.HotelProfileRequest;
 import org.po2_jmp.request.HotelsOverviewsRequest;
@@ -17,9 +19,12 @@ public class HotelsProviderImpl implements HotelsProvider {
 
     private final HotelsRepository hotelsRepository;
     private final HotelAmenitiesRepository hotelAmenitiesRepository;
+    private final HotelRoomsRepository hotelRoomsRepository;
 
-    public HotelsProviderImpl(HotelsRepository hotelsRepository,
-            HotelAmenitiesRepository hotelAmenitiesRepository) {
+    public HotelsProviderImpl(
+            HotelsRepository hotelsRepository,
+            HotelAmenitiesRepository hotelAmenitiesRepository,
+            HotelRoomsRepository hotelRoomsRepository) {
         if (hotelsRepository == null) {
             throw new IllegalArgumentException("HotelsRepository can not be null," +
                     " but null was passed to HotelsProviderImpl");
@@ -28,8 +33,13 @@ public class HotelsProviderImpl implements HotelsProvider {
             throw new IllegalArgumentException("HotelAmenitiesRepository " +
                     "can not be null, but null was passed to HotelsProviderImpl");
         }
+        if (hotelRoomsRepository == null) {
+            throw new IllegalArgumentException("HotelRoomsRepository " +
+                    "can not be null, but null was passed to HotelsProviderImpl");
+        }
         this.hotelsRepository = hotelsRepository;
         this.hotelAmenitiesRepository = hotelAmenitiesRepository;
+        this.hotelRoomsRepository = hotelRoomsRepository;
     }
 
     @Override
@@ -42,7 +52,10 @@ public class HotelsProviderImpl implements HotelsProvider {
         }
         Hotel hotel = optionalHotel.get();
         List<HotelAmenity> amenities = hotelAmenitiesRepository.findAllByHotelId(hotelId);
-        return buildSuccessHotelProfileResponse(hotel, hotel.getAddress(), amenities);
+        List<HotelRoom> hotelRooms = hotelRoomsRepository.findAllByHotelId(hotelId);
+        List<Integer> guestCapacities = getGuestCapacities(hotelRooms);
+        return buildSuccessHotelProfileResponse(hotel,
+                hotel.getAddress(), amenities, guestCapacities);
     }
 
     @Override
@@ -72,7 +85,8 @@ public class HotelsProviderImpl implements HotelsProvider {
     }
 
     private HotelProfileResponse buildSuccessHotelProfileResponse(
-            Hotel hotel, Address address, List<HotelAmenity> amenities) {
+            Hotel hotel, Address address, List<HotelAmenity> amenities,
+            List<Integer> guestCapacities) {
         List<String> amenitiesNames = getAmenitiesNames(amenities);
         return new HotelProfileResponse(
                 ResponseStatus.OK,
@@ -81,12 +95,20 @@ public class HotelsProviderImpl implements HotelsProvider {
                 hotel.getName().getValue(),
                 hotel.getDescription().getValue(),
                 amenitiesNames,
-                mapAddressToDto(address));
+                mapAddressToDto(address),
+                guestCapacities);
     }
 
     private List<String> getAmenitiesNames(List<HotelAmenity> amenities) {
         return amenities.stream()
                 .map(amenity -> amenity.getName().getValue())
+                .toList();
+    }
+
+    private List<Integer> getGuestCapacities(List<HotelRoom> rooms) {
+        return rooms.stream()
+                .map(hr -> hr.getGuestCapacity().getValue())
+                .distinct()
                 .toList();
     }
 
