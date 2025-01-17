@@ -1,6 +1,8 @@
 package org.po2_jmp.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -9,7 +11,7 @@ import java.util.List;
 
 @Getter
 @ToString
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class HotelProfileResponse extends Response {
 
@@ -20,27 +22,22 @@ public class HotelProfileResponse extends Response {
     private final AddressDto address;
     private final List<Integer> guestCapacities;
 
-    public HotelProfileResponse(ResponseStatus status, String message) {
-        super(status, message);
-        this.hotelId = null;
-        this.name = null;
-        this.description = null;
-        this.amenities = null;
-        this.address = null;
-        this.guestCapacities = null;
-    }
-
-    public HotelProfileResponse(ResponseStatus status, String message,
-            int hotelId, String hotelName, String description,
-            List<String> amenities, AddressDto address,
-            List<Integer> guestCapacities) {
+    @JsonCreator
+    public HotelProfileResponse(
+            @JsonProperty("status") ResponseStatus status,
+            @JsonProperty("message") String message,
+            @JsonProperty("hotelId") Integer hotelId,
+            @JsonProperty("name") String name,
+            @JsonProperty("description") String description,
+            @JsonProperty("amenities") List<String> amenities,
+            @JsonProperty("address") AddressDto address,
+            @JsonProperty("guestCapacities") List<Integer> guestCapacities) {
         super(status, message);
         this.hotelId = hotelId;
-        this.name = hotelName;
+        this.name = name;
         this.description = description;
         this.amenities = amenities;
         this.address = address;
         this.guestCapacities = guestCapacities;
     }
-
 }

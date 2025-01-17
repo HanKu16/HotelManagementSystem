@@ -5,12 +5,15 @@ import org.eclipse.jetty.client.Origin;
 import org.po2_jmp.request.HotelsOverviewsRequest;
 import org.po2_jmp.response.AddressDto;
 import org.po2_jmp.response.HotelOverviewDto;
+import org.po2_jmp.response.HotelProfileResponse;
 import org.po2_jmp.response.HotelsOverviewsResponse;
 import org.po2_jmp.websocket.JsonUtils;
 import org.po2_jmp.websocket.MyWebSocketHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class HotelListPanelCreator {
@@ -134,7 +137,13 @@ public class HotelListPanelCreator {
         JButton selectButton = new JButton("Wybierz");
         selectButton.setBackground(new Color(128, 0, 128));
         selectButton.setForeground(Color.WHITE);
-        selectButton.addActionListener(e -> layout.show(container, "HotelProfile" + hotelId));
+        selectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HotelProfilePanelCreator hotelProfilePanelCreator = new HotelProfilePanelCreator(myWebSocketHandler);
+                hotelProfilePanelCreator.create(layout, container, 1);
+            }
+        });
         hotelPanel.add(selectButton, gbc);
 
         return hotelPanel;

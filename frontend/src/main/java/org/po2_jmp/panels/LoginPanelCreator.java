@@ -1,6 +1,7 @@
 package org.po2_jmp.panels;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.po2_jmp.FrontendApp;
 import org.po2_jmp.request.UserAuthenticationRequest;
 import org.po2_jmp.response.ResponseStatus;
 import org.po2_jmp.response.UserAuthenticationResponse;
@@ -152,6 +153,7 @@ public class LoginPanelCreator {
         try {
             UserAuthenticationResponse authResponse = jsonUtils.deserialize(response, UserAuthenticationResponse.class);
             if (authResponse.getStatus() == ResponseStatus.OK) {
+                FrontendApp.userId = authResponse.getUserId();
                 layout.show(container, "menuPanel");
             } else {
                 System.out.println("Authentication failed: " + authResponse.getMessage());
