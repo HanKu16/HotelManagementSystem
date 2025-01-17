@@ -44,6 +44,24 @@ public class PanelsContainer {
         }
         layout.show(container, panelId.getValue());
     }
+    public void replacePanel(PanelId panelId, JPanel newPanel) {
+        if (!panels.containsKey(panelId)) {
+            throw new NoSuchElementException("No panel found in PanelsContainer with id: " + panelId);
+        }
+
+        // Remove the old panel
+        JPanel oldPanel = panels.remove(panelId);
+        container.remove(oldPanel);
+
+        // Add the new panel
+        container.add(newPanel, panelId.getValue());
+        panels.put(panelId, newPanel);
+
+        // Refresh the container
+        container.revalidate();
+        container.repaint();
+    }
+
 
     private void setLayout() {
         container.setLayout(layout);
@@ -97,5 +115,6 @@ public class PanelsContainer {
     private boolean isCardLayoutValid(CardLayout layout) {
         return layout != null;
     }
+
 
 }

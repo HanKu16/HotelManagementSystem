@@ -1,5 +1,6 @@
 package org.po2_jmp.websocket;
 import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import org.po2_jmp.response.UserAuthenticationResponse;
@@ -10,6 +11,7 @@ import org.po2_jmp.websocket.JsonUtils;
 import java.io.IOException;
 import java.io.*;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @WebSocket
 public class MyWebSocketHandler {
@@ -17,7 +19,10 @@ public class MyWebSocketHandler {
     private Session session;
     private JsonUtils jsonUtils = new JsonUtils();
     @Getter
-    private BlockingQueue<String> messageQueue;
+    @Setter
+    private String respondFromBackend;
+    private BlockingQueue<String> responseQueue = new LinkedBlockingQueue<>();
+
 
     @OnWebSocketConnect
     public void onConnect(Session session) {
@@ -28,26 +33,13 @@ public class MyWebSocketHandler {
     @OnWebSocketMessage
     public void onMessage(String message) {
         try {
-            messageQueue.put(message);
-            String type = jsonUtils.getTypeFromMessage(message);
-            switch (type) {
-                case "user was successfully authenticated":
-                    UserAuthenticationResponse loginResponse =  jsonUtils.deserialize(message, UserAuthenticationResponse.class);
-                    System.out.println(loginResponse);
-                    break;
-                case "user account was created successfully":
-                    UserRegistrationResponse registerResponse =  jsonUtils.deserialize(message, UserRegistrationResponse.class);
-                    System.out.println(registerResponse);
-                    break;
-                default:
-                    System.err.println("Unknown message type: " + type);
-                    break;
-            }
-        }
-        catch (Exception e) {
-            System.err.println("Response failed: " + e.getMessage());
+            responseQueue.put(message);  // Put the message in the queue
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Failed to put message in queue: " + e.getMessage());
         }
     }
+
 
     @OnWebSocketClose
     public void onClose(int statusCode, String reason) {
@@ -68,6 +60,9 @@ public class MyWebSocketHandler {
                 System.err.println("Failed to send message: " + e.getMessage());
             }
         }
+    }
+    public String getResponse() throws InterruptedException {
+        return responseQueue.take();  // This will block until a message is available
     }
 
 }

@@ -1,6 +1,7 @@
 package org.po2_jmp.response;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,7 +9,6 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-@AllArgsConstructor
 public class AddressDto {
 
     private final String city;
@@ -16,4 +16,15 @@ public class AddressDto {
     private final String postalCode;
     private final String buildingNumber;
 
+    @JsonCreator
+    public AddressDto(
+            @JsonProperty("city") String city,
+            @JsonProperty("street") String street,
+            @JsonProperty("postalCode") String postalCode,
+            @JsonProperty("buildingNumber") String buildingNumber) {
+        this.city = city;
+        this.street = street;
+        this.postalCode = postalCode;
+        this.buildingNumber = buildingNumber;
+    }
 }

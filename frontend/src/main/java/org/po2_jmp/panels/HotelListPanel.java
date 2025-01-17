@@ -3,6 +3,9 @@ package org.po2_jmp.panels;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.po2_jmp.request.HotelsOverviewsRequest;
 import org.po2_jmp.request.UserAuthenticationRequest;
+import org.po2_jmp.response.AddressDto;
+import org.po2_jmp.response.HotelsOverviewsResponse;
+import org.po2_jmp.response.ResponseStatus;
 import org.po2_jmp.websocket.MyWebSocketHandler;
 import org.po2_jmp.websocket.JsonUtils;
 
@@ -12,9 +15,9 @@ import java.awt.*;
 public class HotelListPanel implements Panel {
 
     private final PanelId id;
-    private final JPanel panel;
-    MyWebSocketHandler myWebSocketHandler;
-    JsonUtils jsonUtils;
+    private JPanel panel;
+    private final MyWebSocketHandler myWebSocketHandler;
+    private final JsonUtils jsonUtils = new JsonUtils();
 
     public HotelListPanel(PanelId id, CardLayout layout, JPanel container, MyWebSocketHandler myWebSocketHandler) {
         this.id = id;
@@ -45,29 +48,20 @@ public class HotelListPanel implements Panel {
         panel.add(titleLabel);
         panel.add(Box.createVerticalStrut(20));
 
-        HotelsOverviewsRequest hotelsOverviewsRequest = new HotelsOverviewsRequest("getHotelsOverviews");
-        try {
-            assert jsonUtils != null;
-            String request = jsonUtils.serialize(hotelsOverviewsRequest);
-            assert myWebSocketHandler != null;
-            myWebSocketHandler.sendMessage(request);
-        } catch (JsonProcessingException ex) {
-            throw new RuntimeException(ex);
-        }
-        for(int i = 0; i < 4; i++){
-            int hotelId = i + 1;
-
-
-            String hotelName;
-            String address;
-            String amenities;
-            panel.add(createHotelPanel(hotelName, address, amenities, layout, container));
-        }
-        panel.add(createHotelPanel("Hotel A", "Ulica Przykładowa 1, Miasto, 00-001", "- WiFi\n- Basen\n- Siłownia", layout, container));
-        panel.add(createHotelPanel("Hotel B", "Ulica Druga 2, Miasto, 00-002", "- Darmowe Śniadanie\n- Parking\n- Spa", layout, container));
-        panel.add(createHotelPanel("Hotel C", "Ulica Trzecia 3, Miasto, 00-003", "- WiFi\n- Restauracja\n- Sala konferencyjna", layout, container));
-        panel.add(createHotelPanel("Hotel D", "Ulica Czwarta 4, Miasto, 00-004", "- Basen\n- Siłownia\n- Sauna", layout, container));
-        panel.add(createHotelPanel("Hotel E", "Ulica Piąta 5, Miasto, 00-005", "- Darmowy transport\n- WiFi\n- Fitness", layout, container));
+////        for(int i = 0; i < 4; i++){
+////            int hotelId = i + 1;
+////
+////
+////            String hotelName;
+////            String address;
+////            String amenities;
+////            panel.add(createHotelPanel(hotelName, address, amenities, layout, container));
+////        }
+//        panel.add(createHotelPanel("Hotel A", "Ulica Przykładowa 1, Miasto, 00-001", "- WiFi\n- Basen\n- Siłownia", layout, container));
+//        panel.add(createHotelPanel("Hotel B", "Ulica Druga 2, Miasto, 00-002", "- Darmowe Śniadanie\n- Parking\n- Spa", layout, container));
+//        panel.add(createHotelPanel("Hotel C", "Ulica Trzecia 3, Miasto, 00-003", "- WiFi\n- Restauracja\n- Sala konferencyjna", layout, container));
+//        panel.add(createHotelPanel("Hotel D", "Ulica Czwarta 4, Miasto, 00-004", "- Basen\n- Siłownia\n- Sauna", layout, container));
+//        panel.add(createHotelPanel("Hotel E", "Ulica Piąta 5, Miasto, 00-005", "- Darmowy transport\n- WiFi\n- Fitness", layout, container));
 
         return panel;
     }
@@ -112,5 +106,71 @@ public class HotelListPanel implements Panel {
         hotelPanel.add(selectButton, gbc);
 
         return hotelPanel;
+    }
+    private void handleHotelList(CardLayout layout, JPanel container) {
+        HotelsOverviewsRequest overviewsRequest = new HotelsOverviewsRequest("getHotelsOverviews");
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() {
+                try {
+                    String request = jsonUtils.serialize(overviewsRequest);
+                    myWebSocketHandler.sendMessage(request);
+
+                    String response;
+                    do {
+                        response = myWebSocketHandler.getRespondFromBackend();
+                    } while (response == null);
+
+                    myWebSocketHandler.setRespondFromBackend(null);
+                    handleResponse(response, layout, container);
+                } catch (JsonProcessingException ex) {
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+        };
+        worker.execute();
+    }
+    private void handleResponse(String response, CardLayout layout, JPanel container) {
+        try {
+            HotelsOverviewsResponse ovsResponse = jsonUtils.deserialize(response, HotelsOverviewsResponse.class);
+            if (ovsResponse.getStatus() == ResponseStatus.OK) {
+                // Wyczyszczenie panelu
+                panel.removeAll();
+
+                // Dodanie tytułu na nowo
+                JLabel titleLabel = new JLabel("Sieć Hoteli Akropol", SwingConstants.CENTER);
+                titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+                titleLabel.setForeground(new Color(128, 0, 128));
+                titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                panel.add(titleLabel);
+                panel.add(Box.createVerticalStrut(20));
+
+                // Iteracja przez hotele i dodanie dynamicznie paneli
+                ovsResponse.getHotels().forEach(hotel -> {
+                    String hotelName = hotel.getName();
+                    AddressDto address = hotel.getAddress();
+                    String addressAsText = address.toString();
+                    String amenities = String.join("\n", hotel.getAmenities()); // Przy założeniu, że udogodnienia to lista
+                    panel.add(createHotelPanel(hotelName, addressAsText, amenities, layout, container));
+                });
+
+                // Aktualizacja UI
+                panel.revalidate();
+                panel.repaint();
+
+                // Przełączanie na panel hotelowy
+                layout.show(container, "HotelList");
+            } else {
+                System.out.println("Authentication failed: " + ovsResponse.getMessage());
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static JPanel generatePanel(){
+
+        return new JPanel();
     }
 }

@@ -1,9 +1,5 @@
 package org.po2_jmp.panels;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.po2_jmp.request.UserAuthenticationRequest;
 import org.po2_jmp.response.ResponseStatus;
@@ -11,30 +7,19 @@ import org.po2_jmp.response.UserAuthenticationResponse;
 import org.po2_jmp.websocket.JsonUtils;
 import org.po2_jmp.websocket.MyWebSocketHandler;
 
-public class LoginPanel implements Panel {
+import javax.swing.*;
+import java.awt.*;
 
-    private final PanelId id;
-    private final JPanel panel;
-    private final MyWebSocketHandler myWebSocketHandler;
-    private final JsonUtils jsonUtils = new JsonUtils();
+public class LoginPanelCreator {
 
-    public LoginPanel(PanelId id, CardLayout layout, JPanel container, MyWebSocketHandler myWebSocketHandler) {
-        this.id = id;
-        this.panel = create(layout, container);
+    private JsonUtils jsonUtils = new JsonUtils();
+    private MyWebSocketHandler myWebSocketHandler;
+
+    public LoginPanelCreator(MyWebSocketHandler myWebSocketHandler) {
         this.myWebSocketHandler = myWebSocketHandler;
     }
 
-    @Override
-    public PanelId getId() {
-        return id;
-    }
-
-    @Override
-    public JPanel get() {
-        return panel;
-    }
-
-    private JPanel create(CardLayout layout, JPanel container) {
+    public JPanel create(CardLayout layout, JPanel container) {
         JPanel panel = initializePanel();
         panel.add(createTitlePanel());
         panel.add(Box.createVerticalStrut(20));
@@ -136,7 +121,6 @@ public class LoginPanel implements Panel {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         return button;
     }
-
     private void handleLogin(CardLayout layout, JPanel container, JTextField loginField, JPasswordField passwordField) {
         String username = loginField.getText().trim();
         String password = new String(passwordField.getPassword());
@@ -149,15 +133,14 @@ public class LoginPanel implements Panel {
                     String request = jsonUtils.serialize(authRequest);
                     myWebSocketHandler.sendMessage(request);
 
-                    String response;
-                    do {
-                        response = myWebSocketHandler.getRespondFromBackend();
-                    } while (response == null);
+                    String response = myWebSocketHandler.getResponse();
 
                     myWebSocketHandler.setRespondFromBackend(null);
                     handleAuthenticationResponse(response, layout, container);
                 } catch (JsonProcessingException ex) {
                     ex.printStackTrace();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
                 return null;
             }
@@ -169,7 +152,7 @@ public class LoginPanel implements Panel {
         try {
             UserAuthenticationResponse authResponse = jsonUtils.deserialize(response, UserAuthenticationResponse.class);
             if (authResponse.getStatus() == ResponseStatus.OK) {
-                SwingUtilities.invokeLater(() -> layout.show(container, "Register"));
+                layout.show(container, "menuPanel");
             } else {
                 System.out.println("Authentication failed: " + authResponse.getMessage());
             }
@@ -177,6 +160,4 @@ public class LoginPanel implements Panel {
             e.printStackTrace();
         }
     }
-
-
 }

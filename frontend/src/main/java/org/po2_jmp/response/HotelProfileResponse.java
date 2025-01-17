@@ -18,6 +18,7 @@ public class HotelProfileResponse extends Response {
     private final String description;
     private final List<String> amenities;
     private final AddressDto address;
+    private final List<Integer> guestCapacities;
 
     public HotelProfileResponse(ResponseStatus status, String message) {
         super(status, message);
@@ -26,17 +27,20 @@ public class HotelProfileResponse extends Response {
         this.description = null;
         this.amenities = null;
         this.address = null;
+        this.guestCapacities = null;
     }
 
     public HotelProfileResponse(ResponseStatus status, String message,
             int hotelId, String hotelName, String description,
-            List<String> amenities, AddressDto address) {
+            List<String> amenities, AddressDto address,
+            List<Integer> guestCapacities) {
         super(status, message);
         this.hotelId = hotelId;
         this.name = hotelName;
         this.description = description;
         this.amenities = amenities;
         this.address = address;
+        this.guestCapacities = guestCapacities;
     }
 
 }
