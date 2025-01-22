@@ -6,36 +6,32 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.po2_jmp.request.UserAuthenticationRequest;
+import org.po2_jmp.FrontendApp;
 import org.po2_jmp.request.UserRegistrationRequest;
+import org.po2_jmp.response.ResponseStatus;
+import org.po2_jmp.response.UserAuthenticationResponse;
+import org.po2_jmp.response.UserRegistrationResponse;
 import org.po2_jmp.websocket.JsonUtils;
 import org.po2_jmp.websocket.MyWebSocketHandler;
 
-public class RegisterPanel implements Panel {
+public class RegisterPanelCreator {
 
-    private final PanelId id;
-    private final JPanel panel;
     MyWebSocketHandler myWebSocketHandler;
     JsonUtils jsonUtils = new JsonUtils();
 
-
-    public RegisterPanel(PanelId id, CardLayout layout, JPanel container, MyWebSocketHandler myWebSocketHandler) {
-        this.id = id;
-        this.panel = create(layout, container);
+    public RegisterPanelCreator(MyWebSocketHandler myWebSocketHandler) {
         this.myWebSocketHandler = myWebSocketHandler;
     }
 
-    @Override
-    public PanelId getId() {
-        return id;
-    }
-
-    @Override
-    public JPanel get() {
+    public JPanel create(CardLayout layout, JPanel container) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+        panel.add(createRegisterPanel(layout, container));
         return panel;
     }
 
-    private JPanel create(CardLayout layout, JPanel container) {
+    private JPanel createRegisterPanel(CardLayout layout, JPanel container) {
         // Main panel
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -78,7 +74,7 @@ public class RegisterPanel implements Panel {
         confirmPasswordField.setMaximumSize(new Dimension(200, 40));
         panel.add(confirmPasswordField);
         panel.add(Box.createVerticalStrut(20));
-        
+
         // Buttons
         JButton registerButton = new JButton("Sign up");
         registerButton.setPreferredSize(new Dimension(200, 40));
@@ -90,7 +86,7 @@ public class RegisterPanel implements Panel {
 
         registerButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 String username = loginField.getText().trim();
                 char[] passwordArray = passwordField.getPassword();
                 String password = new String(passwordArray);
@@ -100,7 +96,10 @@ public class RegisterPanel implements Panel {
                 try {
                     String request = jsonUtils.serialize(userRegistrationRequest);
                     myWebSocketHandler.sendMessage(request);
-                } catch (JsonProcessingException ex) {
+                    String response = myWebSocketHandler.getResponse();
+                    myWebSocketHandler.setRespondFromBackend(null);
+                    handleRegistrationResponse(response, layout, container);
+                } catch (JsonProcessingException | InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -111,6 +110,21 @@ public class RegisterPanel implements Panel {
         return panel;
     }
 
+    private void handleRegistrationResponse(String response, CardLayout layout, JPanel container) {
+        try {
+            UserRegistrationResponse regResponse = jsonUtils.deserialize(response, UserRegistrationResponse.class);
+            if (regResponse.getStatus() == ResponseStatus.CREATED) {
+                showSuccessDialog(layout, container);
+            } else {
+                System.out.println("Registration failed: " + regResponse.getMessage());
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 
-
+    private void showSuccessDialog(CardLayout layout, JPanel container) {
+        JOptionPane.showMessageDialog(null, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        layout.show(container, "loginPanel");
+    }
 }

@@ -28,11 +28,17 @@ public class HotelProfilePanelCreator {
     }
 
     public void create(CardLayout layout, JPanel container, int hotelId) {
-        handleHotelProfile(layout, container, hotelId); // Uruchomienie asynchronicznego zadania
+        handleHotelProfile(layout, container, hotelId);
     }
 
+    private JPanel initializePanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+        return panel;
+    }
 
-    public JPanel createHotelProfilePanel(int hotelId, String hotelName, String description, String address, String amenities, CardLayout layout, JPanel container) {
+    public JPanel createHotelProfilePanel(int hotelId, String hotelName, String description, String address, String amenities, List<Integer> guestCapacities , CardLayout layout, JPanel container) {
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(new Color(186, 85, 211)); // Fioletowy kolor
         mainPanel.setLayout(new BorderLayout(10, 10)); // Odstępy między elementami
@@ -115,8 +121,7 @@ public class HotelProfilePanelCreator {
         gbc.gridy = 0;
         optionsPanel.add(numPeopleLabel, gbc);
 
-        String[] numberOfPeople = {"1", "2", "3", "4", "5"};
-        JComboBox<String> peopleComboBox = new JComboBox<>(numberOfPeople);
+        JComboBox<Integer> peopleComboBox = new JComboBox<>(guestCapacities.stream().toArray(Integer[]::new));
         peopleComboBox.setFont(new Font("Arial", Font.PLAIN, 14));
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -138,6 +143,13 @@ public class HotelProfilePanelCreator {
 
         mainPanel.add(optionsPanel, BorderLayout.NORTH);
 
+        JButton backButton = new JButton("Cofnij");
+        backButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        backButton.setBackground(new Color(255,182,193));
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(e -> {
+            layout.show(container, "hotelList");
+        });
         // Przycisk Rezerwuj
         JButton reserveButton = new JButton("Rezerwuj");
         reserveButton.setFont(new Font("Arial", Font.BOLD, 16)); // Zwiększona czcionka
@@ -154,7 +166,14 @@ public class HotelProfilePanelCreator {
             ReservationCreationRequest reservationCreationRequest = new ReservationCreationRequest("createReservation", FrontendApp.userId, convertToLocalDate(selectedDate), hotelId, selectedCapacity);
             handleReservation(layout, container, reservationCreationRequest);
         });
-        mainPanel.add(reserveButton, BorderLayout.PAGE_END);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBackground(new Color(255, 182, 193));
+        buttonPanel.add(backButton);
+        buttonPanel.add(reserveButton);
+
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         return mainPanel;
     }
@@ -205,7 +224,7 @@ public class HotelProfilePanelCreator {
                         JPanel panel = initializePanel();
 
                         profileResult.getHotelId();
-                        panel.add(createHotelProfilePanel(profileResult.getHotelId(), profileResult.getName(), profileResult.getDescription() ,FormatAddress(profileResult.getAddress()), FormatAmenities(profileResult.getAmenities()), layout, container));
+                        panel.add(createHotelProfilePanel(profileResult.getHotelId(), profileResult.getName(), profileResult.getDescription() ,FormatAddress(profileResult.getAddress()), FormatAmenities(profileResult.getAmenities()), profileResult.getGuestCapacities(), layout, container));
                         container.add(panel, "hotelProfile");
                         layout.show(container, "hotelProfile");
                         System.out.println("Panel HotelProfile został aktywowany.");
@@ -219,12 +238,6 @@ public class HotelProfilePanelCreator {
         worker.execute();
     }
 
-    private JPanel initializePanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.WHITE);
-        return panel;
-    }
     private HotelProfileResponse handleProfileResponse(String response) {
         HotelProfileResponse profResponse = null;
         try {
@@ -242,6 +255,7 @@ public class HotelProfilePanelCreator {
     private String FormatAmenities(List<String> amenities) {
         return String.join(", ", amenities);
     }
+
 
     private void handleReservation(CardLayout layout, JPanel container, ReservationCreationRequest reservationCreationRequest) {
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
@@ -283,6 +297,7 @@ public class HotelProfilePanelCreator {
                 SwingUtilities.invokeLater(() -> {
                     if (reservationResult != null) {
                         System.out.println("Rezerwacja została pomyślnie utworzona.");
+                        showSuccessDialog(layout, container);
                     } else {
                         // Obsługa przypadku, gdy wynik jest null
                         JOptionPane.showMessageDialog(null, "Nie udało się utworzyć rezerwacji.");
@@ -307,6 +322,10 @@ public class HotelProfilePanelCreator {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
+    }
+    private void showSuccessDialog(CardLayout layout, JPanel container) {
+        JOptionPane.showMessageDialog(null, "Reservation successfully created!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        layout.show(container, "menuPanel");
     }
 
 }

@@ -75,14 +75,24 @@ public class HotelListPanelCreator {
                         titleLabel.setForeground(Color.BLACK);
                         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
                         panel.add(titleLabel);
+                        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                        backButtonPanel.setBackground(Color.WHITE);
 
-                        // Dodanie hoteli do panelu po zakończeniu operacji
+                        JButton backButton = new JButton("Cofnij");
+                        backButton.setBackground(new Color(192, 192, 192));
+                        backButton.setForeground(Color.BLACK);
+                        backButton.addActionListener(e -> layout.show(container, "menuPanel"));
+                        backButtonPanel.add(backButton);
+
+                        panel.add(backButtonPanel);
+
+
                         for (HotelOverviewDto hotel : result.getHotels()) {
                             panel.add(createHotelPanel(hotel.getHotelId(),hotel.getName(), FormatAddress(hotel.getAddress()), FormatAmenities(hotel.getAmenities()), layout, container));
                         }
 
-                        container.add(panel, "HotelList");
-                        layout.show(container, "HotelList");
+                        container.add(panel, "hotelList");
+                        layout.show(container, "hotelList");
                         System.out.println("Panel HotelList został aktywowany.");
                     } else {
                         // Obsługa przypadku, gdy wynik jest null
@@ -98,6 +108,8 @@ public class HotelListPanelCreator {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
+
+
         return panel;
     }
 
@@ -141,7 +153,7 @@ public class HotelListPanelCreator {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HotelProfilePanelCreator hotelProfilePanelCreator = new HotelProfilePanelCreator(myWebSocketHandler);
-                hotelProfilePanelCreator.create(layout, container, 1);
+                hotelProfilePanelCreator.create(layout, container, hotelId);
             }
         });
         hotelPanel.add(selectButton, gbc);

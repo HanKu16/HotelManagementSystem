@@ -10,6 +10,8 @@ import org.po2_jmp.websocket.MyWebSocketHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class LoginPanelCreator {
 
@@ -93,7 +95,15 @@ public class LoginPanelCreator {
         registerPanel.add(noAccountLabel);
 
         JButton registerButton = createButton("Sign up");
-        registerButton.addActionListener(e -> layout.show(container, "Register"));
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RegisterPanelCreator registerPanelCreator = new RegisterPanelCreator(myWebSocketHandler);
+                JPanel registerPanel = registerPanelCreator.create(layout, container);
+                container.add(registerPanel, "registerPanel");
+                layout.show(container, "registerPanel");
+            }
+        });
         registerPanel.add(registerButton);
 
         return registerPanel;
