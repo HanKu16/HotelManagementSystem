@@ -161,11 +161,19 @@ public class HotelProfilePanelCreator {
         reserveButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         reserveButton.addActionListener(e -> {
             // Zbieranie wybranych danych
-            int selectedCapacity = Integer.parseInt((String) peopleComboBox.getSelectedItem());
+            int selectedCapacity = (Integer) peopleComboBox.getSelectedItem(); // Fixed casting issue
             Date selectedDate = dateChooser.getDate();
-            ReservationCreationRequest reservationCreationRequest = new ReservationCreationRequest("createReservation", FrontendApp.userId, convertToLocalDate(selectedDate), hotelId, selectedCapacity);
+            ReservationCreationRequest reservationCreationRequest = new ReservationCreationRequest(
+                    "createReservation",
+                    FrontendApp.userId,
+                    convertToLocalDate(selectedDate),
+                    hotelId,
+                    selectedCapacity
+            );
             handleReservation(layout, container, reservationCreationRequest);
         });
+
+
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
