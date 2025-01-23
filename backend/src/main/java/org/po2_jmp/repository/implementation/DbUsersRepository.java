@@ -9,18 +9,14 @@ import java.util.Optional;
 
 public class DbUsersRepository implements UsersRepository {
 
-    private final String url;
-    private final String user;
-    private final String password;
+    private final DbUtils dbUtils;
 
-    public DbUsersRepository(String url, String user, String password) {
-        if (areAnyNullParams(url, user, password)) {
-            throw new IllegalArgumentException("Url, user and password can not be " +
-                    "nulls but were passed to DbUsersRepository constructor");
+    public DbUsersRepository(DbUtils dbUtils) {
+        if (dbUtils == null) {
+            throw new IllegalArgumentException("DbUtils can not be null " +
+                    "but null was passed to DbUsersRepository constructor");
         }
-        this.url = url;
-        this.user = user;
-        this.password = password;
+        this.dbUtils = dbUtils;
     }
 
     @Override
@@ -28,45 +24,18 @@ public class DbUsersRepository implements UsersRepository {
         String sql = "SELECT user_id, password, creation_datetime, role_id" +
                     " FROM users" +
                     " WHERE user_id = ?;";
-        Optional<User> optionalUser = Optional.empty();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    optionalUser = Optional.of(createUser(rs));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return optionalUser;
+        return dbUtils.executeQuery(sql,
+                stmt -> stmt.setString(1, id),
+                rs -> createUser(rs));
     }
 
     @Override
     public Optional<String> add(User newUser) {
         String sql = "INSERT INTO users (user_id, password, creation_datetime, role_id)" +
                     " VALUES (?, ?, ?, ?);";
-        Optional<String> optionalUserId = Optional.empty();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(
-                     sql, Statement.RETURN_GENERATED_KEYS)) {
-            setInsertQueryParams(stmt, newUser);
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows > 0) {
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        optionalUserId = Optional.of(
-                                rs.getString("user_id"));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return optionalUserId;
+        return dbUtils.executeInsert(sql,
+                stmt -> setInsertQueryParams(stmt, newUser),
+                rs -> rs.getString("user_id"));
     }
 
     private User createUser(ResultSet rs) throws SQLException {
@@ -84,11 +53,6 @@ public class DbUsersRepository implements UsersRepository {
         stmt.setString(2, user.getPassword().getValue());
         stmt.setTimestamp(3, Timestamp.valueOf(user.getCreationDateTime()));
         stmt.setInt(4, user.getRoleId());
-    }
-
-    private boolean areAnyNullParams(String url,
-            String user, String password) {
-        return (url == null) || (user == null) || (password == null);
     }
 
 }

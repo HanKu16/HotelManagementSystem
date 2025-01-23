@@ -18,13 +18,14 @@ class DbUsersRepositoryTest {
     private final String url = "jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1";
     private final String user = "sa";
     private final String password = "";
+    private final DbUtils dbUtils = new DbUtils(url, user, password);;
     private final DbTestConfigurator usersConfigurator = createConfigurator("users");
     private final DbTestConfigurator rolesConfigurator = createConfigurator("roles");
     private DbUsersRepository usersRepository;
 
     @BeforeEach
     public void setUp() throws SQLException {
-        this.usersRepository = new DbUsersRepository(url, user, password);
+        this.usersRepository = new DbUsersRepository(dbUtils);
         rolesConfigurator.create();
         usersConfigurator.create();
     }
@@ -33,33 +34,6 @@ class DbUsersRepositoryTest {
     public void cleanUp() throws SQLException {
         usersConfigurator.drop();
         rolesConfigurator.drop();
-    }
-
-    @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenUrlIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new DbUsersRepository(null, user, password);
-        });
-    }
-
-    @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenUserIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new DbUsersRepository(url, null, password);
-        });
-    }
-
-    @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenPasswordIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new DbUsersRepository(url, user, null);
-        });
-    }
-
-    @Test
-    void Constructor_ShouldCreateObject_WhenAllParamsAreNotNulls() {
-        DbUsersRepository repository = new DbUsersRepository(url, user, password);
-        assertNotNull(repository);
     }
 
     @Test
