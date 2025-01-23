@@ -8,38 +8,22 @@ import org.po2_jmp.repository.contract.RolesRepository;
 
 public class DbRolesRepository implements RolesRepository {
 
-    private final String url;
-    private final String user;
-    private final String password;
+    private final DbUtils dbUtils;
 
-    public DbRolesRepository(String url, String user, String password) {
-        if (areAnyNullParams(url, user, password)) {
-            throw new IllegalArgumentException("Url, user and password can not be " +
-                    "nulls but were passed to DbRolesRepository constructor");
+    public DbRolesRepository(DbUtils dbUtils) {
+        if (dbUtils == null) {
+            throw new IllegalArgumentException("DbUtils can not be " +
+                    "null but null was passed to DbRolesRepository constructor");
         }
-        this.url = url;
-        this.user = user;
-        this.password = password;
+        this.dbUtils = dbUtils;
     }
 
     @Override
     public Optional<Role> findById(int id) {
         String sql = "SELECT role_id, name FROM roles WHERE role_id = ?;";
-        Optional<Role> optionalRole = Optional.empty();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Role role = createRole(rs);
-                    optionalRole = Optional.of(role);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return optionalRole;
+        return dbUtils.executeQuery(sql,
+                stmt -> stmt.setInt(1, id),
+                rs -> createRole(rs));
     }
 
     private Role createRole(ResultSet rs) throws SQLException {
@@ -47,10 +31,6 @@ public class DbRolesRepository implements RolesRepository {
                 rs.getInt("role_id"),
                 RoleName.valueOf(rs.getString("name"))
         );
-    }
-
-    private boolean areAnyNullParams(String url, String user, String password) {
-        return (url == null) || (user == null) || (password == null);
     }
 
 }
