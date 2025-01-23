@@ -1,5 +1,6 @@
 package org.po2_jmp.service.implementation;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import org.po2_jmp.entity.Reservation;
 import org.po2_jmp.repository.contract.ReservationsRepository;
@@ -34,12 +35,22 @@ public class ReservationsCancelerImpl implements ReservationsCanceler {
             return new ReservationCancellationResponse(ResponseStatus.NOT_FOUND,
                     "Reservation of id " + reservationId + " does not exist");
         }
+        LocalDate reservationDate = optionalReservation.get().getReservationDate();
+        if (!isDateFromTheFuture(reservationDate)) {
+            return new ReservationCancellationResponse(ResponseStatus.BAD_REQUEST,
+                    "Can cancel only reservations from the future date");
+        }
         if (reservationsRepository.deleteById(reservationId)) {
             return new ReservationCancellationResponse(ResponseStatus.OK,
                     "Reservation deleted", reservationId);
         }
         return new ReservationCancellationResponse(ResponseStatus.INTERNAL_SERVER_ERROR,
                 "Something goes wrong on the server");
+    }
+
+    private boolean isDateFromTheFuture(LocalDate date) {
+        LocalDate today = LocalDate.now();
+        return date.isAfter(today);
     }
 
 }

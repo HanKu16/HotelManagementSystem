@@ -35,7 +35,7 @@ public class Controller {
 
     @OnWebSocketMessage
     public void clientMessage(Session session, String message) throws IOException {
-        System.out.println("New message" + message);
+        System.out.println("Request from client\n" + message);
         String response = messageResponder.respond(message);
         session.getRemote().sendString(response);
         System.out.println("Response from server\n" + response);
