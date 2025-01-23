@@ -19,6 +19,7 @@ class DbReservationsRepositoryTest {
     private final String url = "jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1";
     private final String user = "sa";
     private final String password = "";
+    private final DbUtils dbUtils = new DbUtils(url, user, password);
     private final DbTestConfigurator reservationsConfigurator =
             createConfigurator("reservations");
     private final DbTestConfigurator usersConfigurator = createConfigurator("users");
@@ -32,7 +33,7 @@ class DbReservationsRepositoryTest {
 
     @BeforeEach
     public void setUp() throws SQLException {
-        repository = new DbReservationsRepository(url, user, password);
+        repository = new DbReservationsRepository(dbUtils);
         hotelAddressesConfigurator.create();
         hotelsConfigurator.create();
         hotelRoomsConfigurator.create();
@@ -49,34 +50,6 @@ class DbReservationsRepositoryTest {
         hotelRoomsConfigurator.drop();
         hotelsConfigurator.drop();
         hotelAddressesConfigurator.drop();
-    }
-
-    @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenUrlIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new DbReservationsRepository(null, user, password);
-        });
-    }
-
-    @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenUserIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new DbReservationsRepository(url, null, password);
-        });
-    }
-
-    @Test
-    void Constructor_ShouldThrowIllegalArgumentException_WhenPasswordIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new DbReservationsRepository(url, user, null);
-        });
-    }
-
-    @Test
-    void Constructor_ShouldCreateObject_WhenAllParamsAreNotNulls() {
-        DbReservationsRepository repository = new DbReservationsRepository(
-                url, user, password);
-        assertNotNull(repository);
     }
 
     @Test

@@ -33,33 +33,6 @@ class DbRolesRepositoryTest {
         rolesConfigurator.drop();
     }
 
-//    @Test
-//    void Constructor_ShouldThrowIllegalArgumentException_WhenUrlIsNull() {
-//        assertThrows(IllegalArgumentException.class, () -> {
-//            new DbRolesRepository(null, user, password);
-//        });
-//    }
-//
-//    @Test
-//    void Constructor_ShouldThrowIllegalArgumentException_WhenUserIsNull() {
-//        assertThrows(IllegalArgumentException.class, () -> {
-//            new DbRolesRepository(url, null, password);
-//        });
-//    }
-//
-//    @Test
-//    void Constructor_ShouldThrowIllegalArgumentException_WhenPasswordIsNull() {
-//        assertThrows(IllegalArgumentException.class, () -> {
-//            new DbRolesRepository(url, user, null);
-//        });
-//    }
-//
-//    @Test
-//    void Constructor_ShouldCreateObject_WhenAllParamsAreNotNulls() {
-//        DbRolesRepository repository = new DbRolesRepository(url, user, password);
-//        assertNotNull(repository);
-//    }
-
     @Test
     void FindById_ShouldReturnPresentOptional_WhenIdIs1() throws SQLException {
         insertData();

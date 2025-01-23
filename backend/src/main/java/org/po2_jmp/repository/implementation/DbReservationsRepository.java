@@ -11,18 +11,14 @@ import java.util.Optional;
 
 public class DbReservationsRepository implements ReservationsRepository {
 
-    private final String url;
-    private final String user;
-    private final String password;
+    private final DbUtils dbUtils;
 
-    public DbReservationsRepository(String url, String user, String password) {
-        if (areAnyNullParams(url, user, password)) {
-            throw new IllegalArgumentException("Url, user and password can not be " +
-                    "nulls but were passed to DbReservationsRepository constructor");
+    public DbReservationsRepository(DbUtils dbUtils) {
+        if (dbUtils == null) {
+            throw new IllegalArgumentException("DbUtils can not be null " +
+                    "but null was passed to DbReservationsRepository constructor");
         }
-        this.url = url;
-        this.user = user;
-        this.password = password;
+        this.dbUtils = dbUtils;
     }
 
     @Override
@@ -31,21 +27,9 @@ public class DbReservationsRepository implements ReservationsRepository {
                     " user_id, hotel_room_id" +
                     " FROM reservations" +
                     " WHERE reservation_id = ?;";
-        Optional<Reservation> optionalReservation = Optional.empty();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Reservation reservation = createReservation(rs);
-                    optionalReservation = Optional.of(reservation);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return optionalReservation;
+        return dbUtils.executeQuery(sql,
+                stmt -> stmt.setInt(1, id),
+                rs -> createReservation(rs));
     }
 
     @Override
@@ -54,21 +38,10 @@ public class DbReservationsRepository implements ReservationsRepository {
                     " user_id, hotel_room_id" +
                     " FROM reservations" +
                     " WHERE user_id = ?;";
-        List<Reservation> reservations = new ArrayList<>();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, userId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Reservation reservation = createReservation(rs);
-                    reservations.add(reservation);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return reservations;
+        return dbUtils.executeQueryForCollection(sql,
+                stmt -> stmt.setString(1, userId),
+                rs -> createReservation(rs),
+                new ArrayList<>());
     }
 
     @Override
@@ -78,22 +51,12 @@ public class DbReservationsRepository implements ReservationsRepository {
                     " user_id, hotel_room_id" +
                     " FROM reservations" +
                     " WHERE hotel_room_id = ? AND reservation_date = ?;";
-        Optional<Reservation> optionalReservation = Optional.empty();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            setSelectByRoomIdAndReservationDateQueryParams(
-                    stmt, roomId, reservationDate);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Reservation reservation = createReservation(rs);
-                    optionalReservation = Optional.of(reservation);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return optionalReservation;
+        return dbUtils.executeQuery(sql,
+                stmt -> {
+                    stmt.setInt(1, roomId);
+                    stmt.setDate(2, java.sql.Date.valueOf(reservationDate));
+                },
+                rs -> createReservation(rs));
     }
 
     @Override
@@ -101,40 +64,21 @@ public class DbReservationsRepository implements ReservationsRepository {
         String sql = "INSERT INTO reservations" +
                     " (reservation_date, creation_datetime, user_id, hotel_room_id)" +
                     " VALUES (?, ?, ?, ?);";
-        Optional<Integer> optionalReservationId = Optional.empty();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(
-                     sql, Statement.RETURN_GENERATED_KEYS)) {
-            setInsertQueryParams(stmt, reservation);
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows > 0) {
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        optionalReservationId = Optional.of(
-                                rs.getInt("reservation_id"));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return optionalReservationId;
+        return dbUtils.executeInsert(sql,
+                stmt -> {
+                    stmt.setDate(1, java.sql.Date.valueOf(reservation.getReservationDate()));
+                    stmt.setTimestamp(2, Timestamp.valueOf(reservation.getCreationDateTime()));
+                    stmt.setString(3, reservation.getUserId().getValue());
+                    stmt.setInt(4, reservation.getRoomId());
+                },
+                rs -> rs.getInt("reservation_id"));
     }
 
     @Override
     public boolean deleteById(int id) {
         String sql = "DELETE FROM reservations WHERE reservation_id = ?;";
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            int affectedRows = stmt.executeUpdate();
-            return affectedRows == 1;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return dbUtils.executeDelete(sql,
+                stmt -> stmt.setInt(1, id));
     }
 
     private Reservation createReservation(ResultSet rs) throws SQLException {
@@ -145,27 +89,6 @@ public class DbReservationsRepository implements ReservationsRepository {
                 new UserId(rs.getString("user_id")),
                 rs.getInt("hotel_room_id")
         );
-    }
-
-    private void setSelectByRoomIdAndReservationDateQueryParams(
-            PreparedStatement stmt, int roomId, LocalDate date)
-            throws SQLException {
-        stmt.setInt(1, roomId);
-        stmt.setDate(2, java.sql.Date.valueOf(date));
-    }
-
-    private void setInsertQueryParams(PreparedStatement stmt,
-            Reservation reservation) throws SQLException {
-        stmt.setDate(1, java.sql.Date.valueOf(reservation.getReservationDate()));
-        stmt.setTimestamp(2, Timestamp.valueOf(reservation.getCreationDateTime()));
-        stmt.setString(3, reservation.getUserId().getValue());
-        stmt.setInt(4, reservation.getRoomId());
-    }
-
-    private boolean areAnyNullParams(String url,
-            String user, String password) {
-        return (url == null) || (user == null) ||
-                (password == null);
     }
 
 }
