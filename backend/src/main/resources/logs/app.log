@@ -1,0 +1,5 @@
+2025-01-24 16:37:32 [qtp2121744517-41] INFO  org.po2_jmp.repository.helper.DbUtilsImpl - SELECT user_id, password, creation_datetime, role_id FROM users WHERE user_id = ?;
+2025-01-24 16:37:42 [qtp2121744517-55] INFO  org.po2_jmp.repository.helper.DbUtilsImpl - SELECT user_id, password, creation_datetime, role_id FROM users WHERE user_id = ?;
+2025-01-24 16:37:49 [qtp2121744517-33] INFO  org.po2_jmp.repository.helper.DbUtilsImpl - SELECT user_id, password, creation_datetime, role_id FROM users WHERE user_id = ?;
+2025-01-24 16:37:50 [qtp2121744517-33] INFO  org.po2_jmp.repository.helper.DbUtilsImpl - SELECT role_id, name FROM roles WHERE role_id = ?;
+2025-01-24 16:38:10 [qtp2121744517-41] INFO  org.po2_jmp.repository.helper.DbUtilsImpl - SELECT * FROM hotels h LEFT JOIN hotel_addresses ha ON ha.hotel_address_id = h.hotel_address_id WHERE h.hotel_id = ?;

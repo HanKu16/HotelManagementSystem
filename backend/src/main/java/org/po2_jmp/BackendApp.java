@@ -1,5 +1,7 @@
 package org.po2_jmp;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.websocket.server.config.JettyWebSocketServletContainerInitializer;
@@ -7,6 +9,8 @@ import org.po2_jmp.controller.Controller;
 import java.time.Duration;
 
 public class BackendApp {
+
+    private static final Logger LOGGER = LogManager.getLogger(BackendApp.class);
 
     public void run()  {
         Server server = new Server(8889);
@@ -23,7 +27,7 @@ public class BackendApp {
             server.start();
             System.out.println("Server started");
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("An error occurred:", e);
         }
     }
 

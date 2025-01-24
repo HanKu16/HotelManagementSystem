@@ -3,9 +3,12 @@ package org.po2_jmp.repository.helper;
 import java.sql.*;
 import java.util.Collection;
 import java.util.Optional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DbUtilsImpl implements DbUtils {
 
+    private static final Logger LOGGER = LogManager.getLogger(DbUtilsImpl.class);
     private final String url;
     private final String user;
     private final String password;
@@ -33,7 +36,7 @@ public class DbUtilsImpl implements DbUtils {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            handleSqlException(e);
         }
         return Optional.empty();
     }
@@ -51,7 +54,7 @@ public class DbUtilsImpl implements DbUtils {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            handleSqlException(e);
         }
         return collection;
     }
@@ -72,7 +75,7 @@ public class DbUtilsImpl implements DbUtils {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            handleSqlException(e);
         }
         return Optional.empty();
     }
@@ -85,9 +88,13 @@ public class DbUtilsImpl implements DbUtils {
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            handleSqlException(e);
         }
         return false;
+    }
+
+    private void handleSqlException(SQLException e) {
+        LOGGER.error("An error occurred:", e);
     }
 
 }
