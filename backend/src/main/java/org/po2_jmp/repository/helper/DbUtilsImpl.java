@@ -1,20 +1,20 @@
-package org.po2_jmp.repository.implementation;
+package org.po2_jmp.repository.helper;
 
 import java.sql.*;
 import java.util.Collection;
 import java.util.Optional;
 
-public class DbUtils {
+public class DbUtilsImpl implements DbUtils {
 
     private final String url;
     private final String user;
     private final String password;
 
-    public DbUtils(String url, String user, String password) {
+    public DbUtilsImpl(String url, String user, String password) {
         if ((url == null) || (user == null) || (password == null)) {
             throw new IllegalArgumentException("Url, user, " +
                     "and password cannot be null, but null " +
-                    "was passed to DbUtils constructor");
+                    "was passed to DbUtilsImpl constructor");
         }
         this.url = url;
         this.user = user;
@@ -88,16 +88,6 @@ public class DbUtils {
             e.printStackTrace();
         }
         return false;
-    }
-
-    @FunctionalInterface
-    public interface ThrowingConsumer<T> {
-        void accept(T t) throws SQLException;
-    }
-
-    @FunctionalInterface
-    public interface ThrowingFunction<T, R> {
-        R apply(T t) throws SQLException;
     }
 
 }
