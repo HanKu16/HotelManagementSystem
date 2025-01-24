@@ -4,6 +4,7 @@ import org.po2_jmp.domain.UserId;
 import org.po2_jmp.domain.UserPassword;
 import org.po2_jmp.entity.User;
 import org.po2_jmp.repository.contract.UsersRepository;
+import org.po2_jmp.repository.helper.DbUtils;
 import java.sql.*;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class DbUsersRepository implements UsersRepository {
                     " WHERE user_id = ?;";
         return dbUtils.executeQuery(sql,
                 stmt -> stmt.setString(1, id),
-                rs -> createUser(rs));
+                this::createUser);
     }
 
     @Override

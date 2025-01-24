@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.po2_jmp.domain.UserId;
 import org.po2_jmp.entity.Reservation;
+import org.po2_jmp.repository.helper.DbUtilsImpl;
 import org.po2_jmp.utils.DbTestConfigurator;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
@@ -19,7 +20,7 @@ class DbReservationsRepositoryTest {
     private final String url = "jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1";
     private final String user = "sa";
     private final String password = "";
-    private final DbUtils dbUtils = new DbUtils(url, user, password);
+    private final DbUtilsImpl dbUtils = new DbUtilsImpl(url, user, password);
     private final DbTestConfigurator reservationsConfigurator =
             createConfigurator("reservations");
     private final DbTestConfigurator usersConfigurator = createConfigurator("users");

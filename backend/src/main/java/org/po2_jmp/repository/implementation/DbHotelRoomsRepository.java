@@ -3,6 +3,7 @@ package org.po2_jmp.repository.implementation;
 import org.po2_jmp.domain.RoomGuestCapacity;
 import org.po2_jmp.entity.HotelRoom;
 import org.po2_jmp.repository.contract.HotelRoomsRepository;
+import org.po2_jmp.repository.helper.DbUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

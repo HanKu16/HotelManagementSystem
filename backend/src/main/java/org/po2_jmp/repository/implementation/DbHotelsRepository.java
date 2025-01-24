@@ -4,6 +4,7 @@ import org.po2_jmp.domain.*;
 import org.po2_jmp.entity.Address;
 import org.po2_jmp.entity.Hotel;
 import org.po2_jmp.repository.contract.HotelsRepository;
+import org.po2_jmp.repository.helper.DbUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class DbHotelsRepository implements HotelsRepository {
                     " WHERE h.hotel_id = ?;";
         return dbUtils.executeQuery(sql,
                 stmt -> stmt.setInt(1, hotelId),
-                rs -> createHotel(rs));
+                this::createHotel);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class DbHotelsRepository implements HotelsRepository {
                     " ON ha.hotel_address_id = h.hotel_address_id;";
         return dbUtils.executeQueryForCollection(sql,
                 stmt -> {},
-                rs -> createHotel(rs),
+                this::createHotel,
                 new ArrayList<>());
     }
 

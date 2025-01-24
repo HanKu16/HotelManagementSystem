@@ -3,6 +3,7 @@ package org.po2_jmp.repository.implementation;
 import org.po2_jmp.domain.HotelAmenityName;
 import org.po2_jmp.entity.HotelAmenity;
 import org.po2_jmp.repository.contract.HotelAmenitiesRepository;
+import org.po2_jmp.repository.helper.DbUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class DbHotelAmenitiesRepository implements HotelAmenitiesRepository {
                     " WHERE hotel_amenity_id = ?;";
         return dbUtils.executeQuery(sql,
                 stmt -> stmt.setInt(1, id),
-                rs -> createHotelAmenity(rs));
+                this::createHotelAmenity);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class DbHotelAmenitiesRepository implements HotelAmenitiesRepository {
                     " WHERE hotel_id = ?;";
         return dbUtils.executeQueryForCollection(sql,
                 stmt -> stmt.setInt(1, hotelId),
-                rs -> createHotelAmenity(rs),
+                this::createHotelAmenity,
                 new ArrayList<>());
     }
 

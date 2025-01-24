@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.po2_jmp.domain.RoleName;
 import org.po2_jmp.entity.Role;
 import org.po2_jmp.repository.contract.RolesRepository;
+import org.po2_jmp.repository.helper.DbUtils;
 
 public class DbRolesRepository implements RolesRepository {
 
@@ -23,7 +24,7 @@ public class DbRolesRepository implements RolesRepository {
         String sql = "SELECT role_id, name FROM roles WHERE role_id = ?;";
         return dbUtils.executeQuery(sql,
                 stmt -> stmt.setInt(1, id),
-                rs -> createRole(rs));
+                this::createRole);
     }
 
     private Role createRole(ResultSet rs) throws SQLException {

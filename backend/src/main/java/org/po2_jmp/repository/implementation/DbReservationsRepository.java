@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.po2_jmp.repository.contract.ReservationsRepository;
 import org.po2_jmp.domain.UserId;
 import org.po2_jmp.entity.Reservation;
+import org.po2_jmp.repository.helper.DbUtils;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,7 @@ public class DbReservationsRepository implements ReservationsRepository {
                     " WHERE reservation_id = ?;";
         return dbUtils.executeQuery(sql,
                 stmt -> stmt.setInt(1, id),
-                rs -> createReservation(rs));
+                this::createReservation);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class DbReservationsRepository implements ReservationsRepository {
                     " WHERE user_id = ?;";
         return dbUtils.executeQueryForCollection(sql,
                 stmt -> stmt.setString(1, userId),
-                rs -> createReservation(rs),
+                this::createReservation,
                 new ArrayList<>());
     }
 
@@ -56,7 +57,7 @@ public class DbReservationsRepository implements ReservationsRepository {
                     stmt.setInt(1, roomId);
                     stmt.setDate(2, java.sql.Date.valueOf(reservationDate));
                 },
-                rs -> createReservation(rs));
+                this::createReservation);
     }
 
     @Override
