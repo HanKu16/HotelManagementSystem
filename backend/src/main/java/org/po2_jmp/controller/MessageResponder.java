@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.po2_jmp.repository.contract.*;
+import org.po2_jmp.repository.helper.DbUtils;
+import org.po2_jmp.repository.helper.DbUtilsImpl;
 import org.po2_jmp.repository.implementation.*;
 import org.po2_jmp.request.*;
 import org.po2_jmp.response.*;
@@ -27,21 +29,24 @@ public class MessageResponder {
         String user = "postgres";
         String password = "1234";
 
-        UsersRepository usersRepository = new DbUsersRepository(url, user, password);
-        RolesRepository rolesRepository = new DbRolesRepository(url, user, password);
-        ReservationsRepository reservationsRepository = new DbReservationsRepository(
-                url, user, password);
-        HotelsRepository hotelsRepository = new DbHotelsRepository(url, user, password);
-        HotelRoomsRepository hotelRoomsRepository = new DbHotelRoomsRepository(
-                url, user, password);
+        DbUtils dbUtils = new DbUtilsImpl(url, user, password);
+        UsersRepository usersRepository = new DbUsersRepository(dbUtils);
+        RolesRepository rolesRepository = new DbRolesRepository(dbUtils);
+        ReservationsRepository reservationsRepository =
+                new DbReservationsRepository(dbUtils);
+        HotelsRepository hotelsRepository = new DbHotelsRepository(dbUtils);
+        HotelRoomsRepository hotelRoomsRepository =
+                new DbHotelRoomsRepository(dbUtils);
         HotelAmenitiesRepository hotelAmenitiesRepository =
-                new DbHotelAmenitiesRepository(url, user, password);
+                new DbHotelAmenitiesRepository(dbUtils);
 
         UserRegistrationRequestValidator userRegistrationRequestValidator =
                 new UserRegistrationRequestValidator(usersRepository);
-        AvailableRoomFinder availableRoomFinder = new AvailableRoomFinder(reservationsRepository);
+        AvailableRoomFinder availableRoomFinder =
+                new AvailableRoomFinder(reservationsRepository);
         ReservationCreationRequestValidator reservationCreationRequestValidator =
-                new ReservationCreationRequestValidator(usersRepository, hotelsRepository);
+                new ReservationCreationRequestValidator(
+                        usersRepository, hotelsRepository);
 
         this.jsonConverter = new JsonConverter();
         this.usersAuthenticator = new UsersAuthenticatorImpl(
