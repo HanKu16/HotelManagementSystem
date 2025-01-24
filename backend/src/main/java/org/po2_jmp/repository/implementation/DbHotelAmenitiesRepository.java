@@ -10,87 +10,45 @@ import java.util.Optional;
 
 public class DbHotelAmenitiesRepository implements HotelAmenitiesRepository {
 
-    private final String url;
-    private final String user;
-    private final String password;
+    private final DbUtils dbUtils;
 
-    public DbHotelAmenitiesRepository(String url,
-            String user, String password) {
-        if (areAnyNullParams(url, user, password)) {
-            throw new IllegalArgumentException("Url, user and password can not be " +
-                    "nulls but were passed to DbHotelAmenitiesRepository constructor");
+    public DbHotelAmenitiesRepository(DbUtils dbUtils) {
+        if (dbUtils == null) {
+            throw new IllegalArgumentException("DbUtils can not be null but " +
+                    "null was passed to DbHotelAmenitiesRepository constructor");
         }
-        this.url = url;
-        this.user = user;
-        this.password = password;
+        this.dbUtils = dbUtils;
     }
 
     @Override
     public Optional<HotelAmenity> findById(int id) {
         String sql = "SELECT hotel_amenity_id, name, hotel_id FROM hotel_amenities" +
                     " WHERE hotel_amenity_id = ?;";
-        Optional<HotelAmenity> optionalHotelAmenity = Optional.empty();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    HotelAmenity hotelAmenity = createHotelAmenity(rs);
-                    optionalHotelAmenity = Optional.of(hotelAmenity);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return optionalHotelAmenity;
+        return dbUtils.executeQuery(sql,
+                stmt -> stmt.setInt(1, id),
+                rs -> createHotelAmenity(rs));
     }
 
     @Override
     public List<HotelAmenity> findAllByHotelId(int hotelId) {
         String sql = "SELECT hotel_amenity_id, name, hotel_id FROM hotel_amenities" +
                     " WHERE hotel_id = ?;";
-        List<HotelAmenity> amenities = new ArrayList<>();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, hotelId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    HotelAmenity amenity = createHotelAmenity(rs);
-                    amenities.add(amenity);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return amenities;
+        return dbUtils.executeQueryForCollection(sql,
+                stmt -> stmt.setInt(1, hotelId),
+                rs -> createHotelAmenity(rs),
+                new ArrayList<>());
     }
 
     @Override
     public Optional<Integer> add(HotelAmenity amenity) {
         String sql = "INSERT INTO hotel_amenities (name, hotel_id)" +
                 " VALUES (?, ?);";
-        Optional<Integer> optionAmenityId = Optional.empty();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(
-                     sql, Statement.RETURN_GENERATED_KEYS)) {
-            setInsertQueryParams(stmt, amenity);
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows > 0) {
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        optionAmenityId = Optional.of(
-                                rs.getInt("hotel_amenity_id"));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return optionAmenityId;
+        return dbUtils.executeInsert(sql,
+                stmt -> {
+                    stmt.setString(1, amenity.getName().getValue());
+                    stmt.setInt(2, amenity.getHotelId());
+                },
+                rs -> rs.getInt("hotel_amenity_id"));
     }
 
     private HotelAmenity createHotelAmenity(ResultSet rs) throws SQLException {
@@ -99,17 +57,6 @@ public class DbHotelAmenitiesRepository implements HotelAmenitiesRepository {
                 new HotelAmenityName(rs.getString("name")),
                 rs.getInt("hotel_id")
         );
-    }
-
-    private void setInsertQueryParams(PreparedStatement stmt,
-            HotelAmenity amenity) throws SQLException {
-        stmt.setString(1, amenity.getName().getValue());
-        stmt.setInt(2, amenity.getHotelId());
-    }
-
-    private boolean areAnyNullParams(String url,
-            String user, String password) {
-        return (url == null) || (user == null) || (password == null);
     }
 
 }
