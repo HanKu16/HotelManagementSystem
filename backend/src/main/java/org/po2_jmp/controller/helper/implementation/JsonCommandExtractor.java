@@ -1,10 +1,11 @@
-package org.po2_jmp.controller;
+package org.po2_jmp.controller.helper.implementation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.po2_jmp.controller.helper.contract.CommandExtractor;
 import java.util.Optional;
 
-public class CommandExtractor {
+public class JsonCommandExtractor implements CommandExtractor {
 
     public Optional<String> extract(String request) {
         Optional<JSONObject> optionalJSONObject = convertRequestToJsonObject(request);
