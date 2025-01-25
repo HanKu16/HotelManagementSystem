@@ -80,17 +80,17 @@ public class DbUtilsImpl implements DbUtils {
         return Optional.empty();
     }
 
-    public boolean executeDelete(String sql,
+    public int executeDelete(String sql,
             ThrowingConsumer<PreparedStatement> paramSetter) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             paramSetter.accept(stmt);
             int affectedRows = stmt.executeUpdate();
-            return affectedRows > 0;
+            return affectedRows;
         } catch (SQLException e) {
             handleSqlException(e);
         }
-        return false;
+        return 0;
     }
 
     private void handleSqlException(SQLException e) {

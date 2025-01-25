@@ -40,17 +40,20 @@ public class ReservationsCancelerImpl implements ReservationsCanceler {
             return new ReservationCancellationResponse(ResponseStatus.BAD_REQUEST,
                     "Can cancel only reservations from the future date");
         }
-        if (reservationsRepository.deleteById(reservationId)) {
-            return new ReservationCancellationResponse(ResponseStatus.OK,
-                    "Reservation deleted", reservationId);
-        }
-        return new ReservationCancellationResponse(ResponseStatus.INTERNAL_SERVER_ERROR,
-                "Something goes wrong on the server");
+        return deleteReservation(reservationId);
     }
 
     private boolean isDateFromTheFuture(LocalDate date) {
         LocalDate today = LocalDate.now();
         return date.isAfter(today);
+    }
+
+    private ReservationCancellationResponse deleteReservation(int reservationId) {
+        return (reservationsRepository.deleteById(reservationId) == 1) ?
+                new ReservationCancellationResponse(ResponseStatus.OK,
+                        "Reservation deleted", reservationId) :
+                new ReservationCancellationResponse(ResponseStatus.INTERNAL_SERVER_ERROR,
+                        "Something goes wrong on the server");
     }
 
 }

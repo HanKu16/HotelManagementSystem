@@ -16,6 +16,6 @@ public interface DbUtils {
     <T> Optional<T> executeInsert(String sql,
             ThrowingConsumer<PreparedStatement> paramSetter,
             ThrowingFunction<ResultSet, T> resultProcessor);
-    boolean executeDelete(String sql, ThrowingConsumer<PreparedStatement> paramSetter);
+    int executeDelete(String sql, ThrowingConsumer<PreparedStatement> paramSetter);
 
 }
