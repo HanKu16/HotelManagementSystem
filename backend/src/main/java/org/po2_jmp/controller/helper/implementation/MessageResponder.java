@@ -3,6 +3,7 @@ package org.po2_jmp.controller.helper.implementation;
 import org.po2_jmp.controller.helper.RequestValidationResult;
 import org.po2_jmp.controller.helper.contract.CommandExtractor;
 import org.po2_jmp.controller.helper.contract.InvalidRequestResponder;
+import org.po2_jmp.controller.helper.contract.RequestValidator;
 import org.po2_jmp.controller.helper.contract.ValidRequestResponder;
 import org.po2_jmp.repository.contract.*;
 import org.po2_jmp.repository.helper.DbUtils;
@@ -14,7 +15,7 @@ import org.po2_jmp.service.implementation.*;
 
 public class MessageResponder {
 
-    private final JsonRequestValidator validator;
+    private final RequestValidator validator;
     private final InvalidRequestResponder invalidRequestResponder;
     private final ValidRequestResponder validRequestResponder;
 
@@ -64,6 +65,14 @@ public class MessageResponder {
                 usersAuthenticator, userRegistrar, reservationsCreator,
                 hotelsProvider, reservationsProvider, reservationsCanceler,
                 commandExtractor, jsonConverter);
+    }
+
+    public MessageResponder(RequestValidator requestValidator,
+            InvalidRequestResponder invalidRequestResponder,
+            ValidRequestResponder validRequestResponder) {
+        this.validator = requestValidator;
+        this.invalidRequestResponder = invalidRequestResponder;
+        this.validRequestResponder = validRequestResponder;
     }
 
     public String respond(String message) {
