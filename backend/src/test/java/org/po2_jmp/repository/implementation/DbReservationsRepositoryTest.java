@@ -3,6 +3,8 @@ package org.po2_jmp.repository.implementation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.po2_jmp.domain.UserId;
 import org.po2_jmp.entity.Reservation;
 import org.po2_jmp.repository.helper.DbUtilsImpl;
@@ -131,6 +133,24 @@ class DbReservationsRepositoryTest {
                 5);
         Optional<Integer> optionalReservationId = repository.add(reservation);
         assertTrue(optionalReservationId.isPresent());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-3, 102, 1001})
+    void DeleteById_ShouldReturn0_WhenReservationOfGivenIdDoesNotExist(
+            int reservationId) throws SQLException {
+        insertData();
+        int removedRows = repository.deleteById(reservationId);
+        assertEquals(0, removedRows);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 7, 15})
+    void DeleteById_ShouldReturn1_WhenReservationOfGivenIdDoesNotExist(
+            int reservationId) throws SQLException {
+        insertData();
+        int removedRows = repository.deleteById(reservationId);
+        assertEquals(1, removedRows);
     }
 
     private void insertData() throws SQLException {
