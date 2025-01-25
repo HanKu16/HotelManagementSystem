@@ -54,7 +54,7 @@ public class MenuPanelCreator {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(Color.WHITE);
 
-        JButton reservationsButton = new JButton("Reservations");
+        JButton reservationsButton = new JButton("Rezerwacje");
         reservationsButton.setFont(new Font("Arial", Font.PLAIN, 16));
         reservationsButton.setForeground(Color.WHITE);
         reservationsButton.setBackground(new Color(128, 0, 128));
@@ -62,11 +62,12 @@ public class MenuPanelCreator {
         reservationsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                layout.show(container, "reservationsPanel");
+                ReservationsPanelCreator reservationsPanelCreator = new ReservationsPanelCreator(myWebSocketHandler);
+                reservationsPanelCreator.create(layout, container);
             }
         });
 
-        JButton hotelListButton = new JButton("Hotel List");
+        JButton hotelListButton = new JButton("Lista hoteli");
         hotelListButton.setFont(new Font("Arial", Font.PLAIN, 16));
         hotelListButton.setForeground(Color.WHITE);
         hotelListButton.setBackground(new Color(128, 0, 128));

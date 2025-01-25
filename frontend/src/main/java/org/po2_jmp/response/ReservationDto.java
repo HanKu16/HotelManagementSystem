@@ -1,7 +1,8 @@
 package org.po2_jmp.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -12,7 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @EqualsAndHashCode
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReservationDto {
 
@@ -22,4 +22,18 @@ public class ReservationDto {
     private final String hotel;
     private final Integer roomGuestCapacity;
 
+    @JsonCreator
+    public ReservationDto(
+            @JsonProperty("reservationId") int reservationId,
+            @JsonProperty("reservationDate") LocalDate reservationDate,
+            @JsonProperty("creationDateTime") LocalDateTime creationDateTime,
+            @JsonProperty("hotel") String hotel,
+            @JsonProperty("roomGuestCapacity") Integer roomGuestCapacity
+    ) {
+        this.reservationId = reservationId;
+        this.reservationDate = reservationDate;
+        this.creationDateTime = creationDateTime;
+        this.hotel = hotel;
+        this.roomGuestCapacity = roomGuestCapacity;
+    }
 }
