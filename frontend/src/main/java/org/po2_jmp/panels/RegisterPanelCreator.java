@@ -28,16 +28,16 @@ public class RegisterPanelCreator {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
         panel.add(createRegisterPanel(layout, container));
+        panel.add(createLoginSection(layout, container));
         return panel;
     }
 
     private JPanel createRegisterPanel(CardLayout layout, JPanel container) {
-        // Main panel
+
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
 
-        // Title section
         JLabel titleLabel = new JLabel("Sieć Hoteli Akropol", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setForeground(new Color(128, 0, 128));
@@ -55,28 +55,45 @@ public class RegisterPanelCreator {
         titlePanel.add(iconLabel);
 
         panel.add(titlePanel);
-        panel.add(Box.createVerticalStrut(20)); // Space between title and login
+        panel.add(Box.createVerticalStrut(20));
 
-        JTextField loginField = new JTextField("login");
+        JLabel usernameLabel = new JLabel("Login", SwingConstants.LEFT);
+        usernameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(usernameLabel);
+        panel.add(Box.createVerticalStrut(5));
+
+        JTextField loginField = new JTextField("");
         loginField.setPreferredSize(new Dimension(200, 40));
         loginField.setMaximumSize(new Dimension(200, 40));
         panel.add(loginField);
         panel.add(Box.createVerticalStrut(20));
 
-        JPasswordField passwordField = new JPasswordField("password");
+        JLabel passwordLabel = new JLabel("Hasło", SwingConstants.LEFT);
+        passwordLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(passwordLabel);
+        panel.add(Box.createVerticalStrut(5));
+
+        JPasswordField passwordField = new JPasswordField("");
         passwordField.setPreferredSize(new Dimension(200, 40));
         passwordField.setMaximumSize(new Dimension(200, 40));
         panel.add(passwordField);
         panel.add(Box.createVerticalStrut(20));
 
-        JPasswordField confirmPasswordField = new JPasswordField("password");
+        JLabel confirmPasswordLabel = new JLabel("Powtórz hasło", SwingConstants.LEFT);
+        confirmPasswordLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        confirmPasswordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(confirmPasswordLabel);
+        panel.add(Box.createVerticalStrut(5));
+
+        JPasswordField confirmPasswordField = new JPasswordField("");
         confirmPasswordField.setPreferredSize(new Dimension(200, 40));
         confirmPasswordField.setMaximumSize(new Dimension(200, 40));
         panel.add(confirmPasswordField);
         panel.add(Box.createVerticalStrut(20));
 
-        // Buttons
-        JButton registerButton = new JButton("Sign up");
+        JButton registerButton = new JButton("Zarejestruj się");
         registerButton.setPreferredSize(new Dimension(200, 40));
         registerButton.setMaximumSize(new Dimension(200, 40));
         registerButton.setBackground(Color.GRAY);
@@ -126,5 +143,29 @@ public class RegisterPanelCreator {
     private void showSuccessDialog(CardLayout layout, JPanel container) {
         JOptionPane.showMessageDialog(null, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
         layout.show(container, "loginPanel");
+    }
+    private JPanel createLoginSection(CardLayout layout, JPanel container) {
+        JPanel loginPanel = new JPanel();
+        loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
+        loginPanel.setBackground(Color.WHITE);
+
+        JLabel noAccountLabel = new JLabel("Masz już konto?", SwingConstants.CENTER);
+        noAccountLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loginPanel.add(noAccountLabel);
+
+        JButton registerButton = createButton("Zaloguj się");
+        registerButton.addActionListener(e -> layout.show(container, "loginPanel"));
+        loginPanel.add(registerButton);
+
+        return loginPanel;
+    }
+    private JButton createButton(String text) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(200, 40));
+        button.setMaximumSize(new Dimension(200, 40));
+        button.setBackground(Color.GRAY);
+        button.setForeground(Color.WHITE);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return button;
     }
 }

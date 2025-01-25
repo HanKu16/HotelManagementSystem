@@ -39,7 +39,6 @@ public class MyWebSocketHandler {
                 try {
                     if (session.isOpen()) {
                         session.getRemote().sendPing(ByteBuffer.wrap("ping".getBytes()));
-                        System.out.println("Ping sent");
                     }
                 } catch (Exception e) {
                     System.err.println("Failed to send ping: " + e.getMessage());
@@ -76,7 +75,6 @@ public class MyWebSocketHandler {
         if (session != null && session.isOpen()) {
             try {
                 session.getRemote().sendString(message);
-                System.out.println(message);
             } catch (IOException e) {
                 System.err.println("Failed to send message: " + e.getMessage());
             }

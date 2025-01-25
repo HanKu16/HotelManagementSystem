@@ -26,7 +26,7 @@ public class HotelListPanelCreator {
     }
 
     public void create(CardLayout layout, JPanel container) {
-        handleHotelList(layout, container); // Uruchomienie asynchronicznego zadania
+        handleHotelList(layout, container);
     }
 
     private void handleHotelList(CardLayout layout, JPanel container) {
@@ -54,7 +54,7 @@ public class HotelListPanelCreator {
                         ex.printStackTrace();
                     }
 
-                    result = handleResponse(response); // Przypisanie wyniku odpowiedzi
+                    result = handleResponse(response);
 
                 } catch (JsonProcessingException ex) {
                     ex.printStackTrace();
@@ -66,7 +66,6 @@ public class HotelListPanelCreator {
 
             @Override
             protected void done() {
-                // Wykonaj operacje na GUI po zakończeniu zadania
                 SwingUtilities.invokeLater(() -> {
                     if (result != null) {
                         JPanel panel = initializePanel();
@@ -93,9 +92,7 @@ public class HotelListPanelCreator {
 
                         container.add(panel, "hotelList");
                         layout.show(container, "hotelList");
-                        System.out.println("Panel HotelList został aktywowany.");
                     } else {
-                        // Obsługa przypadku, gdy wynik jest null
                         JOptionPane.showMessageDialog(null, "Nie udało się pobrać listy hoteli.");
                     }
                 });
@@ -164,7 +161,6 @@ public class HotelListPanelCreator {
     private HotelsOverviewsResponse handleResponse(String response) {
         HotelsOverviewsResponse ovsResponse = null;
         try {
-            System.out.println(response);
             ovsResponse = jsonUtils.deserialize(response, HotelsOverviewsResponse.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();

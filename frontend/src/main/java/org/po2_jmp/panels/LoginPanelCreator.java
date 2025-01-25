@@ -64,21 +64,33 @@ public class LoginPanelCreator {
         loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
         loginPanel.setBackground(Color.WHITE);
 
-        JLabel loginLabel = new JLabel("SIGN IN", SwingConstants.CENTER);
+        JLabel loginLabel = new JLabel("Zaloguj się", SwingConstants.CENTER);
         loginLabel.setFont(new Font("Arial", Font.BOLD, 18));
         loginLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         loginPanel.add(loginLabel);
         loginPanel.add(Box.createVerticalStrut(20));
 
-        JTextField loginField = createTextField("login");
+        JLabel usernameLabel = new JLabel("Login", SwingConstants.LEFT);
+        usernameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loginPanel.add(usernameLabel);
+        loginPanel.add(Box.createVerticalStrut(5));
+
+        JTextField loginField = createTextField("");
         loginPanel.add(loginField);
         loginPanel.add(Box.createVerticalStrut(20));
 
-        JPasswordField passwordField = createPasswordField("password");
+        JLabel passwordLabel = new JLabel("Hasło", SwingConstants.LEFT);
+        passwordLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loginPanel.add(passwordLabel);
+        loginPanel.add(Box.createVerticalStrut(5));
+
+        JPasswordField passwordField = createPasswordField("");
         loginPanel.add(passwordField);
         loginPanel.add(Box.createVerticalStrut(20));
 
-        JButton loginButton = createButton("Sign in");
+        JButton loginButton = createButton("Zaloguj się");
         loginButton.addActionListener(e -> handleLogin(layout, container, loginField, passwordField));
         loginPanel.add(loginButton);
 
@@ -90,11 +102,11 @@ public class LoginPanelCreator {
         registerPanel.setLayout(new BoxLayout(registerPanel, BoxLayout.Y_AXIS));
         registerPanel.setBackground(Color.WHITE);
 
-        JLabel noAccountLabel = new JLabel("Don't have an account?", SwingConstants.CENTER);
+        JLabel noAccountLabel = new JLabel("Nie masz konta?", SwingConstants.CENTER);
         noAccountLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         registerPanel.add(noAccountLabel);
 
-        JButton registerButton = createButton("Sign up");
+        JButton registerButton = createButton("Zarejestruj się");
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,6 +120,7 @@ public class LoginPanelCreator {
 
         return registerPanel;
     }
+
 
     private JTextField createTextField(String placeholder) {
         JTextField textField = new JTextField(placeholder);
