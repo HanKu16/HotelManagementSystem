@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.po2_jmp.controller.helper.Person;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JsonConverterTest {
+class JsonConverterTest {
 
     private JsonConverter jsonConverter;
 
