@@ -25,7 +25,7 @@ public class BackendApp {
 
         try {
             server.start();
-            System.out.println("Server started");
+            LOGGER.info("Server started");
         } catch (Exception e) {
             LOGGER.error("An error occurred:", e);
         }
