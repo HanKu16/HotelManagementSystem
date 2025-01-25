@@ -24,11 +24,7 @@ public class ReservationsCancelerImpl implements ReservationsCanceler {
     @Override
     public ReservationCancellationResponse cancel(
             ReservationCancellationRequest request) {
-        Integer reservationId = request.getReservationId();
-        if (reservationId == null) {
-            return new ReservationCancellationResponse(ResponseStatus.BAD_REQUEST,
-                    "Can't delete reservation of id null");
-        }
+        int reservationId = request.getReservationId();
         Optional<Reservation> optionalReservation = reservationsRepository
                 .findById(request.getReservationId());
         if (optionalReservation.isEmpty()) {

@@ -11,7 +11,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper=true)
 public class ReservationCancellationRequest extends Request {
 
-    private final Integer reservationId;
+    private final int reservationId;
 
     @JsonCreator
     public ReservationCancellationRequest(
