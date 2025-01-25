@@ -12,5 +12,5 @@ public interface ReservationsRepository {
     Optional<Reservation> findByRoomIdAndReservationDate(
             int roomId, LocalDate reservationDate);
     Optional<Integer> add(Reservation reservation);
-    boolean deleteById(int id);
+    int deleteById(int id);
 }

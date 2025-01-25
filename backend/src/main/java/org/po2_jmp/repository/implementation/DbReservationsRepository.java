@@ -76,7 +76,7 @@ public class DbReservationsRepository implements ReservationsRepository {
     }
 
     @Override
-    public boolean deleteById(int id) {
+    public int deleteById(int id) {
         String sql = "DELETE FROM reservations WHERE reservation_id = ?;";
         return dbUtils.executeDelete(sql,
                 stmt -> stmt.setInt(1, id));
