@@ -1,6 +1,6 @@
-<Configuration status="debug">
+<Configuration status="info">
     <Properties>
-        <Property name="log-path">backend/src/main/resources/logs</Property>
+        <Property name="log-path">backend/logs</Property>
     </Properties>
     <Appenders>
         <Console name="ConsoleAppender" target="SYSTEM_OUT">
