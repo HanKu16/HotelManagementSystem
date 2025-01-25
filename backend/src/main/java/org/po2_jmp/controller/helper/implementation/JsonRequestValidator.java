@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import org.po2_jmp.controller.helper.RequestValidationResult;
 import org.po2_jmp.controller.helper.contract.CommandExtractor;
 import org.po2_jmp.controller.helper.contract.RequestValidator;
-
 import java.util.Optional;
 
 public class JsonRequestValidator implements RequestValidator {
