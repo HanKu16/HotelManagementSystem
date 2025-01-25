@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.po2_jmp.controller.helper.Person;
+import org.po2_jmp.controller.helper.implementation.JsonConverter;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonConverterTest {

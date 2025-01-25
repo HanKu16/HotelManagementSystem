@@ -1,4 +1,4 @@
-package org.po2_jmp.controller;
+package org.po2_jmp.controller.helper.implementation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
