@@ -1,20 +1,14 @@
-package org.po2_jmp.controller;
+package org.po2_jmp.controller.helper.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.po2_jmp.repository.contract.*;
-import org.po2_jmp.repository.helper.DbUtils;
-import org.po2_jmp.repository.helper.DbUtilsImpl;
-import org.po2_jmp.repository.implementation.*;
+import org.po2_jmp.controller.helper.contract.CommandExtractor;
+import org.po2_jmp.controller.helper.contract.ValidRequestResponder;
 import org.po2_jmp.request.*;
 import org.po2_jmp.response.*;
 import org.po2_jmp.service.contract.*;
-import org.po2_jmp.service.helper.*;
-import org.po2_jmp.service.implementation.*;
 import java.util.Optional;
 
-public class MessageResponder {
+public class ValidRequestResponderImpl implements ValidRequestResponder {
 
     private final UsersAuthenticator usersAuthenticator;
     private final UserRegistrar userRegistrar;
@@ -22,69 +16,45 @@ public class MessageResponder {
     private final HotelsProvider hotelsProvider;
     private final ReservationsProvider reservationsProvider;
     private final ReservationsCanceler reservationsCanceler;
+    private final CommandExtractor commandExtractor;
     private final JsonConverter jsonConverter;
 
-    public MessageResponder() {
-        String url = "jdbc:postgresql://localhost:5432/hotel_management_system_db";
-        String user = "postgres";
-        String password = "1234";
-
-        DbUtils dbUtils = new DbUtilsImpl(url, user, password);
-        UsersRepository usersRepository = new DbUsersRepository(dbUtils);
-        RolesRepository rolesRepository = new DbRolesRepository(dbUtils);
-        ReservationsRepository reservationsRepository =
-                new DbReservationsRepository(dbUtils);
-        HotelsRepository hotelsRepository = new DbHotelsRepository(dbUtils);
-        HotelRoomsRepository hotelRoomsRepository =
-                new DbHotelRoomsRepository(dbUtils);
-        HotelAmenitiesRepository hotelAmenitiesRepository =
-                new DbHotelAmenitiesRepository(dbUtils);
-
-        UserRegistrationRequestValidator userRegistrationRequestValidator =
-                new UserRegistrationRequestValidator(usersRepository);
-        AvailableRoomFinder availableRoomFinder =
-                new AvailableRoomFinder(reservationsRepository);
-        ReservationCreationRequestValidator reservationCreationRequestValidator =
-                new ReservationCreationRequestValidator(
-                        usersRepository, hotelsRepository);
-
-        this.jsonConverter = new JsonConverter();
-        this.usersAuthenticator = new UsersAuthenticatorImpl(
-                usersRepository, rolesRepository);
-        this.userRegistrar = new UserRegistrarImpl(
-                usersRepository, userRegistrationRequestValidator);
-        this.reservationsCreator = new ReservationsCreatorImpl(
-                reservationsRepository, hotelsRepository, hotelRoomsRepository,
-                availableRoomFinder, reservationCreationRequestValidator);
-        this.hotelsProvider = new HotelsProviderImpl(
-                hotelsRepository, hotelAmenitiesRepository,
-                hotelRoomsRepository);
-        this.reservationsProvider = new ReservationsProviderImpl(
-                reservationsRepository, hotelRoomsRepository, hotelsRepository);
-        this.reservationsCanceler = new ReservationsCancelerImpl(reservationsRepository);
+    public ValidRequestResponderImpl(
+            UsersAuthenticator usersAuthenticator,
+            UserRegistrar userRegistrar,
+            ReservationsCreator reservationsCreator,
+            HotelsProvider hotelsProvider,
+            ReservationsProvider reservationsProvider,
+            ReservationsCanceler reservationsCanceler,
+            CommandExtractor commandExtractor,
+            JsonConverter jsonConverter) {
+        validateParams(usersAuthenticator, userRegistrar,
+                reservationsCreator, hotelsProvider,
+                reservationsProvider, reservationsCanceler,
+                commandExtractor, jsonConverter);
+        this.usersAuthenticator = usersAuthenticator;
+        this.userRegistrar = userRegistrar;
+        this.reservationsCreator = reservationsCreator;
+        this.hotelsProvider = hotelsProvider;
+        this.reservationsProvider = reservationsProvider;
+        this.reservationsCanceler = reservationsCanceler;
+        this.commandExtractor = commandExtractor;
+        this.jsonConverter = jsonConverter;
     }
 
-    public String respond(String message) {
-        if (message == null) {
-            return handleBadRequestFormat();
-        }
-        Optional<JSONObject> optionalJSONObject = convertMessageToJsonObject(message);
-        if (optionalJSONObject.isEmpty()) {
-            return handleBadRequestFormat();
-        }
-        Optional<String> optionalCommand = getCommand(optionalJSONObject.get());
-        if (optionalCommand.isEmpty()) {
-            return handleRequestWithoutCommand();
-        }
-        return handleRequestOfValidFormat(optionalCommand.get(), message);
+    public String respond(String request) {
+        Optional<String> optionalCommand = commandExtractor.extract(request);
+        return optionalCommand.isPresent() ?
+                handleRequestOfValidFormat(optionalCommand.get(), request) :
+                handleNoCommandRequest();
     }
 
-    private String handleRequestOfValidFormat(String command, String message) {
+    private String handleRequestOfValidFormat(String command, String request) {
         String response;
         try {
-            response = tryHandleRequestOfValidFormat(command, message);
+            response = tryHandleRequestOfValidFormat(command, request);
         } catch (JsonProcessingException e) {
-            response = handleJsonConvertingError();
+            response = handleJsonProcessingException();
         }
         return response;
     }
@@ -154,7 +124,7 @@ public class MessageResponder {
     }
 
     private String handleCancelReservationRequest(String message)
-        throws JsonProcessingException {
+            throws JsonProcessingException {
         ReservationCancellationRequest request = jsonConverter
                 .deserialize(message, ReservationCancellationRequest.class);
         ReservationCancellationResponse response = reservationsCanceler.cancel(request);
@@ -167,20 +137,21 @@ public class MessageResponder {
         return jsonConverter.serialize(invalidRequestResponse);
     }
 
-    private String handleBadRequestFormat() {
+    private String handleNoCommandRequest() {
         String response;
         try {
             Response invalidRequestResponse = new Response(
-                    ResponseStatus.BAD_REQUEST, "invalid request format");
+                    ResponseStatus.BAD_REQUEST,
+                    "there was no command in the request");
             response = jsonConverter.serialize(invalidRequestResponse);
         } catch (JsonProcessingException e) {
             response = "{\"status\": \"BAD_REQUEST\", " +
-                    "\"message\": \"invalid request format\"}";
+                    "\"message\": \"there was no command in the request\"}";
         }
         return response;
     }
 
-    private String handleJsonConvertingError() {
+    private String handleJsonProcessingException() {
         String response;
         try {
             Response invalidRequestResponse = new Response(
@@ -194,40 +165,43 @@ public class MessageResponder {
         return response;
     }
 
-    private String handleRequestWithoutCommand() {
-        String response;
-        try {
-            Response invalidRequestResponse = new Response(
-                    ResponseStatus.METHOD_NOT_ALLOWED,
-                    "command was not specified in request");
-            response = jsonConverter.serialize(invalidRequestResponse);
-        } catch (JsonProcessingException e) {
-            response = "{\"status\": \"METHOD_NOT_ALLOWED\", " +
-                    "\"message\": \"command was not specified in request\"}";
+    private void validateParams(UsersAuthenticator usersAuthenticator,
+            UserRegistrar userRegistrar, ReservationsCreator reservationsCreator,
+            HotelsProvider hotelsProvider, ReservationsProvider reservationsProvider,
+            ReservationsCanceler reservationsCanceler, CommandExtractor commandExtractor,
+            JsonConverter jsonConverter) {
+        if (usersAuthenticator == null) {
+            throw new IllegalArgumentException("UsersAuthenticator can not be null," +
+                    " but null was passed to ValidRequestResponderImpl");
         }
-        return response;
-    }
-
-    private Optional<JSONObject> convertMessageToJsonObject(String message) {
-        Optional<JSONObject> optionalJsonObject;
-        try {
-            JSONObject jsonObject = new JSONObject(message);
-            optionalJsonObject = Optional.of(jsonObject);
-        } catch (JSONException e) {
-            optionalJsonObject = Optional.empty();
+        if (userRegistrar == null) {
+            throw new IllegalArgumentException("UserRegistrar can not be null," +
+                    " but null was passed to ValidRequestResponderImpl");
         }
-        return optionalJsonObject;
-    }
-
-    private Optional<String> getCommand(JSONObject jsonMessage) {
-        Optional<String> optionalCommand;
-        try {
-            String command = jsonMessage.getString("command");
-            optionalCommand = Optional.of(command);
-        } catch (JSONException e) {
-            optionalCommand = Optional.empty();
+        if (reservationsCreator == null) {
+            throw new IllegalArgumentException("ReservationsCreator can not be null," +
+                    " but null was passed to ValidRequestResponderImpl");
         }
-        return optionalCommand;
+        if (hotelsProvider == null) {
+            throw new IllegalArgumentException("HotelsProvider can not be null," +
+                    " but null was passed to ValidRequestResponderImpl");
+        }
+        if (reservationsProvider == null) {
+            throw new IllegalArgumentException("ReservationsProvider can not be null," +
+                    " but null was passed to ValidRequestResponderImpl");
+        }
+        if (reservationsCanceler == null) {
+            throw new IllegalArgumentException("ReservationsCanceler can not be null," +
+                    " but null was passed to ValidRequestResponderImpl");
+        }
+        if (commandExtractor == null) {
+            throw new IllegalArgumentException("CommandExtractor can not be null," +
+                    " but null was passed to ValidRequestResponderImpl");
+        }
+        if (jsonConverter == null) {
+            throw new IllegalArgumentException("JsonConverter can not be null," +
+                    " but null was passed to ValidRequestResponderImpl");
+        }
     }
 
 }
