@@ -6,23 +6,30 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.po2_jmp.FrontendApp;
 import org.po2_jmp.request.UserRegistrationRequest;
 import org.po2_jmp.response.ResponseStatus;
-import org.po2_jmp.response.UserAuthenticationResponse;
 import org.po2_jmp.response.UserRegistrationResponse;
 import org.po2_jmp.websocket.JsonUtils;
 import org.po2_jmp.websocket.MyWebSocketHandler;
 
+/**
+ * A class that creates and manages the Register Panel UI for user registration.
+ */
 public class RegisterPanelCreator {
 
     MyWebSocketHandler myWebSocketHandler;
     JsonUtils jsonUtils = new JsonUtils();
 
+    /**
+     * Constructor to initialize the RegisterPanelCreator.
+     */
     public RegisterPanelCreator(MyWebSocketHandler myWebSocketHandler) {
         this.myWebSocketHandler = myWebSocketHandler;
     }
 
+    /**
+     * Creates the Register Panel with registration form and login section.
+     */
     public JPanel create(CardLayout layout, JPanel container) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -32,6 +39,9 @@ public class RegisterPanelCreator {
         return panel;
     }
 
+    /**
+     * Creates the registration form panel with fields for username, password, and confirm password.
+     */
     private JPanel createRegisterPanel(CardLayout layout, JPanel container) {
 
         JPanel panel = new JPanel();
@@ -127,6 +137,9 @@ public class RegisterPanelCreator {
         return panel;
     }
 
+    /**
+     * Handles the response from the registration process.
+     */
     private void handleRegistrationResponse(String response, CardLayout layout, JPanel container) {
         try {
             UserRegistrationResponse regResponse = jsonUtils.deserialize(response, UserRegistrationResponse.class);
@@ -140,10 +153,17 @@ public class RegisterPanelCreator {
         }
     }
 
+    /**
+     * Displays a success dialog when registration is successful.
+     */
     private void showSuccessDialog(CardLayout layout, JPanel container) {
         JOptionPane.showMessageDialog(null, "Udało się zarejestrować");
         layout.show(container, "loginPanel");
     }
+
+    /**
+     * Creates the login section panel with a button to switch to the login panel.
+     */
     private JPanel createLoginSection(CardLayout layout, JPanel container) {
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
@@ -159,6 +179,9 @@ public class RegisterPanelCreator {
 
         return loginPanel;
     }
+    /**
+     * Creates a styled button with specified text.
+     */
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(200, 40));

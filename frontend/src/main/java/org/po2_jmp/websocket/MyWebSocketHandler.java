@@ -3,14 +3,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.*;
-import org.po2_jmp.response.UserAuthenticationResponse;
-import org.po2_jmp.response.UserRegistrationResponse;
-import org.po2_jmp.websocket.JsonUtils;
 import java.nio.ByteBuffer;
 
 
 import java.io.IOException;
-import java.io.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
@@ -20,7 +16,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MyWebSocketHandler {
 
     private Session session;
-    private JsonUtils jsonUtils = new JsonUtils();
     @Getter
     @Setter
     private String respondFromBackend;
@@ -57,9 +52,8 @@ public class MyWebSocketHandler {
         }
     }
 
-
     @OnWebSocketClose
-    public void onClose(int statusCode, String reason) {
+    public void onClose(String reason) {
         System.out.println("WebSocket closed: " + reason);
         if (pingTimer != null) {
             pingTimer.cancel();
