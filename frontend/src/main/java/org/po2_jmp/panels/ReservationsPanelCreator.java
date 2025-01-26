@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The ReservationsPanelCreator class is responsible for creating and managing the reservations panel in the user interface.
+ * It fetches user reservations from the server and displays them in a list. It also allows users to cancel reservations.
+ */
 public class ReservationsPanelCreator {
 
     private UserReservationsResponse resResponse;
@@ -22,11 +26,18 @@ public class ReservationsPanelCreator {
     private DefaultListModel<String> reservationListModel;
     private JList<String> reservationList;
 
+    /**
+     * Constructor that initializes the ReservationsPanelCreator with a WebSocket handler.
+     */
+
     public ReservationsPanelCreator(MyWebSocketHandler webSocketHandler) {
         this.myWebSocketHandler = webSocketHandler;
         this.reservationListModel = new DefaultListModel<>();
     }
 
+    /**
+     * Creates the reservations panel with header, content, and footer sections.
+     */
     public JPanel create(CardLayout cardLayout, JPanel containerPanel) {
         reservationsMainPanel = new JPanel();
         reservationsMainPanel.setLayout(new BorderLayout());
@@ -52,6 +63,9 @@ public class ReservationsPanelCreator {
         return reservationsMainPanel;
     }
 
+    /**
+     * Creates the header section for the reservations panel, containing the title.
+     */
     private JPanel createHeader() {
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
@@ -69,6 +83,9 @@ public class ReservationsPanelCreator {
         return headerPanel;
     }
 
+    /**
+     * Creates the list of reservations.
+     */
     private JScrollPane createReservationList() {
         reservationList = new JList<>(reservationListModel);
         reservationList.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -82,6 +99,9 @@ public class ReservationsPanelCreator {
         return scrollPane;
     }
 
+    /**
+     * Creates the section that displays the "Your Reservations" title.
+     */
     private JPanel createReservationPanel() {
         JPanel reservationPanel = new JPanel();
         reservationPanel.setLayout(new BoxLayout(reservationPanel, BoxLayout.Y_AXIS));
@@ -98,6 +118,10 @@ public class ReservationsPanelCreator {
         return reservationPanel;
     }
 
+
+    /**
+     * Creates the footer section for the reservations panel, including the back and cancel reservation buttons.
+     */
     private JPanel createFooterPanel(CardLayout cardLayout, JPanel containerPanel) {
         JPanel footerPanel = new JPanel();
         footerPanel.setLayout(new BorderLayout());
@@ -121,6 +145,10 @@ public class ReservationsPanelCreator {
         return footerPanel;
     }
 
+
+    /**
+     * Fetches the user's reservations and updates the list in the UI.
+     */
     private void handleReservationsList(CardLayout layout, JPanel container) {
         UserReservationsRequest reservationsRequest = new UserReservationsRequest("getUserReservations", FrontendApp.userId);
 
@@ -180,6 +208,9 @@ public class ReservationsPanelCreator {
         worker.execute();
     }
 
+    /**
+     * Cancels the selected reservation from the reservation list.
+     */
     private void cancelSelectedReservation() {
         int selectedIndex = reservationList.getSelectedIndex();
         if (selectedIndex == -1) {
@@ -225,6 +256,10 @@ public class ReservationsPanelCreator {
         };
         cancelWorker.execute();
     }
+
+    /**
+     * Formats the provided LocalDateTime into a string in the format "dd-MM-yyyy HH:mm".
+     */
     private String formatDateTime(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"); // Przykładowy format
         return dateTime.format(formatter);

@@ -7,13 +7,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class creates the menu panel for the application. It includes the title, an icon,
+ * and two buttons for navigation to reservations and hotel list panels.
+ */
 public class MenuPanelCreator {
     private MyWebSocketHandler myWebSocketHandler;
 
+    /**
+     * Constructs a MenuPanelCreator with a specified WebSocket handler.
+     */
     public MenuPanelCreator(MyWebSocketHandler myWebSocketHandler) {
         this.myWebSocketHandler = myWebSocketHandler;
     }
 
+    /**
+     * Creates the menu panel with title, icon, and button panel.
+     */
     public JPanel create(CardLayout layout, JPanel container) {
         JPanel panel = initializePanel();
         panel.add(createTitlePanel());
@@ -22,6 +32,9 @@ public class MenuPanelCreator {
         return panel;
     }
 
+    /**
+     * Initializes the main panel with a vertical BoxLayout.
+     */
     private JPanel initializePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -29,6 +42,9 @@ public class MenuPanelCreator {
         return panel;
     }
 
+    /**
+     * Creates the title panel with a label displaying the title and an icon.
+     */
     private JPanel createTitlePanel() {
         JLabel titleLabel = new JLabel("Sieć Hoteli Akropol", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -49,6 +65,10 @@ public class MenuPanelCreator {
         return titlePanel;
     }
 
+    /**
+     * Creates the button panel with two buttons for navigation: one for reservations
+     * and another for the hotel list.
+     */
     private JPanel createButtonPanel(CardLayout layout, JPanel container) {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));

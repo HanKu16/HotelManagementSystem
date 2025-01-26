@@ -13,15 +13,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * A class that creates a login panel for user authentication.
+ * It contains methods to initialize the panel, handle user login, and process the authentication response.
+ */
 public class LoginPanelCreator {
 
     private JsonUtils jsonUtils = new JsonUtils();
     private MyWebSocketHandler myWebSocketHandler;
 
+    /**
+     * Constructs a LoginPanelCreator with the given WebSocket handler.
+     */
     public LoginPanelCreator(MyWebSocketHandler myWebSocketHandler) {
         this.myWebSocketHandler = myWebSocketHandler;
     }
 
+    /**
+     * Creates and returns the login panel, including title, login section, and registration section.
+     */
     public JPanel create(CardLayout layout, JPanel container) {
         JPanel panel = initializePanel();
         panel.add(createTitlePanel());
@@ -32,6 +42,9 @@ public class LoginPanelCreator {
         return panel;
     }
 
+    /**
+     * Initializes the main panel with a vertical BoxLayout and a white background.
+     */
     private JPanel initializePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -39,6 +52,9 @@ public class LoginPanelCreator {
         return panel;
     }
 
+    /**
+     * Creates the title panel, containing the application title and an icon.
+     */
     private JPanel createTitlePanel() {
         JLabel titleLabel = new JLabel("Sieć Hoteli Akropol", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -59,6 +75,9 @@ public class LoginPanelCreator {
         return titlePanel;
     }
 
+    /**
+     * Creates the login section of the panel, including fields for username, password, and a login button.
+     */
     private JPanel createLoginSection(CardLayout layout, JPanel container) {
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
@@ -97,6 +116,9 @@ public class LoginPanelCreator {
         return loginPanel;
     }
 
+    /**
+     * Creates the registration section of the panel with a prompt and a register button.
+     */
     private JPanel createRegisterSection(CardLayout layout, JPanel container) {
         JPanel registerPanel = new JPanel();
         registerPanel.setLayout(new BoxLayout(registerPanel, BoxLayout.Y_AXIS));
@@ -122,6 +144,9 @@ public class LoginPanelCreator {
     }
 
 
+    /**
+     * Creates a JTextField with the specified placeholder text.
+     */
     private JTextField createTextField(String placeholder) {
         JTextField textField = new JTextField(placeholder);
         textField.setPreferredSize(new Dimension(200, 40));
@@ -129,6 +154,9 @@ public class LoginPanelCreator {
         return textField;
     }
 
+    /**
+     * Creates a JPasswordField with the specified placeholder text.
+     */
     private JPasswordField createPasswordField(String placeholder) {
         JPasswordField passwordField = new JPasswordField(placeholder);
         passwordField.setPreferredSize(new Dimension(200, 40));
@@ -136,6 +164,9 @@ public class LoginPanelCreator {
         return passwordField;
     }
 
+    /**
+     * Creates a JButton with the specified text.
+     */
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(200, 40));
@@ -145,6 +176,10 @@ public class LoginPanelCreator {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         return button;
     }
+
+    /**
+     * Handles the login process, sending the authentication request and processing the response.
+     */
     private void handleLogin(CardLayout layout, JPanel container, JTextField loginField, JPasswordField passwordField) {
         String username = loginField.getText().trim();
         String password = new String(passwordField.getPassword());
@@ -172,6 +207,9 @@ public class LoginPanelCreator {
         worker.execute();
     }
 
+    /**
+     * Processes the authentication response and updates the UI accordingly.
+     */
     private void handleAuthenticationResponse(String response, CardLayout layout, JPanel container) {
         try {
             UserAuthenticationResponse authResponse = jsonUtils.deserialize(response, UserAuthenticationResponse.class);
