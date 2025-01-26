@@ -4,6 +4,14 @@ import lombok.Getter;
 import org.po2_jmp.domain.HotelDescription;
 import org.po2_jmp.domain.HotelName;
 
+/**
+ * Represents a hotel entity.
+ * <p>
+ * The {@link Hotel} class encapsulates the details of a hotel, including its name,
+ * description and address. The constructor ensures that none of these details
+ * are null when creating an instance of the hotel.
+ * </p>
+ */
 @Getter
 public class Hotel {
 
@@ -12,10 +20,38 @@ public class Hotel {
     private final HotelDescription description;
     private final Address address;
 
+    /**
+     * Constructs a {@link Hotel} with the specified name, description, and address.
+     * <p>
+     * This constructor assigns a default id of 0 to the hotel and throws an
+     * {@link IllegalArgumentException} if any of the provided parameters are null.
+     * </p>
+     *
+     * @param name the name of the hotel
+     * @param description the description of the hotel
+     * @param address the address of the hotel
+     *
+     * @throws IllegalArgumentException if any of the parameters are null
+     */
     public Hotel(HotelName name, HotelDescription description, Address address) {
         this(0, name, description, address);
     }
 
+    /**
+     * Constructs a {@link Hotel} with the specified id, name, description, and address.
+     * <p>
+     * This constructor allows for the creation of a hotel with a specific id,
+     * and throws an {@link IllegalArgumentException} if any of the provided
+     * parameters are null.
+     * </p>
+     *
+     * @param id the unique identifier for the hotel
+     * @param name the name of the hotel
+     * @param description the description of the hotel
+     * @param address the address of the hotel
+     *
+     * @throws IllegalArgumentException if any of the parameters are null
+     */
     public Hotel(int id, HotelName name, HotelDescription description,
                  Address address) {
         if (areAnyNullParams(name, description, address)) {
