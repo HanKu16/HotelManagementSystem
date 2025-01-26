@@ -9,10 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of the {@link HotelAmenitiesRepository} interface.
+ * This class provides CRUD operations for hotel amenities using SQL queries.
+ * <p>
+ * The methods use the {@link DbUtils} utility class to execute SQL queries and handle
+ * database interaction. The implementation assumes that a database connection is
+ * managed through the {@link DbUtils} and SQL queries are executed accordingly.
+ * </p>
+ */
 public class DbHotelAmenitiesRepository implements HotelAmenitiesRepository {
 
     private final DbUtils dbUtils;
 
+    /**
+     * Constructs a {@link DbHotelAmenitiesRepository} with the specified {@link DbUtils} object.
+     *
+     * @param dbUtils the {@link DbUtils} utility for executing SQL queries
+     * @throws IllegalArgumentException if {@code dbUtils} is {@code null}
+     */
     public DbHotelAmenitiesRepository(DbUtils dbUtils) {
         if (dbUtils == null) {
             throw new IllegalArgumentException("DbUtils can not be null but " +
@@ -21,6 +36,13 @@ public class DbHotelAmenitiesRepository implements HotelAmenitiesRepository {
         this.dbUtils = dbUtils;
     }
 
+    /**
+     * Finds a hotel amenity by its unique ID.
+     *
+     * @param id the ID of the hotel amenity to find
+     * @return an {@link Optional} containing the {@link HotelAmenity}
+     *        if found, or {@link Optional#empty()} if not
+     */
     @Override
     public Optional<HotelAmenity> findById(int id) {
         String sql = "SELECT hotel_amenity_id, name, hotel_id FROM hotel_amenities" +
@@ -30,6 +52,12 @@ public class DbHotelAmenitiesRepository implements HotelAmenitiesRepository {
                 this::createHotelAmenity);
     }
 
+    /**
+     * Finds all hotel amenities associated with a specific hotel ID.
+     *
+     * @param hotelId the ID of the hotel whose amenities to find
+     * @return a {@link List} of {@link HotelAmenity} associated with the hotel
+     */
     @Override
     public List<HotelAmenity> findAllByHotelId(int hotelId) {
         String sql = "SELECT hotel_amenity_id, name, hotel_id FROM hotel_amenities" +
@@ -40,6 +68,12 @@ public class DbHotelAmenitiesRepository implements HotelAmenitiesRepository {
                 new ArrayList<>());
     }
 
+    /**
+     * Adds a new hotel amenity to the database.
+     *
+     * @param amenity the {@link HotelAmenity} to be added
+     * @return an {@link Optional} containing the ID of the newly added hotel amenity
+     */
     @Override
     public Optional<Integer> add(HotelAmenity amenity) {
         String sql = "INSERT INTO hotel_amenities (name, hotel_id)" +

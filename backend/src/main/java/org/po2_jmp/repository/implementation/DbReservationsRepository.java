@@ -10,10 +10,28 @@ import org.po2_jmp.repository.helper.DbUtils;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of the {@link ReservationsRepository} interface using a relational database.
+ * This class provides CRUD operations for reservations, including retrieving reservations by ID,
+ * retrieving reservations by user ID or room ID with reservation date, and adding or deleting reservations
+ * from the database.
+ * <p>
+ * The methods in this class utilize the {@link DbUtils} utility class for executing SQL
+ * queries and managing database interactions. The {@link Reservation} objects are created
+ * from the result sets returned by SQL queries.
+ * </p>
+
+ */
 public class DbReservationsRepository implements ReservationsRepository {
 
     private final DbUtils dbUtils;
 
+    /**
+     * Constructs a {@link DbReservationsRepository} with the specified {@link DbUtils} utility.
+     *
+     * @param dbUtils the {@link DbUtils} utility for executing SQL queries
+     * @throws IllegalArgumentException if {@code dbUtils} is {@code null}
+     */
     public DbReservationsRepository(DbUtils dbUtils) {
         if (dbUtils == null) {
             throw new IllegalArgumentException("DbUtils can not be null " +
@@ -22,6 +40,13 @@ public class DbReservationsRepository implements ReservationsRepository {
         this.dbUtils = dbUtils;
     }
 
+    /**
+     * Finds a reservation by its unique ID.
+     *
+     * @param id the ID of the reservation to find
+     * @return an {@link Optional} containing the {@link Reservation} if found,
+     * or {@link Optional#empty()} if not
+     */
     @Override
     public Optional<Reservation> findById(int id) {
         String sql = "SELECT reservation_id, reservation_date, creation_datetime," +
@@ -33,6 +58,12 @@ public class DbReservationsRepository implements ReservationsRepository {
                 this::createReservation);
     }
 
+    /**
+     * Finds all reservations for a specific user, identified by the user ID.
+     *
+     * @param userId the user ID to search for reservations
+     * @return a list of {@link Reservation} objects associated with the given user ID
+     */
     @Override
     public List<Reservation> findAllByUserId(String userId) {
         String sql = "SELECT reservation_id, reservation_date, creation_datetime," +
@@ -45,6 +76,14 @@ public class DbReservationsRepository implements ReservationsRepository {
                 new ArrayList<>());
     }
 
+    /**
+     * Finds a reservation based on room ID and reservation date.
+     *
+     * @param roomId the ID of the hotel room
+     * @param reservationDate the date the reservation was made
+     * @return an {@link Optional} containing the {@link Reservation} if found, or
+     * {@link Optional#empty()} if not
+     */
     @Override
     public Optional<Reservation> findByRoomIdAndReservationDate(
             int roomId, LocalDate reservationDate) {
@@ -60,6 +99,12 @@ public class DbReservationsRepository implements ReservationsRepository {
                 this::createReservation);
     }
 
+    /**
+     * Adds a new reservation to the database.
+     *
+     * @param reservation the {@link Reservation} to be added
+     * @return an {@link Optional} containing the ID of the newly added reservation
+     */
     @Override
     public Optional<Integer> add(Reservation reservation) {
         String sql = "INSERT INTO reservations" +
@@ -75,6 +120,12 @@ public class DbReservationsRepository implements ReservationsRepository {
                 rs -> rs.getInt("reservation_id"));
     }
 
+    /**
+     * Deletes a reservation from the database by its unique ID.
+     *
+     * @param id the ID of the reservation to delete
+     * @return the number of rows affected
+     */
     @Override
     public int deleteById(int id) {
         String sql = "DELETE FROM reservations WHERE reservation_id = ?;";
