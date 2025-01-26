@@ -7,10 +7,29 @@ import org.po2_jmp.controller.helper.contract.CommandExtractor;
 import org.po2_jmp.controller.helper.contract.RequestValidator;
 import java.util.Optional;
 
+/**
+ * Implementation of the {@link RequestValidator} interface for validating JSON-based requests.
+ * <p>
+ * This class validates a request string by checking its format, ensuring it can be
+ * converted to a valid {@link JSONObject}, and verifying that it contains a valid command.
+ * </p>
+ */
 public class JsonRequestValidator implements RequestValidator {
 
     private final CommandExtractor commandExtractor;
 
+    /**
+     * Constructs a {@link JsonRequestValidator} with the provided
+     * {@link CommandExtractor}.
+     * <p>
+     * This constructor ensures that the provided {@link CommandExtractor}
+     * is not null.
+     * </p>
+     *
+     * @param commandExtractor the {@link CommandExtractor} used to extract
+     *        commands from the request
+     * @throws IllegalArgumentException if the provided {@link CommandExtractor} is null
+     */
     public JsonRequestValidator(CommandExtractor commandExtractor) {
         if (commandExtractor == null) {
             throw new IllegalArgumentException("CommandExtractor can " +
@@ -19,6 +38,24 @@ public class JsonRequestValidator implements RequestValidator {
         this.commandExtractor = commandExtractor;
     }
 
+    /**
+     * Validates the given JSON request string.
+     * <p>
+     * This method performs the following checks:
+     * <ul>
+     *     <li>If the request is null, returns {@link RequestValidationResult#IS_NULL}.</li>
+     *     <li>Attempts to convert the request into a valid {@link JSONObject}; if it fails,
+     *     returns {@link RequestValidationResult#BAD_FORMAT}.</li>
+     *     <li>Uses the {@link CommandExtractor} to extract the command from the request;
+     *     if no command is found, returns {@link RequestValidationResult#NO_COMMAND}.</li>
+     *     <li>If all checks pass, returns {@link RequestValidationResult#OK} indicating a
+     *     valid request.</li>
+     * </ul>
+     * </p>
+     *
+     * @param request the JSON request string to validate
+     * @return the validation result, indicating the status of the request
+     */
     public RequestValidationResult validate(String request) {
         if (request == null) {
             return RequestValidationResult.IS_NULL;

@@ -13,12 +13,34 @@ import org.po2_jmp.service.contract.*;
 import org.po2_jmp.service.helper.*;
 import org.po2_jmp.service.implementation.*;
 
+/**
+ * Redirects processing and responding to messages based on request validation.
+ * <p>
+ * The {@link MessageResponder} class is responsible for validating incoming
+ * requests and generating appropriate responses based on whether the request
+ * is valid or not. It integrates multiple services and repositories to process
+ * valid requests and generate responses accordingly.
+ * </p>
+ */
 public class MessageResponder {
 
     private final RequestValidator validator;
     private final InvalidRequestResponder invalidRequestResponder;
     private final ValidRequestResponder validRequestResponder;
 
+    /**
+     * Constructs a {@link MessageResponder} with default repositories, services,
+     * and responders.
+     * <p>
+     * This constructor initializes the necessary repositories and services, such as:
+     * <ul>
+     *     <li>Database repositories for users, roles, reservations, hotels, etc.</li>
+     *     <li>Various validators like {@link UserRegistrationRequestValidator} and
+     *     {@link ReservationCreationRequestValidator}.</li>
+     *     <li>Request extractor and responder implementations.</li>
+     * </ul>
+     * </p>
+     */
     public MessageResponder() {
         String url = "jdbc:postgresql://localhost:5432/hotel_management_system_db";
         String user = "postgres";
@@ -67,6 +89,16 @@ public class MessageResponder {
                 commandExtractor, jsonConverter);
     }
 
+    /**
+     * Constructs a {@link MessageResponder}.
+     * <p>
+     * Should be used only for tests purpose.
+     * </p>
+     *
+     * @param requestValidator the {@link RequestValidator} to validate requests
+     * @param invalidRequestResponder the {@link InvalidRequestResponder} to respond to invalid requests
+     * @param validRequestResponder the {@link ValidRequestResponder} to respond to valid requests
+     */
     public MessageResponder(RequestValidator requestValidator,
             InvalidRequestResponder invalidRequestResponder,
             ValidRequestResponder validRequestResponder) {
@@ -75,6 +107,18 @@ public class MessageResponder {
         this.validRequestResponder = validRequestResponder;
     }
 
+    /**
+     * Responds to the given message by validating it and generating an appropriate response.
+     * <p>
+     * The method first validates the request using the {@link RequestValidator}.
+     * If the request is valid, it generates a response using the
+     * {@link ValidRequestResponder}. If the request is invalid,
+     * it generates a response using the {@link InvalidRequestResponder}.
+     * </p>
+     *
+     * @param message the request message to respond to
+     * @return the generated response as a {@link String}
+     */
     public String respond(String message) {
         RequestValidationResult validationResult = validator.validate(message);
         return (validationResult == RequestValidationResult.OK) ?
