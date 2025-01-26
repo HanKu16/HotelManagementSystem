@@ -3,6 +3,21 @@ package org.po2_jmp.domain;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+/**
+ * Represents a city name with validation for format, length, and allowed characters.
+ * <p>
+ * A valid city name must meet the following criteria:
+ * <ul>
+ *     <li>Cannot be null or empty.</li>
+ *     <li>Must be between 2 and 60 characters in length.</li>
+ *     <li>Can only contain Polish letters (both uppercase and
+ *     lowercase), spaces, and hyphens.</li>
+ * </ul>
+ * </p>
+ * <p>
+ * If any of these conditions are violated, an {@link IllegalArgumentException} is thrown.
+ * </p>
+ */
 @Getter
 @EqualsAndHashCode
 public class CityName {
@@ -11,6 +26,17 @@ public class CityName {
     private static final int MAX_LENGTH = 60;
     private final String value;
 
+    /**
+     * Constructs a {@link CityName} object with the given city name.
+     * <p>
+     * If the provided city name is invalid, an
+     * {@link IllegalArgumentException} will be thrown.
+     * </p>
+     *
+     * @param cityName the city name to be validated and assigned
+     * @throws IllegalArgumentException if the city name is null,
+     *      empty, too short, too long, or contains invalid characters
+     */
     public CityName(String cityName) {
         if (isNullOrBlank(cityName)) {
             throw new IllegalArgumentException("City name can not be + " +

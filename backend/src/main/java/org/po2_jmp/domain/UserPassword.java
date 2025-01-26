@@ -3,6 +3,19 @@ package org.po2_jmp.domain;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+/**
+ * Represents a user password with validation checks.
+ * <p>
+ * The {@link UserPassword} class ensures that the provided
+ * password is valid by checking the following:
+ * <ul>
+ *   <li>The password must not be null or blank</li>
+ *   <li>The password must have a length between {@link #MIN_LENGTH}
+ *      and {@link #MAX_LENGTH}</li>
+ *   <li>The password can only contain letters and numbers</li>
+ * </ul>
+ * </p>
+ */
 @Getter
 @EqualsAndHashCode
 public class UserPassword {
@@ -11,6 +24,19 @@ public class UserPassword {
     private static final int MAX_LENGTH = 20;
     private final String value;
 
+    /**
+     * Constructs a {@link UserPassword} with the specified password.
+     * <p>
+     * Validates that the password is not null or blank, its length
+     * is within the specified range, and it contains
+     * only letters and numbers.
+     * </p>
+     *
+     * @param password the password to be validated
+     * @throws IllegalArgumentException if the password is null,
+     *         blank, contains invalid characters, or its length
+     *         is outside the specified range
+     */
     public UserPassword(String password) {
         if (isNullOrBlank(password)) {
             throw new IllegalArgumentException(

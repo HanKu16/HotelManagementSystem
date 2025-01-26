@@ -4,12 +4,37 @@ import lombok.EqualsAndHashCode;
 import java.util.regex.Pattern;
 import lombok.Getter;
 
+/**
+ * Represents a postal code in Poland with validation for format.
+ * <p>
+ * A valid postal code for Poland must follow the format XX-XXX, where:
+ * <ul>
+ *     <li>XX represents two digits (0-9)</li>
+ *     <li>XXX represents three digits (0-9)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * If the provided postal code is null or does not match the expected format,
+ * an {@link IllegalArgumentException} is thrown.
+ * </p>
+ */
 @Getter
 @EqualsAndHashCode
 public class PostalCode {
 
     private final String value;
 
+    /**
+     * Constructs a {@link PostalCode} object with the given postal code.
+     * <p>
+     * If the provided postal code is null or does not match the format XX-XXX
+     * (where each X is a digit), an {@link IllegalArgumentException} is thrown.
+     * </p>
+     *
+     * @param postalCode the postal code to be validated and assigned
+     * @throws IllegalArgumentException if the postal code is null or
+     * has an invalid format
+     */
     public PostalCode(String postalCode) {
         if (postalCode == null) {
             throw new IllegalArgumentException(
