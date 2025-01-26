@@ -159,7 +159,7 @@ public class ReservationsPanelCreator {
                     if (resResponse != null && resResponse.getReservations() != null) {
                         for (ReservationDto reservation : resResponse.getReservations()) {
                             String reservationInfo = String.format(
-                                    "ID: %s, Data: %s, Utworzona: %s, Hotel: %s, Liczba gości: %d",
+                                    "Numer rezerwacji: %s, Data: %s, Utworzona: %s, Hotel: %s, Liczba gości: %d",
                                     reservation.getReservationId(),
                                     reservation.getReservationDate(),
                                     formatDateTime(reservation.getCreationDateTime()),
@@ -188,7 +188,7 @@ public class ReservationsPanelCreator {
         }
 
         String selectedReservation = reservationListModel.getElementAt(selectedIndex);
-        String idString = selectedReservation.split(",")[0].replace("ID: ", "").trim();
+        String idString = selectedReservation.split(",")[0].replace("Numer rezerwacji: ", "").trim();
         int reservationId = Integer.parseInt(idString);
         ReservationCancellationRequest cancelRequest = new ReservationCancellationRequest("cancelReservation", reservationId);
 

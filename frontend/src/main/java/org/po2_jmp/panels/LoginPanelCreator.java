@@ -178,8 +178,8 @@ public class LoginPanelCreator {
             if (authResponse.getStatus() == ResponseStatus.OK) {
                 FrontendApp.userId = authResponse.getUserId();
                 layout.show(container, "menuPanel");
-            } else {
-                System.out.println("Authentication failed: " + authResponse.getMessage());
+            } else if (authResponse.getStatus() == ResponseStatus.UNAUTHORIZED) {
+                JOptionPane.showMessageDialog(null, "Nie udało się zalogować");
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();

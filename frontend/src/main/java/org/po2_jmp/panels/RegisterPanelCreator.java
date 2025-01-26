@@ -132,8 +132,8 @@ public class RegisterPanelCreator {
             UserRegistrationResponse regResponse = jsonUtils.deserialize(response, UserRegistrationResponse.class);
             if (regResponse.getStatus() == ResponseStatus.CREATED) {
                 showSuccessDialog(layout, container);
-            } else {
-                System.out.println("Registration failed: " + regResponse.getMessage());
+            } else if (regResponse.getStatus() == ResponseStatus.BAD_REQUEST){
+                JOptionPane.showMessageDialog(null, "Nie udało się zarejestrować: " + regResponse.getMessage());
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -141,7 +141,7 @@ public class RegisterPanelCreator {
     }
 
     private void showSuccessDialog(CardLayout layout, JPanel container) {
-        JOptionPane.showMessageDialog(null, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Udało się zarejestrować");
         layout.show(container, "loginPanel");
     }
     private JPanel createLoginSection(CardLayout layout, JPanel container) {
