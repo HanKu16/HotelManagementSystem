@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * Represents a body request to retrieve the profile of a specific hotel.
+ * Represents a request to retrieve the profile of a specific hotel.
  * <p>
  * This class extends the {@link Request} class and includes additional
  * information about the hotel ID associated with the request.

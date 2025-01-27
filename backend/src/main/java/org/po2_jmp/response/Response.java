@@ -5,6 +5,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Represents a standard response structure for API responses.
+ * <p>
+ * This class encapsulates the response status and a message.
+ * </p>
+ */
 @Getter
 @ToString
 @EqualsAndHashCode
