@@ -133,50 +133,50 @@ public class HotelProfilePanelCreator {
         panel.add(textArea, gbc);
     }
 
-    /**
-     * Creates an options panel with a combo box for selecting guest capacity and a date chooser.
-     */
-    private JPanel createOptionsPanel(List<Integer> guestCapacities, JDateChooser dateChooser) {
+    private JPanel createOptionsAndButtonPanel(CardLayout layout, JPanel container, int hotelId, List<Integer> guestCapacities) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 20, 10, 20);
 
+        // Add label and combo box for selecting guest capacity
         addLabelToPanel(panel, "Liczba osób:", new Font("Arial", Font.PLAIN, 14), gbc, 0, 0, null);
         JComboBox<Integer> peopleComboBox = new JComboBox<>(guestCapacities.toArray(new Integer[0]));
         gbc.gridx = 1;
         panel.add(peopleComboBox, gbc);
 
+        // Add label and date chooser for selecting date
         addLabelToPanel(panel, "Wybierz datę:", new Font("Arial", Font.PLAIN, 14), gbc, 0, 1, null);
+        JDateChooser dateChooser = new JDateChooser();
         gbc.gridx = 1;
         panel.add(dateChooser, gbc);
 
-        return panel;
-    }
+        // Create a sub-panel for buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBackground(new Color(255, 182, 193));
 
-    /**
-     * Creates a button panel with options to navigate back or make a reservation.
-     */
-    private JPanel createButtonPanel(CardLayout layout, JPanel container, int hotelId, JComboBox<Integer> peopleComboBox, JDateChooser dateChooser) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panel.setBackground(new Color(255, 182, 193));
-
+        // Add back button
         JButton backButton = createButton("Cofnij", new Color(255, 182, 193), e -> layout.show(container, "hotelList"));
-        JButton reserveButton = createButton("Rezerwuj", new Color(255, 182, 193), new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(dateChooser.getDate() != null)
-                    handleReservation(layout, container, createReservationRequest(hotelId, peopleComboBox, dateChooser));
-                else
-                    JOptionPane.showMessageDialog(null, "Proszę zaznaczyć datę");
+        buttonPanel.add(backButton);
+
+        // Add reserve button with validation for date selection
+        JButton reserveButton = createButton("Rezerwuj", new Color(255, 182, 193), e -> {
+            if (dateChooser.getDate() != null) {
+                handleReservation(layout, container, createReservationRequest(hotelId, peopleComboBox, dateChooser));
+            } else {
+                JOptionPane.showMessageDialog(null, "Proszę zaznaczyć datę");
             }
         });
-        panel.add(backButton);
-        panel.add(reserveButton);
+        buttonPanel.add(reserveButton);
+
+        // Add the button panel to the main options panel
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        panel.add(buttonPanel, gbc);
 
         return panel;
     }
-
     /**
      * Helper method to create a JButton with specified properties and action listener.
      */
@@ -238,14 +238,8 @@ public class HotelProfilePanelCreator {
                     );
                     panel.add(hotelInfoPanel, BorderLayout.CENTER);
 
-
-                    JDateChooser dateChooser = new JDateChooser();
-                    JPanel optionsPanel = createOptionsPanel(profileResult.getGuestCapacities(), dateChooser);
-                    panel.add(optionsPanel, BorderLayout.EAST);
-
-                    JComboBox<Integer> peopleComboBox = new JComboBox<>(profileResult.getGuestCapacities().toArray(new Integer[0]));
-                    JPanel buttonPanel = createButtonPanel(layout, container, hotelId, peopleComboBox, dateChooser);
-                    panel.add(buttonPanel, BorderLayout.SOUTH);
+                    JPanel optionsPanel = createOptionsAndButtonPanel(layout, container, hotelId, profileResult.getGuestCapacities());
+                    panel.add(optionsPanel, BorderLayout.SOUTH);
 
                     container.add(panel, "hotelProfile");
                     layout.show(container, "hotelProfile");
@@ -281,6 +275,8 @@ public class HotelProfilePanelCreator {
                     layout.show(container, "menuPanel");
                 } else if(reservationResult.getStatus() == ResponseStatus.NOT_FOUND) {
                     JOptionPane.showMessageDialog(null, "Brak dostępnych pokojów w tym dniu");
+                } else if(reservationResult.getStatus() == ResponseStatus.BAD_REQUEST){
+                    JOptionPane.showMessageDialog(null, "Proszę wybrać datę z przyszłości");
                 }
             }
         };
