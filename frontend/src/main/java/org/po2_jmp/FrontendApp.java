@@ -54,9 +54,6 @@ public class FrontendApp implements Runnable {
         JPanel menuPanel = createMenuPanel(cardLayout, container);
         container.add(menuPanel, "menuPanel");
 
-        JPanel testPanel = new JPanel();
-        container.add(testPanel, "testPanel");
-
         cardLayout.show(container, "loginPanel");
 
         return container;

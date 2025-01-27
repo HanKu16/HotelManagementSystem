@@ -38,7 +38,7 @@ public class LoginPanelCreator {
         panel.add(Box.createVerticalStrut(20));
         panel.add(createLoginSection(layout, container));
         panel.add(Box.createVerticalStrut(10));
-        panel.add(createRegisterSection(layout, container));
+        panel.add(createRegisterButton(layout, container));
         return panel;
     }
 
@@ -119,7 +119,7 @@ public class LoginPanelCreator {
     /**
      * Creates the registration section of the panel with a prompt and a register button.
      */
-    private JPanel createRegisterSection(CardLayout layout, JPanel container) {
+    private JPanel createRegisterButton(CardLayout layout, JPanel container) {
         JPanel registerPanel = new JPanel();
         registerPanel.setLayout(new BoxLayout(registerPanel, BoxLayout.Y_AXIS));
         registerPanel.setBackground(Color.WHITE);

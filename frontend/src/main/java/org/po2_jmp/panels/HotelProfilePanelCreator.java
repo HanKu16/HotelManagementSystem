@@ -144,27 +144,22 @@ public class HotelProfilePanelCreator {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 20, 10, 20);
 
-        // Add label and combo box for selecting guest capacity
         addLabelToPanel(panel, "Liczba osób:", new Font("Arial", Font.PLAIN, 14), gbc, 0, 0, null);
         JComboBox<Integer> peopleComboBox = new JComboBox<>(guestCapacities.toArray(new Integer[0]));
         gbc.gridx = 1;
         panel.add(peopleComboBox, gbc);
 
-        // Add label and date chooser for selecting date
         addLabelToPanel(panel, "Wybierz datę:", new Font("Arial", Font.PLAIN, 14), gbc, 0, 1, null);
         JDateChooser dateChooser = new JDateChooser();
         gbc.gridx = 1;
         panel.add(dateChooser, gbc);
 
-        // Create a sub-panel for buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(new Color(255, 182, 193));
 
-        // Add back button
         JButton backButton = createButton("Cofnij", new Color(255, 182, 193), e -> layout.show(container, "hotelList"));
         buttonPanel.add(backButton);
 
-        // Add reserve button with validation for date selection
         JButton reserveButton = createButton("Rezerwuj", new Color(255, 182, 193), e -> {
             if (dateChooser.getDate() != null) {
                 handleReservation(layout, container, createReservationRequest(hotelId, peopleComboBox, dateChooser));
@@ -174,7 +169,6 @@ public class HotelProfilePanelCreator {
         });
         buttonPanel.add(reserveButton);
 
-        // Add the button panel to the main options panel
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;

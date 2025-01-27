@@ -75,7 +75,7 @@ public class MyWebSocketHandler {
         }
     }
     public String getResponse() throws InterruptedException {
-        return responseQueue.take();  // This will block until a message is available
+        return responseQueue.take();
     }
 
 }
