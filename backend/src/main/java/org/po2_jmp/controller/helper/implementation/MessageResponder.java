@@ -1,5 +1,8 @@
 package org.po2_jmp.controller.helper.implementation;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.po2_jmp.Main;
 import org.po2_jmp.controller.helper.RequestValidationResult;
 import org.po2_jmp.controller.helper.contract.CommandExtractor;
 import org.po2_jmp.controller.helper.contract.InvalidRequestResponder;
@@ -12,6 +15,9 @@ import org.po2_jmp.repository.implementation.*;
 import org.po2_jmp.service.contract.*;
 import org.po2_jmp.service.helper.*;
 import org.po2_jmp.service.implementation.*;
+import java.io.InputStream;
+import java.util.Properties;
+import static java.lang.System.err;
 
 /**
  * Redirects processing and responding to messages based on request validation.
@@ -24,6 +30,7 @@ import org.po2_jmp.service.implementation.*;
  */
 public class MessageResponder {
 
+    private static final Logger LOGGER = LogManager.getLogger(MessageResponder.class);
     private final RequestValidator validator;
     private final InvalidRequestResponder invalidRequestResponder;
     private final ValidRequestResponder validRequestResponder;
@@ -42,9 +49,29 @@ public class MessageResponder {
      * </p>
      */
     public MessageResponder() {
-        String url = "jdbc:postgresql://localhost:5432/hotel_management_system_db";
-        String user = "postgres";
-        String password = "1234";
+        String url = "";
+        String user = "";
+        String password = "";
+
+        Properties properties = new Properties();
+        try (InputStream inputStream = Main.class.getClassLoader()
+                .getResourceAsStream("application.properties")) {
+            if (inputStream == null) {
+                LOGGER.info("Can not read database properties from " +
+                                "config.properties because file does not " +
+                                "exist, app will be closed: {}",
+                        err.toString());
+                System.exit(1);
+            }
+            properties.load(inputStream);
+            url = properties.getProperty("db.url");
+            user = properties.getProperty("db.username");
+            password = properties.getProperty("db.password");
+        } catch (Exception e) {
+            LOGGER.info("Error happen during initialization in MessageResponder" +
+                    " app will be closed");
+            System.exit(1);
+        }
 
         DbUtils dbUtils = new DbUtilsImpl(url, user, password);
         UsersRepository usersRepository = new DbUsersRepository(dbUtils);
