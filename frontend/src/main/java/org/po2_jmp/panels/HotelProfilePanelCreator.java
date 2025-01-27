@@ -133,6 +133,11 @@ public class HotelProfilePanelCreator {
         panel.add(textArea, gbc);
     }
 
+
+    /**
+     * Creates a JPanel containing options for selecting guest capacity, a date,
+     * and buttons for navigating or reserving.
+     */
     private JPanel createOptionsAndButtonPanel(CardLayout layout, JPanel container, int hotelId, List<Integer> guestCapacities) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
