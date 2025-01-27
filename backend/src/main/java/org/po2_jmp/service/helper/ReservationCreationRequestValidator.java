@@ -7,11 +7,32 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code ReservationCreationRequestValidator} class is responsible for validating
+ * a {@link ReservationCreationRequest} before it is processed further. It checks whether
+ * the reservation date, the user, and the hotel in the request are valid.
+ *
+ * <p>This class ensures that:</p>
+ * <ul>
+ *   <li>The reservation date is today or in the future.</li>
+ *   <li>The user exists in the system.</li>
+ *   <li>The specified hotel exists in the system.</li>
+ * </ul>
+ */
 public class ReservationCreationRequestValidator {
 
     private final UsersRepository usersRepository;
     private final HotelsRepository hotelsRepository;
 
+    /**
+     * Constructs a new {@code ReservationCreationRequestValidator} with the specified
+     * {@link UsersRepository} and {@link HotelsRepository}.
+     *
+     * @param usersRepository The {@link UsersRepository} used to check if the user exists.
+     * @param hotelsRepository The {@link HotelsRepository} used to check if the hotel exists.
+     * @throws IllegalArgumentException if either {@link UsersRepository} or
+     *         {@link HotelsRepository} is {@code null}.
+     */
     public ReservationCreationRequestValidator(
             UsersRepository usersRepository,
             HotelsRepository hotelsRepository) {
@@ -27,6 +48,13 @@ public class ReservationCreationRequestValidator {
         this.hotelsRepository = hotelsRepository;
     }
 
+    /**
+     * Validates a {@link ReservationCreationRequest} by checking the reservation date,
+     * the existence of the user, and the existence of the hotel.
+     *
+     * @param request The {@link ReservationCreationRequest} to be validated.
+     * @return A list of error messages. If the request is valid, the list will be empty.
+     */
     public List<String> validate(ReservationCreationRequest request) {
         List<String> errorMessages = new ArrayList<>();
         if (!isReservationDateValid(request.getReservationDate())) {

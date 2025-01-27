@@ -15,12 +15,27 @@ import org.po2_jmp.request.HotelsOverviewsRequest;
 import org.po2_jmp.response.*;
 import org.po2_jmp.service.contract.HotelsProvider;
 
+/**
+ * The {@code HotelsProviderImpl} class implements the {@link HotelsProvider} interface.
+ * It is responsible for providing hotel profile and overview data from various repositories.
+ *
+ * <p>This class uses the {@link HotelsRepository}, {@link HotelAmenitiesRepository}, and
+ * {@link HotelRoomsRepository} to fetch relevant hotel data.</p>
+ */
 public class HotelsProviderImpl implements HotelsProvider {
 
     private final HotelsRepository hotelsRepository;
     private final HotelAmenitiesRepository hotelAmenitiesRepository;
     private final HotelRoomsRepository hotelRoomsRepository;
 
+    /**
+     * Constructs a new {@code HotelsProviderImpl} instance with the specified repositories.
+     *
+     * @param hotelsRepository The repository used to fetch hotel data.
+     * @param hotelAmenitiesRepository The repository used to fetch hotel amenities data.
+     * @param hotelRoomsRepository The repository used to fetch hotel room data.
+     * @throws IllegalArgumentException if any of the repositories are {@code null}.
+     */
     public HotelsProviderImpl(
             HotelsRepository hotelsRepository,
             HotelAmenitiesRepository hotelAmenitiesRepository,
@@ -42,6 +57,14 @@ public class HotelsProviderImpl implements HotelsProvider {
         this.hotelRoomsRepository = hotelRoomsRepository;
     }
 
+    /**
+     * Retrieves the profile of a specific hotel based on the provided request.
+     *
+     * @param request The {@link HotelProfileRequest} containing the
+     *        hotel ID to fetch data for.
+     * @return A {@link HotelProfileResponse} containing hotel data
+     *        or a not found response if the hotel doesn't exist.
+     */
     @Override
     public HotelProfileResponse getProfile(HotelProfileRequest request) {
         int hotelId = request.getHotelId();
@@ -58,6 +81,12 @@ public class HotelsProviderImpl implements HotelsProvider {
                 hotel.getAddress(), amenities, guestCapacities);
     }
 
+    /**
+     * Retrieves a list of overviews for all hotels in the system.
+     *
+     * @param request The {@link HotelsOverviewsRequest} used to initiate the overview retrieval.
+     * @return A {@link HotelsOverviewsResponse} containing a list of hotel overviews.
+     */
     @Override
     public HotelsOverviewsResponse getHotelsOverviews(
             HotelsOverviewsRequest request) {

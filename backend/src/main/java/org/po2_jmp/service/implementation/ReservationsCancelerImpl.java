@@ -9,10 +9,23 @@ import org.po2_jmp.response.ReservationCancellationResponse;
 import org.po2_jmp.response.ResponseStatus;
 import org.po2_jmp.service.contract.ReservationsCanceler;
 
+/**
+ * The {@code ReservationsCancelerImpl} class implements the {@link ReservationsCanceler}
+ * interface. It is responsible for handling reservation cancellations. The class
+ * interacts with the {@link ReservationsRepository} to check for the existence of
+ * a reservation, ensure it is cancelable.
+ */
 public class ReservationsCancelerImpl implements ReservationsCanceler {
 
     private final ReservationsRepository reservationsRepository;
 
+    /**
+     * Constructs a new {@code ReservationsCancelerImpl} instance with the
+     * specified {@link ReservationsRepository}.
+     *
+     * @param reservationsRepository The repository used to fetch and delete reservations.
+     * @throws IllegalArgumentException if the {@code reservationsRepository} is {@code null}.
+     */
     public ReservationsCancelerImpl(ReservationsRepository reservationsRepository) {
         if (reservationsRepository == null) {
             throw new IllegalArgumentException("ReservationsRepository can " +
@@ -21,6 +34,16 @@ public class ReservationsCancelerImpl implements ReservationsCanceler {
         this.reservationsRepository = reservationsRepository;
     }
 
+    /**
+     * Cancels a reservation based on the provided {@link ReservationCancellationRequest}.
+     * It checks if the reservation exists, ensures the reservation date is in the future,
+     * and if so, deletes the reservation. Otherwise, it returns an appropriate response.
+     *
+     * @param request The {@link ReservationCancellationRequest} containing the
+     *        reservation ID to be canceled.
+     * @return A {@link ReservationCancellationResponse} indicating the result
+     *        of the cancellation attempt.
+     */
     @Override
     public ReservationCancellationResponse cancel(
             ReservationCancellationRequest request) {

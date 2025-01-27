@@ -17,6 +17,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@code ReservationsCreatorImpl} class implements the {@link ReservationsCreator} interface.
+ * It handles the creation of reservations for a given hotel and date, ensuring that all
+ * validation checks are met. This includes checking room availability, user existence,
+ * and ensuring that the reservation can be created successfully.
+ */
 public class ReservationsCreatorImpl implements ReservationsCreator {
 
     private final ReservationsRepository reservationsRepository;
@@ -25,6 +31,17 @@ public class ReservationsCreatorImpl implements ReservationsCreator {
     private final AvailableRoomFinder availableRoomFinder;
     private final ReservationCreationRequestValidator requestValidator;
 
+    /**
+     * Constructs a new {@code ReservationsCreatorImpl} instance with the specified repositories
+     * and helper classes. It validates the constructor parameters to ensure they are non-null.
+     *
+     * @param reservationsRepository The repository used for saving reservations.
+     * @param hotelsRepository The repository used for fetching hotel details.
+     * @param hotelRoomsRepository The repository used for fetching hotel rooms.
+     * @param availableRoomFinder The helper to find available rooms based on reservation date.
+     * @param requestValidator The validator for checking request validity.
+     * @throws IllegalArgumentException if any of the provided parameters is {@code null}.
+     */
     public ReservationsCreatorImpl(
             ReservationsRepository reservationsRepository,
             HotelsRepository hotelsRepository,
@@ -40,6 +57,14 @@ public class ReservationsCreatorImpl implements ReservationsCreator {
         this.requestValidator = requestValidator;
     }
 
+    /**
+     * Creates a reservation based on the provided {@link ReservationCreationRequest}.
+     * It first validates the request, then checks for room availability and if successful,
+     * it creates the reservation.
+     *
+     * @param request The {@link ReservationCreationRequest} containing details about the reservation.
+     * @return A {@link ReservationCreationResponse} indicating the result of the reservation creation.
+     */
     @Override
     public ReservationCreationResponse create(ReservationCreationRequest request) {
         List<String> errorMessages = requestValidator.validate(request);

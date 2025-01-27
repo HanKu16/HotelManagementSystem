@@ -15,12 +15,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@code ReservationsProviderImpl} class implements the {@link ReservationsProvider} interface.
+ * It provides functionality for retrieving all reservations made by a user, returning the details
+ * of each reservation in the form of {@link ReservationDto} objects.
+ */
 public class ReservationsProviderImpl implements ReservationsProvider {
 
     private final ReservationsRepository reservationsRepository;
     private final HotelRoomsRepository hotelRoomsRepository;
     private final HotelsRepository hotelsRepository;
 
+    /**
+     * Constructs a new {@code ReservationsProviderImpl} instance with the specified repositories.
+     *
+     * @param reservationsRepository The repository used for fetching reservations.
+     * @param hotelRoomsRepository The repository used for fetching hotel room details.
+     * @param hotelsRepository The repository used for fetching hotel details.
+     */
     public ReservationsProviderImpl(
             ReservationsRepository reservationsRepository,
             HotelRoomsRepository hotelRoomsRepository,
@@ -30,6 +42,14 @@ public class ReservationsProviderImpl implements ReservationsProvider {
         this.hotelsRepository = hotelsRepository;
     }
 
+    /**
+     * Retrieves the list of reservations for a specified user.
+     *
+     * @param request The {@link UserReservationsRequest} containing the user
+     *        ID for which reservations are requested.
+     * @return A {@link UserReservationsResponse} containing a list of
+     *        {@link ReservationDto} objects representing reservation.
+     */
     @Override
     public UserReservationsResponse getUserReservations(UserReservationsRequest request) {
         List<Reservation> userReservations = reservationsRepository

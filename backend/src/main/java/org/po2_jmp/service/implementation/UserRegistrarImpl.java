@@ -13,12 +13,23 @@ import org.po2_jmp.response.UserRegistrationResponse;
 import org.po2_jmp.service.contract.UserRegistrar;
 import org.po2_jmp.service.helper.UserRegistrationRequestValidator;
 
+/**
+ * The {@code UserRegistrarImpl} class implements the {@link UserRegistrar} interface.
+ * It handles the user registration process by validating the registration request,
+ * creating a new user, and saving it to the repository.
+ */
 public class UserRegistrarImpl implements UserRegistrar {
 
     private static final int USER_ROLE_ID = 1;
     private final UsersRepository usersRepository;
     private final UserRegistrationRequestValidator requestValidator;
 
+    /**
+     * Constructs a new {@code UserRegistrarImpl} instance with the specified repositories and validator.
+     *
+     * @param usersRepository The repository used for saving user data.
+     * @param requestValidator The validator used for validating the user registration request.
+     */
     public UserRegistrarImpl(UsersRepository usersRepository,
             UserRegistrationRequestValidator requestValidator) {
         if (usersRepository == null) {
@@ -33,6 +44,13 @@ public class UserRegistrarImpl implements UserRegistrar {
         this.requestValidator = requestValidator;
     }
 
+    /**
+     * Registers a new user by validating the provided registration request, creating the user, and saving
+     * the user to the repository.
+     *
+     * @param request The {@link UserRegistrationRequest} containing the user details for registration.
+     * @return A {@link UserRegistrationResponse} indicating the result of the registration process.
+     */
     @Override
     public UserRegistrationResponse register(UserRegistrationRequest request) {
         List<String> errors = requestValidator.validate(request);

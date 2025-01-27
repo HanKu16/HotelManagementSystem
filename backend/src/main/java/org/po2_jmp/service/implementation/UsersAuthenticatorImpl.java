@@ -10,11 +10,22 @@ import org.po2_jmp.response.UserAuthenticationResponse;
 import org.po2_jmp.service.contract.UsersAuthenticator;
 import java.util.Optional;
 
+/**
+ * The {@code UsersAuthenticatorImpl} class implements the {@link UsersAuthenticator} interface.
+ * It handles the authentication process of a user by validating the credentials and
+ * returning the appropriate response.
+ */
 public class UsersAuthenticatorImpl implements UsersAuthenticator {
 
     private final UsersRepository usersRepository;
     private final RolesRepository rolesRepository;
 
+    /**
+     * Constructs a new {@code UsersAuthenticatorImpl} instance with the specified repositories.
+     *
+     * @param usersRepository The repository used to fetch user data.
+     * @param rolesRepository The repository used to fetch role data.
+     */
     public UsersAuthenticatorImpl(UsersRepository usersRepository,
             RolesRepository rolesRepository) {
         if (usersRepository == null) {
@@ -29,6 +40,16 @@ public class UsersAuthenticatorImpl implements UsersAuthenticator {
         this.rolesRepository = rolesRepository;
     }
 
+    /**
+     * Authenticates the user based on the provided authentication request.
+     * This method validates the credentials and returns a response indicating
+     * success or failure.
+     *
+     * @param request The {@link UserAuthenticationRequest} containing the user ID
+     *        and password for authentication.
+     * @return A {@link UserAuthenticationResponse} indicating the result of the
+     *        authentication process.
+     */
     @Override
     public UserAuthenticationResponse authenticate(UserAuthenticationRequest request) {
         Optional<UserAuthenticationResponse> optionalResponse = validateRequest(request);
