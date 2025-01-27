@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
  * making the reservation, and the room being reserved. It ensures that the
  * reservation date, creation date time, and user ID are not null when
  * creating a reservation instance.
- * </p>
  */
 @Getter
 public class Reservation {
@@ -31,7 +30,6 @@ public class Reservation {
      * This constructor assigns a default id of 0 to the reservation and
      * throws an {@link IllegalArgumentException} if any of the reservation
      * date, creation date time, or user ID is null.
-     * </p>
      *
      * @param reservationDate the date on which the reservation was made
      * @param creationDateTime the date and time when the reservation was created
@@ -54,7 +52,6 @@ public class Reservation {
      * This constructor allows for the creation of a reservation with a
      * specific id and throws an {@link IllegalArgumentException}
      * if any of the reservation date, creation date time, or user ID is null.
-     * </p>
      *
      * @param id the unique identifier for the reservation
      * @param reservationDate the date on which the reservation was made

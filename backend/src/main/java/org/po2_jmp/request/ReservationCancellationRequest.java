@@ -11,7 +11,6 @@ import lombok.ToString;
  * <p>
  * This class extends the {@link Request} class and includes additional information
  * specific to reservation cancellation, such as the {@code reservationId}.
- * </p>
  */
 @Getter
 @ToString

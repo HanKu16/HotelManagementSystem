@@ -12,7 +12,6 @@ import java.util.Optional;
  * modifying reservation information in a data storage system. This interface provides methods
  * to retrieve reservations by different criteria, add new reservations, and delete reservations
  * from the system.
- * </p>
  */
 public interface ReservationsRepository {
 

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
  * This class uses the Jackson {@link ObjectMapper} to convert Java objects to JSON
  * and vice versa. Additionally, it includes options to serialize non-null
  * fields only during serialization.
- * </p>
  */
 public class JsonConverter {
 

@@ -22,7 +22,6 @@ public class Role {
      * <p>
      * This constructor throws an {@link IllegalArgumentException}
      * if the role name is null.
-     * </p>
      *
      * @param id the unique identifier for the role
      * @param name the name of the role

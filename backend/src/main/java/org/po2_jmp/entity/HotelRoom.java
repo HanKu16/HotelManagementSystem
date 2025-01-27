@@ -10,7 +10,6 @@ import org.po2_jmp.domain.RoomGuestCapacity;
  * including its guest capacity, the unique identifier of the room, and the
  * identifier of the associated hotel. It ensures that the
  * guest capacity is not null when creating an instance of the room.
- * </p>
  */
 @Getter
 public class HotelRoom {
@@ -24,7 +23,6 @@ public class HotelRoom {
      * <p>
      * This constructor assigns a default id of 0 to the hotel room and throws an
      * {@link IllegalArgumentException} if the provided guest capacity is null.
-     * </p>
      *
      * @param guestCapacity the guest capacity of the hotel room
      * @param hotelId the identifier of the associated hotel

@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
  * including the user's unique identifier, password, creation date and time,
  * and associated role. It ensures that none of the critical attributes
  * (id, password, and creation date) are null during object construction.
- * </p>
  */
 @Getter
 public class User {
@@ -26,7 +25,6 @@ public class User {
      * <p>
      * This constructor automatically sets the creation date and time to the
      * current date and time using {@link LocalDateTime#now()}.
-     * </p>
      *
      * @param id the unique identifier for the user
      * @param password the user's password
@@ -46,7 +44,6 @@ public class User {
      * This constructor ensures that none of the critical parameters
      * (id, password, and creation date) are null by throwing an
      * {@link IllegalArgumentException} if any of them are.
-     * </p>
      *
      * @param id the unique identifier for the user
      * @param password the user's password

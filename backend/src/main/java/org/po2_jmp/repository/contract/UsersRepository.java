@@ -9,7 +9,6 @@ import java.util.Optional;
  * The {@link UsersRepository} interface defines the contract for accessing and
  * managing user information in a data storage system. This interface provides
  * methods to find a user by their unique identifier and to add a new user to the repository.
- * </p>
  */
 public interface UsersRepository {
 

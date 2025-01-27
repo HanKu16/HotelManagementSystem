@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
  * <p>
  * This class encapsulates the details of a reservation including the reservation ID,
  * reservation date, creation date and time, hotel name, and room guest capacity.
- * </p>
  */
 @Getter
 @ToString

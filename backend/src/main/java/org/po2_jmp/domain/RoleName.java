@@ -10,7 +10,6 @@ package org.po2_jmp.domain;
  *     <li>{@code ADMIN} - Represents an administrator with
  *          all privileges.</li>
  * </ul>
- * </p>
  */
 public enum RoleName {
 

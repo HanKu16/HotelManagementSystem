@@ -9,7 +9,6 @@ import java.util.Optional;
  * The {@link RolesRepository} interface defines the contract for accessing and
  * retrieving role information from a data storage system. This interface provides
  * methods to retrieve a role by its unique identifier.
- * </p>
  */
 public interface RolesRepository {
 

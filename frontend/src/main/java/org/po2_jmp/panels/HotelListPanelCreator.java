@@ -20,8 +20,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
- * @class HotelListPanelCreator
- * @brief Creates and manages a panel displaying a list of hotels retrieved via WebSocket communication.
+ * Creates and manages a panel displaying a list of hotels retrieved via WebSocket communication.
  */
 public class HotelListPanelCreator {
     private HotelsOverviewsResponse result;
@@ -29,7 +28,7 @@ public class HotelListPanelCreator {
     private JsonUtils jsonUtils = new JsonUtils();
 
     /**
-     * @brief Constructs the HotelListPanelCreator with a WebSocket handler.
+     * Constructs the HotelListPanelCreator with a WebSocket handler.
      * @param myWebSocketHandler The WebSocket handler for communication.
      */
 
@@ -38,14 +37,14 @@ public class HotelListPanelCreator {
     }
 
     /**
-     * @brief Creates the hotel list panel.
+     * Creates the hotel list panel.
      */
     public void create(CardLayout layout, JPanel container) {
         handleHotelList(layout, container);
     }
 
     /**
-     * @brief Handles the retrieval and display of the hotel list.
+     * Handles the retrieval and display of the hotel list.
      */
     private void handleHotelList(CardLayout layout, JPanel container) {
         HotelsOverviewsRequest overviewsRequest = new HotelsOverviewsRequest("getHotelsOverviews");
@@ -120,7 +119,7 @@ public class HotelListPanelCreator {
     }
 
     /**
-     * @brief Initializes and returns a blank panel with default properties.
+     * Initializes and returns a blank panel with default properties.
      */
     private JPanel initializePanel() {
         JPanel panel = new JPanel();
@@ -131,7 +130,7 @@ public class HotelListPanelCreator {
     }
 
     /**
-     * @brief Creates a panel for an individual hotel.
+     * Creates a panel for an individual hotel.
      * @return A JPanel displaying hotel details.
      */
     private JPanel createHotelPanel(int hotelId, String hotelName, String address, String amenities, CardLayout layout, JPanel container) {
@@ -183,7 +182,7 @@ public class HotelListPanelCreator {
     }
 
     /**
-     * @brief Processes and deserializes the hotel list response.
+     * Processes and deserializes the hotel list response.
      */
     private HotelsOverviewsResponse handleResponse(String response) {
         HotelsOverviewsResponse ovsResponse = null;

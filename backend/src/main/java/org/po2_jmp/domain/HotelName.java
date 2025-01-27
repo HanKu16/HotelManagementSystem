@@ -13,10 +13,8 @@ import lombok.Getter;
  *          characters (inclusive).</li>
  *     <li>Can only contain letters and white spaces.</li>
  * </ul>
- * </p>
  * <p>
  * If any of these conditions are violated, an {@link IllegalArgumentException} is thrown.
- * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -32,7 +30,6 @@ public class HotelName {
      * If the provided hotel name is invalid (null, blank, not within length
      * range, or containing invalid characters), an {@link IllegalArgumentException}
      * will be thrown.
-     * </p>
      *
      * @param hotelName the hotel name to be validated and assigned
      * @throws IllegalArgumentException if the hotel name is null, blank,

@@ -11,7 +11,6 @@ import lombok.ToString;
  * <p>
  * This class extends the {@link Request} class and serves as a specialized request
  * that requires only a command parameter.
- * </p>
  */
 @Getter
 @ToString

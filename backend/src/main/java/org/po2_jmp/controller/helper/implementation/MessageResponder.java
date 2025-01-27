@@ -26,7 +26,6 @@ import static java.lang.System.err;
  * requests and generating appropriate responses based on whether the request
  * is valid or not. It integrates multiple services and repositories to process
  * valid requests and generate responses accordingly.
- * </p>
  */
 public class MessageResponder {
 
@@ -46,7 +45,6 @@ public class MessageResponder {
      *     {@link ReservationCreationRequestValidator}.</li>
      *     <li>Request extractor and responder implementations.</li>
      * </ul>
-     * </p>
      */
     public MessageResponder() {
         String url = "";

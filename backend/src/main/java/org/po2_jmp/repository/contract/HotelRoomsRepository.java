@@ -11,7 +11,6 @@ import java.util.Optional;
  * modifying hotel room information in a data storage system. This interface
  * provides methods to retrieve hotel rooms by their identifier, find rooms for
  * a specific hotel and its guest capacity, and add new rooms to the system.
- * </p>
  */
 public interface HotelRoomsRepository {
 

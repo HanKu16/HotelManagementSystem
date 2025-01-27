@@ -10,7 +10,6 @@ import org.po2_jmp.domain.HotelName;
  * The {@link Hotel} class encapsulates the details of a hotel, including its name,
  * description and address. The constructor ensures that none of these details
  * are null when creating an instance of the hotel.
- * </p>
  */
 @Getter
 public class Hotel {
@@ -25,7 +24,6 @@ public class Hotel {
      * <p>
      * This constructor assigns a default id of 0 to the hotel and throws an
      * {@link IllegalArgumentException} if any of the provided parameters are null.
-     * </p>
      *
      * @param name the name of the hotel
      * @param description the description of the hotel
@@ -43,7 +41,6 @@ public class Hotel {
      * This constructor allows for the creation of a hotel with a specific id,
      * and throws an {@link IllegalArgumentException} if any of the provided
      * parameters are null.
-     * </p>
      *
      * @param id the unique identifier for the hotel
      * @param name the name of the hotel

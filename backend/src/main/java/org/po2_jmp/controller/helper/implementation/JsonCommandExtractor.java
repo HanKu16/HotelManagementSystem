@@ -13,7 +13,6 @@ import java.util.Optional;
  * attempts to extract the command value from the JSON object. If the request
  * cannot be converted to a valid JSON object or the "command" field is missing,
  * an empty {@link Optional} is returned.
- * </p>
  */
 public class JsonCommandExtractor implements CommandExtractor {
 

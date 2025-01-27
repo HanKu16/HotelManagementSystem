@@ -12,7 +12,6 @@ import org.po2_jmp.response.ResponseStatus;
  * <p>
  * This class generates JSON responses for different types of invalid requests,
  * such as null requests, requests with bad format, or requests without a command.
- * </p>
  */
 public class InvalidRequestResponderImpl implements InvalidRequestResponder {
 

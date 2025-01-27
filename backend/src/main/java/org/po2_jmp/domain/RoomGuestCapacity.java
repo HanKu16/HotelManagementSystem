@@ -8,7 +8,6 @@ import lombok.Getter;
  * <p>
  * The {@link RoomGuestCapacity} class validates that the provided
  * capacity is within the allowable range (1 to 5 guests)
- * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -23,7 +22,6 @@ public class RoomGuestCapacity {
      * <p>
      * Validates that the provided capacity is between the minimum and
      * maximum allowable values.
-     * </p>
      *
      * @param capacity the number of guests the room can accommodate
      * @throws IllegalArgumentException if the capacity is less

@@ -10,7 +10,6 @@ import lombok.ToString;
  * <p>
  * This class extends the {@link Response} class and provides additional details
  * about the user registration result, including the user ID.
- * </p>
  */
 @Getter
 @ToString

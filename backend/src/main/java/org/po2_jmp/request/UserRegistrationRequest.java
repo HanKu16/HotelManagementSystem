@@ -13,7 +13,6 @@ import lombok.ToString;
  * This class extends the {@link Request} class and includes additional fields
  * required for user registration, such as the {@code userId}, {@code password},
  * and {@code confirmedPassword}.
- * </p>
  */
 @Getter
 @ToString

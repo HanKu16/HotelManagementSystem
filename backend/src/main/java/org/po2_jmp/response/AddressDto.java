@@ -9,7 +9,6 @@ import lombok.ToString;
  * Represents an address data transfer object (DTO) containing details about a specific address.
  * <p>
  * This class includes fields for the city, street, postal code, and building number.
- * </p>
  */
 @Getter
 @ToString

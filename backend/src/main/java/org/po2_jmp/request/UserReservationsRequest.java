@@ -10,7 +10,6 @@ import lombok.ToString;
  * <p>
  * This class extends the {@link Request} class and includes an additional field,
  * {@code userId}, which specifies the user for whom the reservations are being requested.
- * </p>
  */
 @Getter
 @ToString

@@ -10,7 +10,6 @@ import org.po2_jmp.domain.HotelAmenityName;
  * including its name, the associated hotel id, and its unique identifier.
  * It ensures that the hotel amenity name is not null when creating an
  * instance of the amenity.
- * </p>
  */
 @Getter
 public class HotelAmenity {
@@ -24,7 +23,6 @@ public class HotelAmenity {
      * <p>
      * This constructor assigns a default id of 0 to the hotel amenity and
      * throws an {@link IllegalArgumentException} if the provided amenity name is null.
-     * </p>
      *
      * @param name the name of the hotel amenity
      * @param hotelId the identifier of the associated hotel
@@ -41,7 +39,6 @@ public class HotelAmenity {
      * This constructor allows for the creation of a hotel amenity with a
      * specific id and throws an {@link IllegalArgumentException}
      * if the provided amenity name is null.
-     * </p>
      *
      * @param id the unique identifier for the hotel amenity
      * @param amenityName the name of the hotel amenity

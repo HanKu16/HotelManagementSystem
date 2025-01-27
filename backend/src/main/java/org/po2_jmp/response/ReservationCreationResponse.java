@@ -11,7 +11,6 @@ import java.time.LocalDate;
  * <p>
  * This class extends {@link Response} and includes the name of the hotel and the reservation
  * date for the created reservation.
- * </p>
  */
 @Getter
 @ToString

@@ -12,11 +12,9 @@ import lombok.Getter;
  *     <li>XX represents two digits (0-9)</li>
  *     <li>XXX represents three digits (0-9)</li>
  * </ul>
- * </p>
  * <p>
  * If the provided postal code is null or does not match the expected format,
  * an {@link IllegalArgumentException} is thrown.
- * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -29,7 +27,6 @@ public class PostalCode {
      * <p>
      * If the provided postal code is null or does not match the format XX-XXX
      * (where each X is a digit), an {@link IllegalArgumentException} is thrown.
-     * </p>
      *
      * @param postalCode the postal code to be validated and assigned
      * @throws IllegalArgumentException if the postal code is null or

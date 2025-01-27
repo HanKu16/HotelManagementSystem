@@ -10,7 +10,6 @@ import lombok.ToString;
  * <p>
  * This class extends {@link Response} and includes the reservation ID in the response,
  * which is relevant when a reservation has been successfully cancelled.
- * </p>
  */
 @Getter
 @ToString

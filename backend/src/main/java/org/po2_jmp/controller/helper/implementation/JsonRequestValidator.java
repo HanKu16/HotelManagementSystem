@@ -12,7 +12,6 @@ import java.util.Optional;
  * <p>
  * This class validates a request string by checking its format, ensuring it can be
  * converted to a valid {@link JSONObject}, and verifying that it contains a valid command.
- * </p>
  */
 public class JsonRequestValidator implements RequestValidator {
 
@@ -24,7 +23,6 @@ public class JsonRequestValidator implements RequestValidator {
      * <p>
      * This constructor ensures that the provided {@link CommandExtractor}
      * is not null.
-     * </p>
      *
      * @param commandExtractor the {@link CommandExtractor} used to extract
      *        commands from the request
@@ -51,7 +49,6 @@ public class JsonRequestValidator implements RequestValidator {
      *     <li>If all checks pass, returns {@link RequestValidationResult#OK} indicating a
      *     valid request.</li>
      * </ul>
-     * </p>
      *
      * @param request the JSON request string to validate
      * @return the validation result, indicating the status of the request

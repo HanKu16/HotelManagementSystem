@@ -10,15 +10,12 @@ import lombok.Getter;
  * A valid building number must consist of one or more digits, optionally
  * followed by a letter (e.g., "A"), and optionally followed by a slash
  * ("/") and more digits (e.g., "/123").
- * </p>
  * <p>
  * This class ensures that the building number adheres to the expected format.
  * If the provided building number is invalid or null, an
  * {@link IllegalArgumentException} will be thrown.
- * </p>
  * <p>
  * The validation pattern follows the regex: <code>\\d+([A-Za-z])?(\\/\\d+)?</code>
- * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -31,7 +28,6 @@ public class BuildingNumber {
      * <p>
      * If the provided building number is {@code null} or doesn't match the valid pattern,
      * an {@link IllegalArgumentException} will be thrown.
-     * </p>
      *
      * @param buildingNumber the building number to be validated and assigned
      * @throws IllegalArgumentException if the building number is

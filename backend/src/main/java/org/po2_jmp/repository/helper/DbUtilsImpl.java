@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
  * for a relational database. The methods handle the creation of database connections,
  * prepared statements, and result set processing while offering customizability through
  * functional interfaces for setting parameters and processing query results.
- * </p>
  */
 public class DbUtilsImpl implements DbUtils {
 

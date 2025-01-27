@@ -12,7 +12,6 @@ import org.po2_jmp.domain.StreetName;
  * The {@link Address} class stores the address information, which includes
  * a city, street name, postal code, and building number. It provides validation
  * to ensure that these values are not null when creating an instance.
- * </p>
  */
 @Getter
 public class Address {
@@ -29,7 +28,6 @@ public class Address {
      * <p>
      * The address is created with a default id of 0, and it will throw an
      * {@link IllegalArgumentException} if any of the provided parameters are null.
-     * </p>
      *
      * @param cityName the name of the city
      * @param streetName the name of the street
@@ -50,7 +48,6 @@ public class Address {
      * This constructor allows for the creation of an address with
      * a specified id, throwing an {@link IllegalArgumentException}
      * if any of the parameters are null.
-     * </p>
      *
      * @param id the unique identifier for the address
      * @param cityName the name of the city

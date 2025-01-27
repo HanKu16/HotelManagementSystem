@@ -7,7 +7,6 @@ package org.po2_jmp.controller.helper.contract;
  * requests and returning an appropriate response in the form of a string.
  * The response may include information or actions resulting from handling
  * the valid request.
- * </p>
  */
 public interface ValidRequestResponder {
 
@@ -16,7 +15,6 @@ public interface ValidRequestResponder {
      * <p>
      * This method processes the given request string and returns a response
      * string that represents the outcome or result of handling the request.
-     * </p>
      *
      * @param request the input request string that has been validated as valid
      * @return a string representing the response to the valid request

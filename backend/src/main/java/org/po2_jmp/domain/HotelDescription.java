@@ -12,10 +12,8 @@ import lombok.Getter;
  *     <li>Must not exceed {@link #MAX_LENGTH} characters in length
  *          (1000 characters).</li>
  * </ul>
- * </p>
  * <p>
  * If any of these conditions are violated, an {@link IllegalArgumentException} is thrown.
- * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -29,7 +27,6 @@ public class HotelDescription {
      * <p>
      * If the provided description is invalid (null or exceeds the maximum length),
      * an {@link IllegalArgumentException} will be thrown.
-     * </p>
      *
      * @param description the hotel description to be validated and assigned
      * @throws IllegalArgumentException if the description is null or

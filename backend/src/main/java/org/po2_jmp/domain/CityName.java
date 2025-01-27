@@ -13,10 +13,8 @@ import lombok.Getter;
  *     <li>Can only contain Polish letters (both uppercase and
  *     lowercase), spaces, and hyphens.</li>
  * </ul>
- * </p>
  * <p>
  * If any of these conditions are violated, an {@link IllegalArgumentException} is thrown.
- * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -31,7 +29,6 @@ public class CityName {
      * <p>
      * If the provided city name is invalid, an
      * {@link IllegalArgumentException} will be thrown.
-     * </p>
      *
      * @param cityName the city name to be validated and assigned
      * @throws IllegalArgumentException if the city name is null,

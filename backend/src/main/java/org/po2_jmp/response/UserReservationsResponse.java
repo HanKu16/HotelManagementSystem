@@ -12,7 +12,6 @@ import java.util.List;
  * <p>
  * This class extends the {@link Response} class and includes the user's ID
  * and a list of reservations associated with that user.
- * </p>
  */
 @Getter
 @ToString

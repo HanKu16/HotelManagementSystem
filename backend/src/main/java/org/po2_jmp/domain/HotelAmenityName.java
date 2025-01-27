@@ -11,10 +11,8 @@ import lombok.Getter;
  *     <li>Cannot be null or blank.</li>
  *     <li>Must contain between 2 and 50 characters (inclusive).</li>
  * </ul>
- * </p>
  * <p>
  * If any of these conditions are violated, an {@link IllegalArgumentException} is thrown.
- * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -29,7 +27,6 @@ public class HotelAmenityName {
      * <p>
      * If the provided name is invalid (null, blank, or out of range in length),
      * an {@link IllegalArgumentException} will be thrown.
-     * </p>
      *
      * @param name the hotel amenity name to be validated and assigned
      * @throws IllegalArgumentException if the name is null, blank,

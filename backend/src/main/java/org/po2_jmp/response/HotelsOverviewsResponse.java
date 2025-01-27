@@ -11,7 +11,6 @@ import java.util.List;
  * <p>
  * This class extends {@link Response} and includes a list of {@link HotelOverviewDto}
  * objects, providing an overview of each hotel in the response.
- * </p>
  */
 @Getter
 @ToString

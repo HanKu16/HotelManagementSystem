@@ -13,7 +13,6 @@ import java.time.LocalDate;
  * This class extends the {@link Request} class and includes additional fields
  * required for creating a reservation, such as user information, reservation date,
  * hotel details, and guest capacity.
- * </p>
  */
 @Getter
 @ToString

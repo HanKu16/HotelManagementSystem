@@ -26,7 +26,6 @@ import java.util.Optional;
  *     <li>{@link ReservationsProvider} for retrieving user reservations.</li>
  *     <li>{@link ReservationsCanceler} for canceling reservations.</li>
  * </ul>
- * </p>
  */
 public class ValidRequestResponderImpl implements ValidRequestResponder {
 

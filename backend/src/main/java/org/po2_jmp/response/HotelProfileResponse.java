@@ -11,7 +11,6 @@ import java.util.List;
  * <p>
  * This class extends {@link Response} and includes various fields to describe the hotel,
  * such as its ID, name, description, amenities, address, and available guest capacities.
- * </p>
  */
 @Getter
 @ToString

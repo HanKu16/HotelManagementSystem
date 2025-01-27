@@ -14,7 +14,6 @@ import lombok.Getter;
  *      and {@link #MAX_LENGTH}</li>
  *   <li>The ID can only contain letters and numbers</li>
  * </ul>
- * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -30,7 +29,6 @@ public class UserId {
      * Validates that the login is not null or blank, its length
      * is within the specified range, and it contains
      * only letters and numbers.
-     * </p>
      *
      * @param login the user ID (login) to be validated
      * @throws IllegalArgumentException if the login is null,

@@ -11,7 +11,6 @@ import java.util.List;
  * Represents a data transfer object (DTO) for providing an overview of a hotel.
  * <p>
  * This class contains information about a hotel, including its ID, name, amenities, and address.
- * </p>
  */
 @Getter
 @ToString

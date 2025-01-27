@@ -12,7 +12,6 @@ import org.po2_jmp.domain.RoleName;
  * This class extends the {@link Response} class and provides details
  * about the user authentication result, including the user's ID and
  * their role in the system.
- * </p>
  */
 @Getter
 @ToString

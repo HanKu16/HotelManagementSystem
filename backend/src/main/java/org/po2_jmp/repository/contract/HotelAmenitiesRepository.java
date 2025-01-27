@@ -11,7 +11,6 @@ import org.po2_jmp.entity.HotelAmenity;
  * modifying hotel amenities in a data storage system. This interface provides methods
  * to retrieve hotel amenities by their identifier, find all amenities for a specific hotel,
  * and add new amenities to the system.
- * </p>
  */
 public interface HotelAmenitiesRepository {
 

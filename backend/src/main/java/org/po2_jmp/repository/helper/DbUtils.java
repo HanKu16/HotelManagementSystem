@@ -12,7 +12,6 @@ import java.util.Optional;
  * and deletions while handling `PreparedStatement` and `ResultSet`. These methods
  * use functional programming concepts to enable customized logic for working with
  * database records.
- * </p>
  */
 public interface DbUtils {
 

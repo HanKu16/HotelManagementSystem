@@ -11,7 +11,6 @@ import lombok.ToString;
  * <p>
  * This class provides a common structure for requests by including a {@code command} field,
  * which specifies the operation associated with the request.
- * </p>
  */
 @Getter
 @ToString

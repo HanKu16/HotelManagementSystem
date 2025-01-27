@@ -14,7 +14,6 @@ import lombok.Getter;
  *      and {@link #MAX_LENGTH}</li>
  *   <li>The password can only contain letters and numbers</li>
  * </ul>
- * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -30,7 +29,6 @@ public class UserPassword {
      * Validates that the password is not null or blank, its length
      * is within the specified range, and it contains
      * only letters and numbers.
-     * </p>
      *
      * @param password the password to be validated
      * @throws IllegalArgumentException if the password is null,

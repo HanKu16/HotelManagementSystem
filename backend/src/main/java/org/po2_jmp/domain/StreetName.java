@@ -9,7 +9,6 @@ import lombok.Getter;
  * The {@link StreetName} class validates that the provided
  * street name is neither null nor empty and that its length
  * does not exceed a maximum allowable length.
- * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -23,7 +22,6 @@ public class StreetName {
      * <p>
      * Validates that the provided street name is neither null nor empty,
      * and that its length is within the allowable limit.
-     * </p>
      *
      * @param street the name of the street
      * @throws IllegalArgumentException if the street name is null,

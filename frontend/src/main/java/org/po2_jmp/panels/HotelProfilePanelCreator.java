@@ -25,6 +25,10 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class is responsible for creating and displaying a panel with hotel profile information
+ * and providing options to make reservations using the specified hotel details.
+ */
 public class HotelProfilePanelCreator {
     private HotelProfileResponse profileResult;
     private ReservationCreationResponse reservationResult;

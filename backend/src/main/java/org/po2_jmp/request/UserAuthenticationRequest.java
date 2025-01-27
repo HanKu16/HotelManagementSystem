@@ -11,7 +11,6 @@ import lombok.ToString;
  * <p>
  * This class extends the {@link Request} class and includes additional fields
  * required for user authentication, such as the {@code userId} and {@code password}.
- * </p>
  */
 @Getter
 @ToString

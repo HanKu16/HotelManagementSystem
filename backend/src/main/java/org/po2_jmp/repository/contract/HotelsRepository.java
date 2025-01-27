@@ -10,7 +10,6 @@ import java.util.Optional;
  * The {@link HotelsRepository} interface defines the contract for accessing and
  * modifying hotel information in a data storage system. This interface provides methods
  * to retrieve hotels by their identifier, find all hotels, and add new hotels to the system.
- * </p>
  */
 public interface HotelsRepository {
 

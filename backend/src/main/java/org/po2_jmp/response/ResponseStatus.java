@@ -5,7 +5,6 @@ package org.po2_jmp.response;
  * <p>
  * The {@code ResponseStatus} enum defines a set of statuses used in API responses
  * to indicate the outcome of an operation.
- * </p>
  *
  * <p>Possible values:</p>
  * <ul>
